@@ -14,3 +14,9 @@ Afin de garder une trace incrémentale et propre de l'évolution du projet, tu D
 - L'interface doit rester minimale, sacrée, sans animations brusques ni couleurs vives (voir `design.md`).
 - Utiliser Zustand pour l'état, React.lazy pour les routes, et privilégier la fluidité extrême (Vibecoding).
 - Maintenir l'usage de `h-[100dvh]` pour un rendu mobile-first parfait sur iOS/Safari.
+
+## 3. Gestion des Versions
+À chaque mise à jour poussée sur Git (git push), tu DOIS obligatoirement incrémenter la version publiée de `+0.01` (ex: `v0.01` -> `v0.02`).
+- Cette version doit être stockée dans `src/version.ts` via `export const APP_VERSION = "vX.XX";`.
+- Elle est affichée en bas de l'écran principal (`HomeScreen.tsx`) à côté de "Paramètres".
+- L'incrémentation doit se faire **avant** de commiter et de pousser le code.

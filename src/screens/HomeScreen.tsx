@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "@/store/useStore";
 import { useTranslation } from "react-i18next";
+import { APP_VERSION } from "@/version";
 
 export function HomeScreen() {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ export function HomeScreen() {
         <button onClick={() => navigate("/about")} className="text-xs text-ash hover:text-parchment transition-colors">{t('about.title')}</button>
         <button onClick={() => navigate("/auth")} className="text-xs text-ash hover:text-parchment transition-colors">{t('home.login')}</button>
         <button onClick={() => navigate("/settings")} className="text-xs text-ash hover:text-parchment transition-colors">{t('home.settings')}</button>
+        <span className="text-[10px] text-ash/40 ml-2 select-none pointer-events-none">{APP_VERSION}</span>
       </footer>
     </div>
   );
