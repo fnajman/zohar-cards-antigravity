@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { MediaPlayer } from "@/components/MediaPlayer";
 import { useStore } from "@/store/useStore";
 import { useCurrentDraw } from "@/hooks/useApi";
+import { useScrollHint } from "@/hooks/useScrollHint";
 
 export function TehimaScreen() {
   const navigate = useNavigate();
@@ -16,12 +17,14 @@ export function TehimaScreen() {
   // Forced to "1.m4v" (Aleph) for now as requested
   const videoSrc = `/video/tehima/1.m4v`;
 
+  const scrollRef = useScrollHint();
+
   return (
-    <div className="h-full flex flex-col bg-night overflow-y-auto">
+    <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">
       <header className="px-6 pt-12 pb-4">
         <button onClick={() => navigate("/experience")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          {t('common.back')}
+          
         </button>
       </header>
 

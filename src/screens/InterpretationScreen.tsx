@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStore } from "@/store/useStore";
 import { useCurrentDraw, useAddKeywords } from "@/hooks/useApi";
+import { useScrollHint } from "@/hooks/useScrollHint";
 
 const fakeAI = `La rencontre de ces deux lettres ouvre un espace de reflexion profond.
 
@@ -22,6 +23,7 @@ export function InterpretationScreen() {
   const { mutate: selectKeywords } = useAddKeywords();
   const markJourneyStep = useStore(state => state.markJourneyStep);
   const [selected, setSelected] = useState<string[]>([]);
+  const scrollRef = useScrollHint();
 
   useEffect(() => {
     markJourneyStep("interpretation");
@@ -33,11 +35,11 @@ export function InterpretationScreen() {
   const save = () => { selectKeywords({ drawId: currentDraw.id, keywords: selected }); navigate("/support-letter"); };
 
   return (
-    <div className="h-full flex flex-col bg-night overflow-y-auto">
+    <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">
       <header className="sticky top-0 z-10 bg-night/95 backdrop-blur-sm px-6 pt-12 pb-3">
         <button onClick={() => navigate("/reading")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          {t('common.back')}
+          
         </button>
       </header>
 

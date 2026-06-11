@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useStore, type DrawStyle } from "@/store/useStore";
 import { useDrawHistory } from "@/hooks/useApi";
 import { HEBREW_FONT_STYLES, type HebrewFontStyle } from "../components/HebrewGlyph";
+import { useScrollHint } from "@/hooks/useScrollHint";
 
 // --- LANGUAGE SELECTOR ---
 function LanguageSelector({ close }: { close: () => void }) {
@@ -53,9 +54,11 @@ export function SettingsScreen() {
   const back = (to: string | (() => void)) => (
     <button onClick={typeof to === "string" ? () => navigate(to) : to} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-      {t('common.back')}
+      
     </button>
   );
+
+  const scrollRef = useScrollHint();
 
   if (section === "language") return <LanguageSelector close={() => setSection("main")} />;
 
@@ -70,7 +73,7 @@ export function SettingsScreen() {
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="#8E8E93" strokeWidth="1.5" strokeLinecap="round"/></svg>
         </button>
       </header>
-      <main className="flex-1 px-6 py-6 overflow-y-auto">
+      <main ref={scrollRef as any} className="flex-1 px-6 py-6 overflow-y-auto">
         <div className="space-y-2">
           {DRAW_STYLES.map((s) => (
             <button key={s.id} onClick={() => setDrawStyle(s.id)}
@@ -104,7 +107,7 @@ export function SettingsScreen() {
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="#8E8E93" strokeWidth="1.5" strokeLinecap="round"/></svg>
         </button>
       </header>
-      <main className="flex-1 px-6 py-6 overflow-y-auto">
+      <main ref={scrollRef as any} className="flex-1 px-6 py-6 overflow-y-auto">
         <div className="space-y-2">
           {HEBREW_FONT_STYLES.map((s) => (
             <button key={s.id} onClick={() => setHebrewFont(s.id)}
@@ -130,7 +133,7 @@ export function SettingsScreen() {
   if (section === "history") return (
     <div className="h-full flex flex-col bg-night overflow-y-auto">
       <header className="sticky top-0 z-10 bg-night/95 backdrop-blur-sm px-6 pt-12 pb-3">{back(() => setSection("main"))}</header>
-      <main className="flex-1 px-6 py-6 overflow-y-auto">
+      <main ref={scrollRef as any} className="flex-1 px-6 py-6 overflow-y-auto">
         <h2 className="text-xl font-medium tracking-tight text-parchment mb-6">{t('settings.history_title')}</h2>
         {isLoading ? <p className="text-sm text-ash">{t('common.loading')}</p> : drawHistory.length === 0
           ? <p className="text-sm text-ash">{t('settings.no_history')}</p>
@@ -152,7 +155,7 @@ export function SettingsScreen() {
   if (section === "plans") return (
     <div className="h-full flex flex-col bg-night overflow-y-auto">
       <header className="px-6 pt-12 pb-4">{back(() => setSection("main"))}</header>
-      <main className="flex-1 px-6 py-6 overflow-y-auto">
+      <main ref={scrollRef as any} className="flex-1 px-6 py-6 overflow-y-auto">
         <h2 className="text-xl font-medium tracking-tight text-parchment mb-2">{t('settings.plans_title')}</h2>
         <p className="text-sm text-ash mb-8">{t('settings.plans_subtitle')}</p>
         <div className="space-y-3">
@@ -179,7 +182,7 @@ export function SettingsScreen() {
   );
 
   return (
-    <div className="h-full flex flex-col bg-night overflow-y-auto">
+    <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">
       <header className="px-6 pt-12 pb-6 flex items-center justify-between border-b border-parchment/10">
         <h1 className="text-2xl font-medium tracking-tight text-parchment">{t('settings.title')}</h1>
         <button onClick={() => navigate("/home")} className="w-8 h-8 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">
@@ -218,6 +221,7 @@ export function SettingsScreen() {
             <div className="space-y-2">
               <Btn label={t('settings.history')} onClick={() => setSection("history")} />
               <Btn label={t('settings.plans')} onClick={() => setSection("plans")} />
+              <Btn label={t('about.title')} onClick={() => navigate("/about")} />
               <Btn label={t('settings.logout')} onClick={() => navigate("/auth")} muted />
             </div>
           </section>

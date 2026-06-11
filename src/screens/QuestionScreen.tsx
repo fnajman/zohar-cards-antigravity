@@ -28,7 +28,7 @@ export function QuestionScreen() {
       <header className="sticky top-0 z-10 bg-night/95 backdrop-blur-sm px-6 pt-12 pb-3 flex justify-between items-center">
         <button onClick={() => navigate(-1)} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          {t('common.back')}
+          
         </button>
         <div className="flex gap-2">
           <span className="text-[11px] text-ash tracking-wide">{t('common.credits_left', { count: user.credits })}</span>

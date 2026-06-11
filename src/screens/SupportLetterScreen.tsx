@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useCurrentDraw } from "@/hooks/useApi";
 import { useStore } from "@/store/useStore";
 import { HebrewGlyph } from "@/components/LetterComponents";
+import { useScrollHint } from "@/hooks/useScrollHint";
 
 const text = `Cher voyageur,
 
@@ -28,12 +29,14 @@ export function SupportLetterScreen() {
     markJourneyStep("support_letter");
   }, [markJourneyStep]);
 
+  const scrollRef = useScrollHint();
+
   return (
-    <div className="h-full flex flex-col bg-night overflow-y-auto">
+    <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">
       <header className="px-6 pt-12 pb-4">
         <button onClick={() => navigate(-1)} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          {t('common.back')}
+          
         </button>
       </header>
 

@@ -1,19 +1,22 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useStore } from "@/store/useStore";
 import { useLetterOfDay } from "@/hooks/useApi";
 import { HebrewGlyph } from "../components/LetterComponents";
+import { useScrollHint } from "@/hooks/useScrollHint";
 
 export function LetterOfDayScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { data: letter, isLoading } = useLetterOfDay();
 
-  if (!letter) return <div className="h-full bg-night" />;
+  if (isLoading) return <div className="h-full bg-night" />;
+  if (!letter) { navigate("/home"); return null; }
+
+  const scrollRef = useScrollHint();
 
   return (
-    <div className="h-full flex flex-col bg-night overflow-y-auto">
+    <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">
       <header className="px-6 pt-12 pb-6 flex items-center justify-between border-b border-parchment/10">
         <h1 className="text-2xl font-medium tracking-tight text-parchment">{t('letter_day.title')}</h1>
         <button onClick={() => navigate("/home")} className="w-8 h-8 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">

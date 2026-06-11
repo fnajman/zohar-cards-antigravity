@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useCurrentDraw } from "@/hooks/useApi";
 import { MediaPlayer } from "@/components/MediaPlayer";
 import { useStore } from "@/store/useStore";
+import { useScrollHint } from "@/hooks/useScrollHint";
 
 export function MeditationScreen() {
   const navigate = useNavigate();
@@ -12,16 +13,17 @@ export function MeditationScreen() {
   const { data: currentDraw } = useCurrentDraw();
   const markJourneyStep = useStore(state => state.markJourneyStep);
   const [ready, setReady] = useState(false);
+  const scrollRef = useScrollHint();
 
   // Forced to "1.mp3" (Aleph) for now as requested
   const audioSrc = `/video/audio/1.mp3`;
 
   return (
-    <div className="h-full flex flex-col bg-night overflow-y-auto">
+    <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">
       <header className="px-6 pt-12 pb-4">
         <button onClick={() => navigate("/experience")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          {t('common.back')}
+          
         </button>
       </header>
 

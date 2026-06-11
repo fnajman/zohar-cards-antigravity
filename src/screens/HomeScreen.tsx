@@ -38,7 +38,8 @@ export function HomeScreen() {
         </motion.div>
       </main>
 
-      <footer className="px-6 pb-8 flex justify-center gap-8">
+      <footer className="px-6 pb-8 flex justify-center gap-6">
+        <button onClick={() => navigate("/about")} className="text-xs text-ash hover:text-parchment transition-colors">{t('about.title')}</button>
         <button onClick={() => navigate("/auth")} className="text-xs text-ash hover:text-parchment transition-colors">{t('home.login')}</button>
         <button onClick={() => navigate("/settings")} className="text-xs text-ash hover:text-parchment transition-colors">{t('home.settings')}</button>
       </footer>

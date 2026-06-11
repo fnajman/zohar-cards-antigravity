@@ -45,14 +45,6 @@ export function DrawScreen() {
     }
   }, [selected, isPending, performDraw, navigate, markJourneyStep]);
 
-  const handleAutoSelect = () => {
-    if (isPending) return;
-    markJourneyStep("card1");
-    markJourneyStep("card2");
-    performDraw(undefined, {
-      onSuccess: () => navigate("/reveal")
-    });
-  };
 
   const changeMode = (id: DrawStyle) => {
     setDrawStyle(id);
@@ -83,10 +75,6 @@ export function DrawScreen() {
       <header className="px-6 pt-12 pb-3 flex items-center justify-between">
         <button onClick={() => navigate("/home")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          {t('common.back')}
-        </button>
-        <button onClick={handleAutoSelect} className="text-xs text-ash/50 hover:text-ash transition-colors">
-          {t('draw.choose_for_me')}
         </button>
       </header>
 

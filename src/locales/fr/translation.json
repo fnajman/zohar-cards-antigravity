@@ -107,5 +107,9 @@
     "title": "Lettre du jour",
     "essence": "Essence",
     "invitation": "Invitation"
+  },
+  "about": {
+    "title": "A propos",
+    "content": "Zohar Cards est une application qui crée un pont entre la sagesse millénaire des lettres hébraïques et le design moderne. Dans un espace de minimalisme sacré, elle vous invite à tirer des cartes, lire des interprétations profondes, et vivre chaque lettre à travers la méditation, le Téhima (la danse des lettres) ou la calligraphie. Une véritable expérience d'introspection et de connexion au sens caché du monde."
   }
 }

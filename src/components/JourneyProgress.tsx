@@ -23,7 +23,7 @@ export function JourneyProgress() {
   }
 
   return (
-    <div className="absolute top-[48px] left-0 w-full z-50 pointer-events-none flex items-center justify-center h-8">
+    <div className="absolute top-[58px] -translate-y-1/2 left-0 w-full z-50 pointer-events-none flex items-center justify-center">
       <div className="relative w-[180px] flex items-center justify-between">
         {/* Background Line */}
         <div className="absolute left-0 right-0 h-[1px] bg-parchment/10" />
