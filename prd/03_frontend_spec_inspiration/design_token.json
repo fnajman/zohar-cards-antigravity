@@ -1,0 +1,274 @@
+{
+  "meta": {
+    "name": "Zohar Cards",
+    "version": "1.0.0",
+    "platform": ["mobile", "web"],
+    "notes": {
+      "intent": "Timeless, minimal, symbolic. No mystic spectacle. High contrast. Silence-first UI.",
+      "constraints": [
+        "Max 2 colors per screen (including background).",
+        "No gradients except subtle grain texture.",
+        "No glassmorphism, no neon, no glow.",
+        "Motion is slow and minimal."
+      ]
+    }
+  },
+  "color": {
+    "base": {
+      "night": { "value": "#0E0F1A", "description": "Deep night blue background" },
+      "ink": { "value": "#0A0A0A", "description": "Ink black for structure and typography on light surfaces" },
+      "parchment": { "value": "#F5F1E8", "description": "Parchment ivory surface" },
+      "bone": { "value": "#E8E2D6", "description": "Warm bone surface alternative" },
+      "ash": { "value": "#8E8E93", "description": "Ash grey for secondary metadata" },
+      "mist": { "value": "rgba(245,241,232,0.12)", "description": "Soft overlay for dividers / subtle borders on dark" }
+    },
+    "semantic": {
+      "bg": {
+        "primary": { "value": "{color.base.night.value}" },
+        "secondary": { "value": "{color.base.parchment.value}" }
+      },
+      "text": {
+        "primaryOnDark": { "value": "{color.base.parchment.value}" },
+        "secondaryOnDark": { "value": "rgba(245,241,232,0.70)" },
+        "tertiaryOnDark": { "value": "rgba(245,241,232,0.45)" },
+        "primaryOnLight": { "value": "{color.base.ink.value}" },
+        "secondaryOnLight": { "value": "rgba(10,10,10,0.70)" },
+        "tertiaryOnLight": { "value": "rgba(10,10,10,0.45)" }
+      },
+      "border": {
+        "onDark": { "value": "rgba(245,241,232,0.18)" },
+        "onLight": { "value": "rgba(10,10,10,0.12)" }
+      },
+      "surface": {
+        "card": { "value": "{color.base.parchment.value}" },
+        "cardAlt": { "value": "{color.base.bone.value}" },
+        "chipOnDark": { "value": "rgba(245,241,232,0.06)" }
+      },
+      "action": {
+        "primaryBg": { "value": "{color.base.parchment.value}" },
+        "primaryFg": { "value": "{color.base.ink.value}" },
+        "secondaryBg": { "value": "transparent" },
+        "secondaryFg": { "value": "{color.base.parchment.value}" }
+      },
+      "state": {
+        "focusRing": { "value": "rgba(245,241,232,0.22)" },
+        "disabled": { "value": "rgba(245,241,232,0.28)" }
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "latinPrimary": {
+        "value": "Inter",
+        "description": "Neutral grotesk. Use a single family across the app."
+      },
+      "latinFallback": {
+        "value": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial",
+        "description": "Fallback stack"
+      },
+      "hebrewDisplay": {
+        "value": "custom_vector_glyph",
+        "description": "Hebrew letters are rendered as vector glyph assets (SVG), not decorative fonts."
+      }
+    },
+    "scale": {
+      "h1": { "size": 34, "lineHeight": 40, "weight": 500, "tracking": -0.2 },
+      "h2": { "size": 24, "lineHeight": 30, "weight": 500, "tracking": -0.1 },
+      "h3": { "size": 18, "lineHeight": 24, "weight": 500, "tracking": 0 },
+      "body": { "size": 15, "lineHeight": 22, "weight": 400, "tracking": 0 },
+      "caption": { "size": 12, "lineHeight": 16, "weight": 400, "tracking": 0.2 },
+      "overline": { "size": 11, "lineHeight": 14, "weight": 500, "tracking": 1.2, "transform": "uppercase" }
+    },
+    "styles": {
+      "titleUpper": {
+        "fontFamily": "{typography.fontFamily.latinPrimary.value}",
+        "fontSize": 18,
+        "lineHeight": 22,
+        "fontWeight": 600,
+        "letterSpacing": 1.8,
+        "textTransform": "uppercase"
+      },
+      "buttonLabel": {
+        "fontFamily": "{typography.fontFamily.latinPrimary.value}",
+        "fontSize": 14,
+        "lineHeight": 18,
+        "fontWeight": 600,
+        "letterSpacing": 0.6
+      },
+      "meta": {
+        "fontFamily": "{typography.fontFamily.latinPrimary.value}",
+        "fontSize": 12,
+        "lineHeight": 16,
+        "fontWeight": 400,
+        "letterSpacing": 0.2
+      }
+    }
+  },
+  "spacing": {
+    "unit": 8,
+    "scale": {
+      "0": 0,
+      "1": 4,
+      "2": 8,
+      "3": 12,
+      "4": 16,
+      "5": 20,
+      "6": 24,
+      "7": 28,
+      "8": 32,
+      "10": 40,
+      "12": 48,
+      "14": 56,
+      "16": 64
+    },
+    "layout": {
+      "screenPaddingX": { "value": 24, "description": "Large margins create silence" },
+      "screenPaddingY": { "value": 24 },
+      "sectionGap": { "value": 24 },
+      "stackGap": { "value": 12 }
+    }
+  },
+  "radius": {
+    "scale": {
+      "xs": { "value": 8 },
+      "sm": { "value": 12 },
+      "md": { "value": 16 },
+      "lg": { "value": 20 },
+      "xl": { "value": 24 },
+      "pill": { "value": 999 }
+    },
+    "usage": {
+      "card": { "value": "{radius.scale.lg.value}" },
+      "button": { "value": "{radius.scale.pill.value}" },
+      "input": { "value": "{radius.scale.pill.value}" }
+    }
+  },
+  "stroke": {
+    "width": {
+      "hairline": { "value": 1 },
+      "thin": { "value": 1.5 },
+      "regular": { "value": 2 }
+    }
+  },
+  "elevation": {
+    "shadow": {
+      "none": { "value": "none" },
+      "soft": {
+        "value": "0px 10px 30px rgba(0,0,0,0.25)",
+        "description": "Subtle depth only; avoid dramatic shadows."
+      }
+    }
+  },
+  "components": {
+    "screen": {
+      "background": { "value": "{color.semantic.bg.primary.value}" },
+      "grain": {
+        "enabled": true,
+        "opacity": 0.06,
+        "description": "Very subtle paper/mineral grain overlay"
+      }
+    },
+    "card": {
+      "bg": { "value": "{color.semantic.surface.card.value}" },
+      "fg": { "value": "{color.semantic.text.primaryOnLight.value}" },
+      "borderColor": { "value": "{color.semantic.border.onLight.value}" },
+      "borderWidth": { "value": "{stroke.width.hairline.value}" },
+      "radius": { "value": "{radius.usage.card.value}" },
+      "padding": { "x": 20, "y": 18 },
+      "shadow": { "value": "{elevation.shadow.soft.value}" }
+    },
+    "button": {
+      "primary": {
+        "bg": { "value": "{color.semantic.action.primaryBg.value}" },
+        "fg": { "value": "{color.semantic.action.primaryFg.value}" },
+        "radius": { "value": "{radius.usage.button.value}" },
+        "height": 48,
+        "paddingX": 18,
+        "borderWidth": 0,
+        "textStyle": "{typography.styles.buttonLabel}"
+      },
+      "secondary": {
+        "bg": { "value": "{color.semantic.action.secondaryBg.value}" },
+        "fg": { "value": "{color.semantic.action.secondaryFg.value}" },
+        "radius": { "value": "{radius.usage.button.value}" },
+        "height": 48,
+        "paddingX": 18,
+        "borderWidth": 1,
+        "borderColor": { "value": "{color.semantic.border.onDark.value}" },
+        "textStyle": "{typography.styles.buttonLabel}"
+      }
+    },
+    "input": {
+      "bgOnDark": { "value": "rgba(245,241,232,0.06)" },
+      "fgOnDark": { "value": "{color.semantic.text.primaryOnDark.value}" },
+      "placeholderOnDark": { "value": "{color.semantic.text.tertiaryOnDark.value}" },
+      "borderColor": { "value": "{color.semantic.border.onDark.value}" },
+      "borderWidth": { "value": "{stroke.width.hairline.value}" },
+      "radius": { "value": "{radius.usage.input.value}" },
+      "height": 48,
+      "paddingX": 16
+    },
+    "divider": {
+      "onDark": { "value": "{color.semantic.border.onDark.value}" },
+      "onLight": { "value": "{color.semantic.border.onLight.value}" }
+    },
+    "icon": {
+      "strokeWidth": { "value": 1.75 },
+      "size": {
+        "sm": 18,
+        "md": 22,
+        "lg": 28
+      },
+      "colorOnDark": { "value": "{color.semantic.text.secondaryOnDark.value}" },
+      "colorOnLight": { "value": "{color.semantic.text.secondaryOnLight.value}" }
+    }
+  },
+  "motion": {
+    "durationMs": {
+      "instant": 0,
+      "fast": 150,
+      "normal": 300,
+      "slow": 500
+    },
+    "easing": {
+      "linear": "linear",
+      "standard": "cubic-bezier(0.2, 0.0, 0.0, 1.0)",
+      "gentle": "cubic-bezier(0.2, 0.8, 0.2, 1.0)"
+    },
+    "rules": {
+      "maxScale": 1.02,
+      "noBounce": true,
+      "noGlow": true
+    }
+  },
+  "haptics": {
+    "enabled": true,
+    "patterns": {
+      "tap": { "type": "light", "description": "Single soft tap" },
+      "confirm": { "type": "medium", "description": "Single confirmation tap" }
+    }
+  },
+  "assets": {
+    "hebrewGlyphs": {
+      "format": "svg",
+      "pathPattern": "assets/glyphs/hebrew/{letter}.svg",
+      "rendering": {
+        "maxWidthPercent": 0.62,
+        "maxHeightPercent": 0.32,
+        "colorOnLight": "{color.base.ink.value}",
+        "colorOnDark": "{color.base.parchment.value}"
+      }
+    },
+    "emblems": {
+      "format": "svg",
+      "style": "monoline_engraved",
+      "strokeWidth": "{stroke.width.thin.value}"
+    },
+    "grainOverlay": {
+      "format": "png",
+      "opacity": 0.06,
+      "blendMode": "overlay",
+      "description": "Subtle texture only"
+    }
+  }
+}

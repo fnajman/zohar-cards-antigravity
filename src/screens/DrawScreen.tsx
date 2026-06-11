@@ -1,0 +1,436 @@
+import { useState, useRef, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useStore, type DrawStyle } from "@/store/useStore";
+import { useTranslation } from "react-i18next";
+import { useCreateDraw, useLetters } from "@/hooks/useApi";
+import { HebrewGlyph, type HebrewFontStyle } from "../components/HebrewGlyph";
+import type { Letter } from "../data/types";
+
+const MODE_META: { id: DrawStyle; label: string; icon: React.ReactNode }[] = [
+  { id: "grid", label: "Ordonne", icon: <GridIcon /> },
+  { id: "chaos", label: "Chaos", icon: <ChaosIcon /> },
+  { id: "fan", label: "Eventail", icon: <FanIcon /> },
+  { id: "slider", label: "Slider", icon: <SliderIcon /> },
+  { id: "hold", label: "Maintenir", icon: <HoldIcon /> },
+];
+
+export function DrawScreen() {
+  const navigate = useNavigate();
+  const { drawStyle, setDrawStyle, hebrewFont } = useStore();
+  const { mutate: performDraw, isPending } = useCreateDraw();
+  const { t } = useTranslation();
+  const { data: letters = [] } = useLetters();
+  const [selected, setSelected] = useState<Letter[]>([]);
+  const [revealed, setRevealed] = useState<Set<number>>(new Set());
+
+  const handleSelect = useCallback((letter: Letter) => {
+    if (isPending || revealed.has(letter.id)) return;
+    setRevealed((prev) => new Set(prev).add(letter.id));
+    setSelected((prev) => {
+      if (prev.find((l) => l.id === letter.id)) return prev;
+      return [...prev, letter];
+    });
+  }, [revealed, isPending]);
+
+  useEffect(() => {
+    if (selected.length === 2 && !isPending) {
+      performDraw({ selectedIds: [selected[0].id, selected[1].id] }, {
+        onSuccess: () => setTimeout(() => navigate("/reveal"), 1200)
+      });
+    }
+  }, [selected, isPending, performDraw, navigate]);
+
+  const handleAutoSelect = () => {
+    if (isPending) return;
+    performDraw(undefined, {
+      onSuccess: () => navigate("/reveal")
+    });
+  };
+
+  const resetMode = (id: DrawStyle) => {
+    setDrawStyle(id);
+    setSelected([]);
+    setRevealed(new Set());
+  };
+
+  if (letters.length === 0) {
+    return <div className="h-full bg-night" />;
+  }
+
+  return (
+    <div className="h-full flex flex-col bg-night">
+      <header className="px-6 pt-12 pb-3 flex items-center justify-between">
+        <button onClick={() => navigate("/home")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          {t('common.back')}
+        </button>
+        <button onClick={handleAutoSelect} className="text-xs text-ash/50 hover:text-ash transition-colors">
+          {t('draw.choose_for_me')}
+        </button>
+      </header>
+
+      <main className="flex-1 overflow-hidden relative">
+        <AnimatePresence mode="wait">
+          {drawStyle === "grid" && <GridMode key="grid" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
+          {drawStyle === "chaos" && <ChaosMode key="chaos" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
+          {drawStyle === "fan" && <FanMode key="fan" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
+          {drawStyle === "slider" && <SliderMode key="slider" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
+          {drawStyle === "hold" && <HoldMode key="hold" />}
+        </AnimatePresence>
+      </main>
+
+      {selected.length > 0 && selected.length < 2 && drawStyle !== "hold" && (
+        <div className="px-6 py-2 text-center">
+          <span className="text-xs text-ash">{t('draw.revealed', { name: selected[0].name })}</span>
+        </div>
+      )}
+
+      <nav className="px-4 pb-6 pt-3 border-t border-parchment/5">
+        <div className="flex items-center justify-around">
+          {MODE_META.map((m) => (
+            <button
+              key={m.id}
+              onClick={() => resetMode(m.id)}
+              className={`flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all duration-300 ${
+                drawStyle === m.id ? "text-parchment" : "text-ash/50 hover:text-ash"
+              }`}
+            >
+              <div className={`w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 ${
+                drawStyle === m.id ? "bg-parchment/10" : ""
+              }`}>
+                {m.icon}
+              </div>
+              <span className="text-[9px] tracking-wide">{m.label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
+    </div>
+  );
+}
+
+// --- CARD BACK (decorative motif) ---
+function CardBack({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
+  const sizes = { 
+    sm: "w-[16vw] max-w-[65px] aspect-[2/3]", 
+    md: "w-[22vw] max-w-[90px] aspect-[2/3]", 
+    lg: "w-[30vw] max-w-[120px] aspect-[2/3]" 
+  };
+  return (
+    <div className={`${sizes[size]} rounded-xl bg-night-light border border-parchment/12 flex items-center justify-center relative overflow-hidden`}>
+      <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #F5F1E8 1px, transparent 1px)", backgroundSize: "8px 8px" }} />
+      <svg width="40%" height="40%" viewBox="0 0 24 24" fill="none" className="opacity-30">
+        <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#F5F1E8" strokeWidth="1" />
+        <circle cx="12" cy="12" r="3" stroke="#F5F1E8" strokeWidth="0.7" />
+      </svg>
+    </div>
+  );
+}
+
+// --- FLIPPING CARD ---
+function FlipCard({ letter, isRevealed, onClick, size = "md", hebrewFont = "Lalou" }: {
+  letter: Letter;
+  isRevealed: boolean;
+  onClick: () => void;
+  size?: "sm" | "md" | "lg";
+  hebrewFont?: HebrewFontStyle;
+}) {
+  const sizes = { 
+    sm: "w-[16vw] max-w-[65px] aspect-[2/3]", 
+    md: "w-[22vw] max-w-[90px] aspect-[2/3]", 
+    lg: "w-[30vw] max-w-[120px] aspect-[2/3]" 
+  };
+  const glyphSizes = { sm: "xs" as const, md: "sm" as const, lg: "md" as const };
+
+  return (
+    <motion.div 
+      className={`${sizes[size]} perspective-500 cursor-pointer`} 
+      onClick={onClick}
+      whileHover={{ scale: 1.05, y: -2 }}
+      whileTap={{ scale: 0.92 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+    >
+      <motion.div
+        animate={{ rotateY: isRevealed ? 180 : 0 }}
+        transition={{ duration: 0.6, ease: [0.2, 0.0, 0.0, 1.0] }}
+        className="relative w-full h-full"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {/* Back */}
+        <div className="absolute inset-0 rounded-xl bg-night-light border border-parchment/12 flex items-center justify-center overflow-hidden" style={{ backfaceVisibility: "hidden" }}>
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #F5F1E8 1px, transparent 1px)", backgroundSize: "8px 8px" }} />
+          <svg width="40%" height="40%" viewBox="0 0 24 24" fill="none" className="opacity-30">
+            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#F5F1E8" strokeWidth="1" />
+            <circle cx="12" cy="12" r="3" stroke="#F5F1E8" strokeWidth="0.7" />
+          </svg>
+        </div>
+        {/* Front (revealed) */}
+        <div className="absolute inset-0 rounded-xl bg-parchment/[0.08] border border-parchment/25 flex items-center justify-center" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
+          <HebrewGlyph letter={letter} style={hebrewFont} size={glyphSizes[size]} />
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// --- GRID MODE ---
+function GridMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[] }) {
+  const { t } = useTranslation();
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
+      className="h-full px-4 py-4 overflow-y-auto"
+    >
+      <p className="text-center text-sm text-ash mb-4">{t('draw.grid_desc')}</p>
+      <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 sm:gap-4 justify-items-center max-w-2xl mx-auto">
+        {letters.map((l) => (
+          <FlipCard key={l.id} letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+// --- CHAOS MODE ---
+function ChaosMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[] }) {
+  const { t } = useTranslation();
+  const [positions] = useState(() =>
+    letters.map(() => ({
+      x: 5 + Math.random() * 65,
+      y: 8 + Math.random() * 65,
+      rotate: Math.random() * 50 - 25,
+    }))
+  );
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
+      className="h-full relative overflow-hidden"
+    >
+      <p className="absolute top-4 left-0 right-0 text-center text-sm text-ash z-10">{t('draw.chaos_desc')}</p>
+      {letters.map((l, i) => (
+        <motion.div
+          key={l.id}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: i * 0.025, duration: 0.4 }}
+          className="absolute"
+          style={{
+            left: `${positions[i].x}%`,
+            top: `${positions[i].y}%`,
+            translate: "-50% -50%",
+            transform: `rotate(${positions[i].rotate}deg)`,
+          }}
+        >
+          <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} />
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+}
+
+// --- FAN MODE ---
+function FanMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[] }) {
+  const { t } = useTranslation();
+  const total = letters.length;
+  const arcSpread = 140;
+  const startAngle = -arcSpread / 2;
+  const angleStep = arcSpread / (total > 1 ? total - 1 : 1);
+  const radius = 220;
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
+      className="h-full flex items-end justify-center relative overflow-hidden pb-4"
+    >
+      <p className="absolute top-4 left-0 right-0 text-center text-sm text-ash z-10">{t('draw.fan_desc')}</p>
+      <div className="relative" style={{ width: "100%", height: `${radius + 80}px` }}>
+        {letters.map((l, i) => {
+          const angle = startAngle + i * angleStep;
+          const rad = (angle * Math.PI) / 180;
+          const x = Math.sin(rad) * radius;
+          const y = -Math.cos(rad) * radius + radius;
+
+          return (
+            <motion.div
+              key={l.id}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.02, duration: 0.4 }}
+              className="absolute origin-bottom hover:z-30 z-10"
+              style={{
+                left: `calc(50% + ${x}px)`,
+                bottom: `${radius - y + 10}px`,
+                translate: "-50% 0",
+                transform: `rotate(${angle}deg)`,
+              }}
+            >
+              <div style={{ transform: `rotate(0deg)` }}>
+                <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} />
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
+
+// --- SLIDER MODE ---
+function SliderMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[] }) {
+  const { t } = useTranslation();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
+      className="h-full flex flex-col items-center justify-center"
+    >
+      <p className="text-sm text-ash mb-6">{t('draw.slider_desc')}</p>
+      <div
+        ref={scrollRef}
+        className="w-full overflow-x-auto no-scrollbar"
+        style={{ WebkitOverflowScrolling: "touch" }}
+      >
+        <div className="w-max flex gap-3 sm:gap-4 px-6 py-4 mx-auto">
+          {letters.map((l) => (
+            <div key={l.id} className="flex-shrink-0">
+              <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="lg" hebrewFont={hebrewFont} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <p className="text-xs text-ash/40 mt-4">{t('draw.slider_hint')}</p>
+    </motion.div>
+  );
+}
+
+// --- HOLD MODE ---
+function HoldMode() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { mutate: performDraw } = useCreateDraw();
+  const [phase, setPhase] = useState<"ready" | "charging" | "done">("ready");
+  const [progress, setProgress] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startHold = useCallback(() => {
+    setPhase("charging");
+    setProgress(0);
+    timerRef.current = setInterval(() => {
+      setProgress((p) => {
+        if (p >= 100) {
+          clearInterval(timerRef.current!);
+          timerRef.current = null;
+          setPhase("done");
+          performDraw(undefined, {
+            onSuccess: () => setTimeout(() => navigate("/reveal"), 600)
+          });
+          return 100;
+        }
+        return p + 2;
+      });
+    }, 30);
+  }, [performDraw, navigate]);
+
+  const endHold = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    if (phase === "charging") {
+      setPhase("ready");
+      setProgress(0);
+    }
+  }, [phase]);
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="h-full flex flex-col items-center justify-center px-6"
+    >
+      <AnimatePresence mode="wait">
+        {phase === "ready" && (
+          <motion.div key="r" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center gap-6">
+            <p className="text-sm text-ash text-center max-w-[200px] leading-relaxed">{t('draw.hold_ready')}</p>
+            <div
+              onMouseDown={startHold} onMouseUp={endHold} onMouseLeave={endHold}
+              onTouchStart={startHold} onTouchEnd={endHold}
+              className="w-36 h-52 rounded-2xl bg-night-light border border-parchment/10 flex items-center justify-center cursor-pointer select-none relative overflow-hidden group"
+            >
+              <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #F5F1E8 1px, transparent 1px)", backgroundSize: "10px 10px" }} />
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="opacity-25 group-hover:opacity-40 transition-opacity">
+                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#F5F1E8" strokeWidth="1" />
+                <circle cx="12" cy="12" r="3" stroke="#F5F1E8" strokeWidth="0.7" />
+              </svg>
+              <span className="absolute bottom-3 text-[10px] tracking-[0.15em] uppercase text-ash/50">{t('draw.hold_btn')}</span>
+            </div>
+            <p className="text-xs text-ash/40">{t('draw.hold_hint')}</p>
+          </motion.div>
+        )}
+        {phase === "charging" && (
+          <motion.div key="c" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center gap-6"
+            onMouseUp={endHold} onTouchEnd={endHold}
+          >
+            <div className="w-36 h-52 rounded-2xl bg-night-light border border-parchment/20 flex items-center justify-center relative overflow-hidden">
+              <div className="absolute bottom-0 left-0 right-0 bg-parchment/8 transition-all" style={{ height: `${progress}%` }} />
+              <motion.div animate={{ scale: [1, 1.02, 1] }} transition={{ duration: 1.2, repeat: Infinity }}>
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="opacity-40 z-10 relative">
+                  <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#F5F1E8" strokeWidth="1" />
+                  <circle cx="12" cy="12" r="3" stroke="#F5F1E8" strokeWidth="0.7" />
+                </svg>
+              </motion.div>
+            </div>
+            <div className="w-28 h-1 bg-parchment/10 rounded-full overflow-hidden">
+              <div className="h-full bg-parchment/50 rounded-full transition-all" style={{ width: `${progress}%` }} />
+            </div>
+          </motion.div>
+        )}
+        {phase === "done" && (
+          <motion.div key="d" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+            <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 2, repeat: Infinity }} className="font-hebrew text-5xl text-parchment">...</motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+// --- ICONS ---
+function GridIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.3">
+      <rect x="2" y="2" width="5" height="5" rx="1" /><rect x="11" y="2" width="5" height="5" rx="1" />
+      <rect x="2" y="11" width="5" height="5" rx="1" /><rect x="11" y="11" width="5" height="5" rx="1" />
+    </svg>
+  );
+}
+
+function ChaosIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.3">
+      <circle cx="5" cy="6" r="1.5" /><circle cx="13" cy="4" r="1.5" />
+      <circle cx="9" cy="11" r="1.5" /><circle cx="14" cy="13" r="1.5" /><circle cx="4" cy="14" r="1.5" />
+    </svg>
+  );
+}
+
+function FanIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.3">
+      <path d="M9 16L4 4" /><path d="M9 16L7 3" /><path d="M9 16V2" /><path d="M9 16L11 3" /><path d="M9 16L14 4" />
+    </svg>
+  );
+}
+
+function SliderIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.3">
+      <rect x="1" y="5" width="6" height="8" rx="1.5" /><rect x="6" y="4" width="6" height="10" rx="1.5" /><rect x="11" y="5" width="6" height="8" rx="1.5" />
+    </svg>
+  );
+}
+
+function HoldIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.3">
+      <circle cx="9" cy="9" r="6" /><circle cx="9" cy="9" r="2" fill="currentColor" opacity="0.4" />
+    </svg>
+  );
+}

@@ -1,0 +1,16 @@
+# Règles du Projet Zohar Cards
+
+## 1. Gestion de la Mémoire et des PRD
+Afin de garder une trace incrémentale et propre de l'évolution du projet, tu DOIS appliquer la règle suivante lors de **chaque changement majeur** (nouvelle fonctionnalité, refactorisation, modification de l'architecture ou de la base de données) :
+
+1. **Logs dans `/memory`** : Crée un fichier markdown dans le dossier `/memory` (ex: `YYYY-MM-DD_nom_du_changement.md`). Ce fichier doit documenter de manière exhaustive :
+   - Le résumé des changements.
+   - Les décisions techniques et design prises.
+   - La liste des fichiers créés, modifiés ou supprimés.
+
+2. **Mise à jour des PRD** : Ne te contente pas de coder et de logger. Tu DOIS obligatoirement répercuter ces changements dans la documentation de référence située dans le dossier `/prd` (ex: `00_master_plan.md`, `Tech_Notice.md`, `01_data_schema.md`, etc.). Les PRD doivent **toujours** refléter l'état actuel et exact du code.
+
+## 2. Code & Architecture (Rappels)
+- L'interface doit rester minimale, sacrée, sans animations brusques ni couleurs vives (voir `design.md`).
+- Utiliser Zustand pour l'état, React.lazy pour les routes, et privilégier la fluidité extrême (Vibecoding).
+- Maintenir l'usage de `h-[100dvh]` pour un rendu mobile-first parfait sur iOS/Safari.

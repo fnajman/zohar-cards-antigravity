@@ -1,0 +1,52 @@
+import React, { Suspense } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SplashScreen } from "@/screens/SplashScreen";
+
+const HomeScreen = React.lazy(() => import("@/screens/HomeScreen").then(m => ({ default: m.HomeScreen })));
+const DrawScreen = React.lazy(() => import("@/screens/DrawScreen").then(m => ({ default: m.DrawScreen })));
+const RevealScreen = React.lazy(() => import("@/screens/RevealScreen").then(m => ({ default: m.RevealScreen })));
+const ReadingScreen = React.lazy(() => import("@/screens/ReadingScreen").then(m => ({ default: m.ReadingScreen })));
+const QuestionScreen = React.lazy(() => import("@/screens/QuestionScreen").then(m => ({ default: m.QuestionScreen })));
+const InterpretationScreen = React.lazy(() => import("@/screens/InterpretationScreen").then(m => ({ default: m.InterpretationScreen })));
+const SupportLetterScreen = React.lazy(() => import("@/screens/SupportLetterScreen").then(m => ({ default: m.SupportLetterScreen })));
+const LetterOfDayScreen = React.lazy(() => import("@/screens/LetterOfDayScreen").then(m => ({ default: m.LetterOfDayScreen })));
+const SettingsScreen = React.lazy(() => import("@/screens/SettingsScreen").then(m => ({ default: m.SettingsScreen })));
+const AuthScreen = React.lazy(() => import("@/screens/AuthScreen").then(m => ({ default: m.AuthScreen })));
+
+const LoadingFallback = () => <div className="h-[100dvh] w-full bg-night" />;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    },
+  },
+});
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <div className="h-[100dvh] w-full max-w-[430px] mx-auto relative bg-night">
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<SplashScreen />} />
+              <Route path="/home" element={<HomeScreen />} />
+              <Route path="/draw" element={<DrawScreen />} />
+              <Route path="/reveal" element={<RevealScreen />} />
+              <Route path="/reading" element={<ReadingScreen />} />
+              <Route path="/question" element={<QuestionScreen />} />
+              <Route path="/interpretation" element={<InterpretationScreen />} />
+              <Route path="/support-letter" element={<SupportLetterScreen />} />
+              <Route path="/letter-of-day" element={<LetterOfDayScreen />} />
+              <Route path="/settings" element={<SettingsScreen />} />
+              <Route path="/auth" element={<AuthScreen />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </div>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+}

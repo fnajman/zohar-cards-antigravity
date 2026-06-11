@@ -1,0 +1,100 @@
+{
+  "common": {
+    "back": "Back",
+    "close_draw": "Close the draw",
+    "loading": "Loading...",
+    "credits_left": "{{count}} credit remaining",
+    "credits_left_plural": "{{count}} credits remaining"
+  },
+  "home": {
+    "title": "Zohar Cards",
+    "subtitle": "A space for symbolic contemplation",
+    "draw_btn": "Draw two letters",
+    "letter_btn": "Letter of the day",
+    "login": "Sign in",
+    "settings": "Settings"
+  },
+  "draw": {
+    "choose_for_me": "Choose for me",
+    "grid_desc": "Choose two cards",
+    "chaos_desc": "Choose from chaos",
+    "fan_desc": "Draw from the fan",
+    "slider_desc": "Scroll and choose",
+    "slider_hint": "Swipe horizontally",
+    "hold_ready": "Take a moment before drawing.",
+    "hold_hint": "Hold the card to initiate the draw",
+    "hold_btn": "Hold",
+    "revealed": "1/2 — {{name}} revealed"
+  },
+  "reveal": {
+    "first_letter": "First letter",
+    "second_letter": "Second letter",
+    "next_btn": "Discover the second",
+    "read_btn": "Read the interpretation"
+  },
+  "reading": {
+    "tab_combo": "Encounter",
+    "theme": "Theme",
+    "archetypal_question": "Archetypal question",
+    "frames": "Reading frames",
+    "frame_general": "General",
+    "frame_relationships": "Relationships",
+    "frame_work": "Work",
+    "frame_inner": "Inner life",
+    "ask_question": "Ask a question"
+  },
+  "interpretation": {
+    "subtitle": "Contextual interpretation",
+    "resonance": "Which words resonate with you?",
+    "your_resonance": "Your resonance:",
+    "support_btn": "Letter of support"
+  },
+  "question": {
+    "no_credits": "You have no credits left to ask a personal question.",
+    "see_plans": "View plans",
+    "title": "Your question",
+    "subtitle": "There's no need to be precise. Let what comes, come.",
+    "placeholder": "What occupies my mind...",
+    "reveal_btn": "Reveal interpretation",
+    "reveal_skip_btn": "Reveal without question"
+  },
+  "settings": {
+    "title": "Settings",
+    "account": "Account",
+    "experience": "Experience",
+    "actions": "Actions",
+    "language": "Language",
+    "draw_style": "Draw style",
+    "font_style": "Letter style",
+    "interaction": "Interaction mode",
+    "card_back": "Card back",
+    "history": "Draw history",
+    "plans": "Manage subscription",
+    "logout": "Sign out",
+    "history_title": "History",
+    "no_history": "No recorded draws.",
+    "plans_title": "Plans",
+    "plans_subtitle": "Choose the depth that suits you.",
+    "current_plan": "Current",
+    "choose_plan": "Choose",
+    "questions_per_month": "Questions: {{q}}",
+    "ai_chat": "AI Chat: {{chat}}",
+    "yes": "Yes",
+    "no": "No",
+    "style_title": "Draw style",
+    "style_subtitle": "Choose your default draw mode.",
+    "font_title": "Letter style",
+    "font_subtitle": "Choose the graphical style of the Hebrew letters.",
+    "french": "French",
+    "english": "English"
+  },
+  "support": {
+    "title": "Letter of support",
+    "back_btn": "Return to silence"
+  },
+  "letter_day": {
+    "title": "Letter of the day",
+    "essence": "Essence",
+    "invitation": "Invitation"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "instanceName": "xzye-nshv-nuiv",
+  "workspaceName": "Zohar Card 2.0",
+  "workspaceId": 48,
+  "branch": "v1",
+  "paths": {
+    "functions": "functions",
+    "tables": "tables",
+    "apis": "apis",
+    "tasks": "tasks"
+  }
+}

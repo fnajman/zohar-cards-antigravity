@@ -1,0 +1,100 @@
+{
+  "common": {
+    "back": "Retour",
+    "close_draw": "Clore le tirage",
+    "loading": "Chargement...",
+    "credits_left": "{{count}} crédit restant",
+    "credits_left_plural": "{{count}} crédits restants"
+  },
+  "home": {
+    "title": "Zohar Cards",
+    "subtitle": "Un espace de contemplation symbolique",
+    "draw_btn": "Tirer deux lettres",
+    "letter_btn": "Lettre du jour",
+    "login": "S'identifier",
+    "settings": "Paramètres"
+  },
+  "draw": {
+    "choose_for_me": "Choisir pour moi",
+    "grid_desc": "Choisissez deux cartes",
+    "chaos_desc": "Choisissez dans le chaos",
+    "fan_desc": "Tirez de l'éventail",
+    "slider_desc": "Faites défiler et choisissez",
+    "slider_hint": "Glissez horizontalement",
+    "hold_ready": "Prenez un moment avant de tirer.",
+    "hold_hint": "Maintenez la carte pour initier le tirage",
+    "hold_btn": "Maintenir",
+    "revealed": "1/2 — {{name}} révélée"
+  },
+  "reveal": {
+    "first_letter": "Première lettre",
+    "second_letter": "Seconde lettre",
+    "next_btn": "Découvrir la seconde",
+    "read_btn": "Lire l'interprétation"
+  },
+  "reading": {
+    "tab_combo": "Rencontre",
+    "theme": "Thème",
+    "archetypal_question": "Question archétypale",
+    "frames": "Cadres de lecture",
+    "frame_general": "Général",
+    "frame_relationships": "Relations",
+    "frame_work": "Travail",
+    "frame_inner": "Vie intérieure",
+    "ask_question": "Poser une question"
+  },
+  "interpretation": {
+    "subtitle": "Interprétation contextuelle",
+    "resonance": "Quels mots résonnent en vous ?",
+    "your_resonance": "Votre résonance :",
+    "support_btn": "Lettre de soutien"
+  },
+  "question": {
+    "no_credits": "Vous n'avez plus de crédits pour poser une question personnelle.",
+    "see_plans": "Voir les abonnements",
+    "title": "Votre question",
+    "subtitle": "Il n'est pas nécessaire d'être précis. Laissez venir ce qui vient.",
+    "placeholder": "Ce qui occupe mon esprit...",
+    "reveal_btn": "Révéler l'interprétation",
+    "reveal_skip_btn": "Révéler sans question"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "account": "Compte",
+    "experience": "Expérience",
+    "actions": "Actions",
+    "language": "Langue",
+    "draw_style": "Style de tirage",
+    "font_style": "Style des lettres",
+    "interaction": "Mode interaction",
+    "card_back": "Dos de carte",
+    "history": "Historique des tirages",
+    "plans": "Gérer l'abonnement",
+    "logout": "Se déconnecter",
+    "history_title": "Historique",
+    "no_history": "Aucun tirage enregistré.",
+    "plans_title": "Abonnements",
+    "plans_subtitle": "Choisissez la profondeur qui vous convient.",
+    "current_plan": "Actuel",
+    "choose_plan": "Choisir",
+    "questions_per_month": "Questions : {{q}}",
+    "ai_chat": "Chat IA : {{chat}}",
+    "yes": "Oui",
+    "no": "Non",
+    "style_title": "Style de tirage",
+    "style_subtitle": "Choisissez votre mode de tirage par défaut.",
+    "font_title": "Style des lettres",
+    "font_subtitle": "Choisissez le style graphique des lettres hébraïques.",
+    "french": "Français",
+    "english": "Anglais"
+  },
+  "support": {
+    "title": "Lettre de soutien",
+    "back_btn": "Retour au silence"
+  },
+  "letter_day": {
+    "title": "Lettre du jour",
+    "essence": "Essence",
+    "invitation": "Invitation"
+  }
+}
