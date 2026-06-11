@@ -90,7 +90,18 @@
   },
   "support": {
     "title": "Letter of support",
-    "back_btn": "Return to silence"
+    "back_btn": "Return to silence",
+    "experience_btn": "Experience the letter"
+  },
+  "experience": {
+    "title": "Experience your letter",
+    "meditation": "Breathe and meditate",
+    "meditation_desc": "Take a moment to sit in silence. Let the voice guide you through the essence of this letter.",
+    "tehima": "Move with Tehima",
+    "tehima_desc": "Tehima is the gesture of Hebrew letters. Let your body express the shape and movement of this letter.",
+    "calligraphy": "Focus (Calligraphy)",
+    "calligraphy_desc": "Observe the calligrapher's gesture. Let your eyes follow the subtle tracing of ink on parchment.",
+    "ready_btn": "I am ready"
   },
   "letter_day": {
     "title": "Letter of the day",

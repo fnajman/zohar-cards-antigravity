@@ -101,6 +101,29 @@ Chaque carte a un dos decore (pattern subtil) et un verso avec le glyphe revele.
 ### 4.11 Auth (`/auth`)
 - Email / Mot de passe (UI prete, logique Supabase a connecter).
 
+### 4.12 Vivre sa lettre (`/experience`)
+Après la réception de la lettre de soutien, l'utilisateur se voit proposer 3 manières d'expérimenter et d'intégrer l'essence de sa lettre. Ces parcours utilisent un composant lecteur média (audio/vidéo) universel, adapté au mobile et desktop, gérant le streaming continu. Le contenu (voix, textes) doit être adapté à la langue choisie (multilingue).
+
+#### 4.12.1 Respirer et méditer (`/experience/meditation`)
+- **Lecteur audio** permettant d'écouter une méditation guidée spécifique à la lettre de soutien.
+- UI minimaliste : contrôles de lecture (play/pause, progression), fond apaisant, centré sur l'écoute.
+
+#### 4.12.2 Bouger (`/experience/tehima`)
+- **Lecteur vidéo** pour regarder et pratiquer le Téhima (yoga hébraïque).
+- Les vidéos sont streamées depuis `/video/tehima/{n}.mp4` (où `{n}` est le numéro de position alphabétique de la lettre).
+- Options du lecteur : play/pause, plein écran, contrôle du volume.
+
+#### 4.12.3 Se concentrer (`/experience/calligraphy`)
+- **Lecteur vidéo** dévoilant la création de la lettre par un calligraphe.
+- Les vidéos sont streamées depuis `/video/calligraph/{n}.mp4`.
+- L'accent est mis sur le geste et la fluidité (mode boucle ou ralenti possible à l'avenir).
+
+### Spécifications Techniques : Media Player Component
+- **Composant Universel (`MediaPlayer`)** : Un wrapper customisant la balise native `<video>` / `<audio>`.
+- **Compatibilité** : Doit être 100% responsive et supporter les modes plein écran natifs iOS/Android, ainsi que la lecture en tâche de fond pour l'audio si possible.
+- **Multilingue** : Les pistes audio ou les sous-titres doivent s'adapter selon la variable `i18n.language`.
+- **Esthétique** : Contrôles (UI) épurés s'intégrant au "Sacred Minimalism", couleurs `Parchment` et `Night`, sans les gros boutons natifs du navigateur par défaut (masquer les contrôles par défaut et construire des boutons customs).
+
 ---
 
 ## 5. Interactions & Animations

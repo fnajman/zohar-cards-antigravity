@@ -46,8 +46,11 @@ export function SupportLetterScreen() {
             <p className="text-sm text-parchment/85 leading-[1.9] whitespace-pre-line font-light">{text}</p>
           </motion.div>
         </motion.div>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="mt-8">
-          <button onClick={() => navigate("/home")} className="w-full py-4 bg-parchment/5 text-parchment rounded-full text-sm font-medium hover:bg-parchment/10 transition-colors">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="mt-8 flex flex-col gap-3">
+          <button onClick={() => navigate("/experience")} className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-parchment/90 transition-colors">
+            {t('support.experience_btn')}
+          </button>
+          <button onClick={() => navigate("/home")} className="w-full py-4 bg-transparent border border-parchment/20 text-parchment rounded-full text-sm font-medium hover:bg-parchment/5 transition-colors">
             {t('support.back_btn')}
           </button>
         </motion.div>

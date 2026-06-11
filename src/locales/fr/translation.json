@@ -90,7 +90,18 @@
   },
   "support": {
     "title": "Lettre de soutien",
-    "back_btn": "Retour au silence"
+    "back_btn": "Retour au silence",
+    "experience_btn": "Vivre l'expérience de la lettre"
+  },
+  "experience": {
+    "title": "Vivre sa lettre",
+    "meditation": "Respirer et méditer",
+    "meditation_desc": "Prenez un instant pour vous asseoir dans le silence. Laissez la voix vous guider à travers l'essence de cette lettre.",
+    "tehima": "Bouger avec le Téhima",
+    "tehima_desc": "Le Téhima est la gestuelle des lettres hébraïques. Laissez votre corps exprimer la forme et le mouvement de cette lettre.",
+    "calligraphy": "Se concentrer (Calligraphie)",
+    "calligraphy_desc": "Observez le geste du calligraphe. Laissez votre regard suivre le tracé subtil de l'encre sur le parchemin.",
+    "ready_btn": "Je suis prêt(e)"
   },
   "letter_day": {
     "title": "Lettre du jour",

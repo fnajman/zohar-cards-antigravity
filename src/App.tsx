@@ -13,6 +13,11 @@ const SupportLetterScreen = React.lazy(() => import("@/screens/SupportLetterScre
 const LetterOfDayScreen = React.lazy(() => import("@/screens/LetterOfDayScreen").then(m => ({ default: m.LetterOfDayScreen })));
 const SettingsScreen = React.lazy(() => import("@/screens/SettingsScreen").then(m => ({ default: m.SettingsScreen })));
 const AuthScreen = React.lazy(() => import("@/screens/AuthScreen").then(m => ({ default: m.AuthScreen })));
+const ExperienceMenuScreen = React.lazy(() => import("@/screens/ExperienceMenuScreen").then(m => ({ default: m.ExperienceMenuScreen })));
+const MeditationScreen = React.lazy(() => import("@/screens/MeditationScreen").then(m => ({ default: m.MeditationScreen })));
+const TehimaScreen = React.lazy(() => import("@/screens/TehimaScreen").then(m => ({ default: m.TehimaScreen })));
+const CalligraphyScreen = React.lazy(() => import("@/screens/CalligraphyScreen").then(m => ({ default: m.CalligraphyScreen })));
+
 
 const LoadingFallback = () => <div className="h-[100dvh] w-full bg-night" />;
 
@@ -42,6 +47,10 @@ export default function App() {
               <Route path="/letter-of-day" element={<LetterOfDayScreen />} />
               <Route path="/settings" element={<SettingsScreen />} />
               <Route path="/auth" element={<AuthScreen />} />
+              <Route path="/experience" element={<ExperienceMenuScreen />} />
+              <Route path="/experience/meditation" element={<MeditationScreen />} />
+              <Route path="/experience/tehima" element={<TehimaScreen />} />
+              <Route path="/experience/calligraphy" element={<CalligraphyScreen />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>
