@@ -106,17 +106,18 @@ Après la réception de la lettre de soutien, l'utilisateur se voit proposer 3 m
 
 #### 4.12.1 Respirer et méditer (`/experience/meditation`)
 - **Lecteur audio** permettant d'écouter une méditation guidée spécifique à la lettre de soutien.
+- Les fichiers audio sont streamés depuis `/video/audio/{n}.mp3` (où `{n}` est la position alphabétique non paddée, ex: `1.mp3`).
 - UI minimaliste : contrôles de lecture (play/pause, progression), fond apaisant, centré sur l'écoute.
 
 #### 4.12.2 Bouger (`/experience/tehima`)
 - **Lecteur vidéo** pour regarder et pratiquer le Téhima (yoga hébraïque).
-- Les vidéos sont streamées depuis `/video/tehima/{n}.mp4` (où `{n}` est le numéro de position alphabétique de la lettre).
-- Options du lecteur : play/pause, plein écran, contrôle du volume.
+- Les vidéos sont streamées depuis `/video/tehima/{n}.m4v` (où `{n}` est le numéro de position alphabétique de la lettre).
+- Options du lecteur : lecture verticale plein écran, play/pause, plein écran natif.
 
 #### 4.12.3 Se concentrer (`/experience/calligraphy`)
 - **Lecteur vidéo** dévoilant la création de la lettre par un calligraphe.
 - Les vidéos sont streamées depuis `/video/calligraph/{n}.mp4`.
-- L'accent est mis sur le geste et la fluidité (mode boucle ou ralenti possible à l'avenir).
+- Format vidéo centré et adaptatif (fullscreen vertical). L'accent est mis sur le geste et la fluidité.
 
 ### Spécifications Techniques : Media Player Component
 - **Composant Universel (`MediaPlayer`)** : Un wrapper customisant la balise native `<video>` / `<audio>`.

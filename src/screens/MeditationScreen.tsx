@@ -13,7 +13,7 @@ export function MeditationScreen() {
 
   // We fallback to 1 if no draw
   const letterPos = currentDraw?.card_1.identity.alphabet_position || 1;
-  const audioFile = String(letterPos).padStart(2, "0") + ".mp3";
+  const audioFile = `${letterPos}.mp3`;
   const audioSrc = `/video/audio/${audioFile}`;
 
   return (

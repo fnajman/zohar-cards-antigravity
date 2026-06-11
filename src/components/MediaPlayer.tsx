@@ -86,13 +86,19 @@ export function MediaPlayer({ src, type, onEnded, poster }: MediaPlayerProps) {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
+  useEffect(() => {
+    if (mediaRef.current) {
+      mediaRef.current.load();
+    }
+  }, [src]);
+
   return (
-    <div ref={containerRef} className="relative w-full max-w-2xl mx-auto rounded-2xl overflow-hidden bg-night flex flex-col justify-center items-center group">
+    <div ref={containerRef} className={`relative w-full max-w-2xl mx-auto rounded-2xl overflow-hidden bg-night flex flex-col justify-center items-center group ${type === "video" ? "aspect-[9/16] h-[75vh]" : "aspect-video"}`}>
       {type === "video" ? (
         <video
           ref={mediaRef as React.RefObject<HTMLVideoElement>}
           src={src}
-          className="w-full h-auto aspect-video object-cover"
+          className="w-full h-full object-cover"
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           onEnded={onEnded}
@@ -101,7 +107,7 @@ export function MediaPlayer({ src, type, onEnded, poster }: MediaPlayerProps) {
           poster={poster}
         />
       ) : (
-        <div className="w-full aspect-video flex items-center justify-center bg-night-light border border-parchment/10 relative">
+        <div className="w-full h-full flex items-center justify-center bg-night-light border border-parchment/10 relative">
            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #F5F1E8 1px, transparent 1px)", backgroundSize: "10px 10px" }} />
            <motion.div 
              animate={isPlaying ? { scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] } : { scale: 1, opacity: 0.3 }}
@@ -114,6 +120,7 @@ export function MediaPlayer({ src, type, onEnded, poster }: MediaPlayerProps) {
              onTimeUpdate={handleTimeUpdate}
              onLoadedMetadata={handleLoadedMetadata}
              onEnded={onEnded}
+             preload="auto"
            />
         </div>
       )}

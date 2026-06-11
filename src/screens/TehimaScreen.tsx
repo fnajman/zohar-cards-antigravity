@@ -9,8 +9,8 @@ export function TehimaScreen() {
   const { t } = useTranslation();
   const [ready, setReady] = useState(false);
 
-  // Forced to "01.mp4" (Aleph) for now as requested
-  const videoSrc = `/video/tehima/01.mp4`;
+  // Forced to "1.m4v" (Aleph) for now as requested
+  const videoSrc = `/video/tehima/1.m4v`;
 
   return (
     <div className="h-full flex flex-col bg-night overflow-y-auto">

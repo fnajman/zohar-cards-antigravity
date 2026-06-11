@@ -9,8 +9,8 @@ export function CalligraphyScreen() {
   const { t } = useTranslation();
   const [ready, setReady] = useState(false);
 
-  // Forced to "01.mp4" (Aleph) for now as requested
-  const videoSrc = `/video/calligraph/01.mp4`;
+  // Forced to "1.mp4" (Aleph) for now as requested
+  const videoSrc = `/video/calligraph/1.mp4`;
 
   return (
     <div className="h-full flex flex-col bg-night overflow-y-auto">
