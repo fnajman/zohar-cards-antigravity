@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useShake } from "@/hooks/useShake";
 import { useStore, type DrawStyle } from "@/store/useStore";
 import { useTranslation } from "react-i18next";
 import { useCreateDraw, useLetters } from "@/hooks/useApi";
@@ -210,37 +211,67 @@ function GridMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: L
 // --- CHAOS MODE ---
 function ChaosMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[] }) {
   const { t } = useTranslation();
-  const [positions] = useState(() =>
-    letters.map(() => ({
-      x: 5 + Math.random() * 65,
-      y: 8 + Math.random() * 65,
-      rotate: Math.random() * 50 - 25,
-    }))
-  );
+  
+  const generatePositions = useCallback(() => {
+    return letters.map(() => ({
+      // Safe bounds: x between 20% and 80%, y between 25% and 75%
+      x: 20 + Math.random() * 60,
+      y: 25 + Math.random() * 50,
+      rotate: Math.random() * 60 - 30,
+    }));
+  }, [letters]);
+
+  const [positions, setPositions] = useState(generatePositions);
+
+  const shuffle = useCallback(() => {
+    setPositions(generatePositions());
+  }, [generatePositions]);
+
+  // Request permission on click if needed (for iOS 13+)
+  const handleContainerClick = async () => {
+    if (typeof (DeviceMotionEvent as any).requestPermission === 'function') {
+      try {
+        await (DeviceMotionEvent as any).requestPermission();
+      } catch (e) {
+        // ignore
+      }
+    }
+  };
+
+  useShake(shuffle, 15);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
-      className="h-full relative overflow-hidden"
+      className="h-full w-full relative overflow-hidden"
+      onClick={handleContainerClick}
     >
-      <p className="absolute top-4 left-0 right-0 text-center text-sm text-ash z-10">{t('draw.chaos_desc')}</p>
-      {letters.map((l, i) => (
-        <motion.div
-          key={l.id}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: i * 0.025, duration: 0.4 }}
-          className="absolute"
-          style={{
-            left: `${positions[i].x}%`,
-            top: `${positions[i].y}%`,
-            translate: "-50% -50%",
-            transform: `rotate(${positions[i].rotate}deg)`,
-            zIndex: revealed.has(l.id) ? 50 : 1,
-          }}
-        >
-          <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} />
-        </motion.div>
-      ))}
+      <p className="absolute top-8 left-0 right-0 text-center text-sm text-ash z-10 px-4">{t('draw.chaos_desc')}</p>
+      <div className="absolute inset-0 max-w-3xl mx-auto">
+        {letters.map((l, i) => (
+          <motion.div
+            key={l.id}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1,
+              left: `${positions[i].x}%`,
+              top: `${positions[i].y}%`,
+              rotate: positions[i].rotate
+            }}
+            transition={{ 
+              delay: i * 0.025, 
+              duration: 0.5,
+              type: "spring",
+              stiffness: 100,
+              damping: 15
+            }}
+            className="absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ zIndex: revealed.has(l.id) ? 50 : 1 }}
+          >
+            <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} />
+          </motion.div>
+        ))}
+      </div>
     </motion.div>
   );
 }
