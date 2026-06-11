@@ -11,10 +11,8 @@ export function MeditationScreen() {
   const { data: currentDraw } = useCurrentDraw();
   const [ready, setReady] = useState(false);
 
-  // We fallback to 1 if no draw
-  const letterPos = currentDraw?.card_1.identity.alphabet_position || 1;
-  const audioFile = `${letterPos}.mp3`;
-  const audioSrc = `/video/audio/${audioFile}`;
+  // Forced to "1.mp3" (Aleph) for now as requested
+  const audioSrc = `/video/audio/1.mp3`;
 
   return (
     <div className="h-full flex flex-col bg-night overflow-y-auto">
