@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { MediaPlayer } from "@/components/MediaPlayer";
+import { useStore } from "@/store/useStore";
+import { useCurrentDraw } from "@/hooks/useApi";
 
 export function TehimaScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { data: currentDraw } = useCurrentDraw();
+  const markJourneyStep = useStore(state => state.markJourneyStep);
   const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    markJourneyStep("experience");
+  }, [markJourneyStep]);
 
   // Forced to "1.m4v" (Aleph) for now as requested
   const videoSrc = `/video/tehima/1.m4v`;

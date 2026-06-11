@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -8,9 +8,13 @@ import { useCurrentDraw } from "@/hooks/useApi";
 export function QuestionScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user } = useStore();
+  const { user, markJourneyStep } = useStore();
   const { data: currentDraw } = useCurrentDraw();
   const [question, setQuestion] = useState("");
+
+  useEffect(() => {
+    markJourneyStep("question");
+  }, [markJourneyStep]);
 
   if (!currentDraw) { navigate("/home"); return null; }
 

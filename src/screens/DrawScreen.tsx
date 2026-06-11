@@ -17,7 +17,7 @@ const MODE_META: { id: DrawStyle; label: string; icon: React.ReactNode }[] = [
 
 export function DrawScreen() {
   const navigate = useNavigate();
-  const { drawStyle, setDrawStyle, hebrewFont } = useStore();
+  const { drawStyle, setDrawStyle, hebrewFont, markJourneyStep } = useStore();
   const { mutate: performDraw, isPending } = useCreateDraw();
   const { t } = useTranslation();
   const { data: letters = [] } = useLetters();
@@ -34,15 +34,21 @@ export function DrawScreen() {
   }, [revealed, isPending]);
 
   useEffect(() => {
+    if (selected.length === 1) {
+      markJourneyStep("card1");
+    }
     if (selected.length === 2 && !isPending) {
+      markJourneyStep("card2");
       performDraw({ selectedIds: [selected[0].id, selected[1].id] }, {
         onSuccess: () => setTimeout(() => navigate("/reveal"), 2000)
       });
     }
-  }, [selected, isPending, performDraw, navigate]);
+  }, [selected, isPending, performDraw, navigate, markJourneyStep]);
 
   const handleAutoSelect = () => {
     if (isPending) return;
+    markJourneyStep("card1");
+    markJourneyStep("card2");
     performDraw(undefined, {
       onSuccess: () => navigate("/reveal")
     });
@@ -55,15 +61,18 @@ export function DrawScreen() {
   const handleHoldComplete = useCallback(() => {
     if (isPending) return;
     if (selected.length === 1) {
+      markJourneyStep("card2");
       performDraw({ selectedIds: [selected[0].id] as any }, {
         onSuccess: () => setTimeout(() => navigate("/reveal"), 600)
       });
     } else {
+      markJourneyStep("card1");
+      markJourneyStep("card2");
       performDraw(undefined, {
         onSuccess: () => setTimeout(() => navigate("/reveal"), 600)
       });
     }
-  }, [selected, performDraw, navigate, isPending]);
+  }, [selected, performDraw, navigate, isPending, markJourneyStep]);
 
   if (letters.length === 0) {
     return <div className="h-full bg-night" />;

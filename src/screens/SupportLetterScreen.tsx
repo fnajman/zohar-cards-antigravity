@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCurrentDraw } from "@/hooks/useApi";
+import { useStore } from "@/store/useStore";
 import { HebrewGlyph } from "@/components/LetterComponents";
 
 const text = `Cher voyageur,
@@ -20,6 +22,11 @@ export function SupportLetterScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { data: currentDraw } = useCurrentDraw();
+  const markJourneyStep = useStore(state => state.markJourneyStep);
+
+  useEffect(() => {
+    markJourneyStep("support_letter");
+  }, [markJourneyStep]);
 
   return (
     <div className="h-full flex flex-col bg-night overflow-y-auto">

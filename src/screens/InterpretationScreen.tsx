@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStore } from "@/store/useStore";
@@ -20,7 +20,12 @@ export function InterpretationScreen() {
   const { t, i18n } = useTranslation();
   const { data: currentDraw } = useCurrentDraw();
   const { mutate: selectKeywords } = useAddKeywords();
+  const markJourneyStep = useStore(state => state.markJourneyStep);
   const [selected, setSelected] = useState<string[]>([]);
+
+  useEffect(() => {
+    markJourneyStep("interpretation");
+  }, [markJourneyStep]);
 
   if (!currentDraw) { navigate("/home"); return null; }
 

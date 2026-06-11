@@ -29,7 +29,7 @@ export function HomeScreen() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="flex flex-col items-center gap-4 w-full max-w-[280px]">
-          <button onClick={() => navigate("/draw")} className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium tracking-wide hover:bg-bone transition-colors duration-300">
+          <button onClick={() => { useStore.getState().resetJourney(); navigate("/draw"); }} className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium tracking-wide hover:bg-bone transition-colors duration-300">
             {t('home.draw_btn')}
           </button>
           <button onClick={() => navigate("/letter-of-day")} className="w-full py-4 border border-parchment/20 text-parchment rounded-full text-sm tracking-wide hover:border-parchment/40 transition-colors duration-300">

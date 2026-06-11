@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen } from "@/screens/SplashScreen";
+import { JourneyProgress } from "@/components/JourneyProgress";
 
 const HomeScreen = React.lazy(() => import("@/screens/HomeScreen").then(m => ({ default: m.HomeScreen })));
 const DrawScreen = React.lazy(() => import("@/screens/DrawScreen").then(m => ({ default: m.DrawScreen })));
@@ -34,6 +35,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <div className="h-[100dvh] w-full max-w-[430px] mx-auto relative bg-night">
+          <JourneyProgress />
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
               <Route path="/" element={<SplashScreen />} />

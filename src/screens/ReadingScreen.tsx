@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "@/store/useStore";
@@ -10,6 +10,11 @@ export function ReadingScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { data: currentDraw } = useCurrentDraw();
+  const markJourneyStep = useStore(state => state.markJourneyStep);
+
+  useEffect(() => {
+    markJourneyStep("reading");
+  }, [markJourneyStep]);
   const [tab, setTab] = useState<"combo" | "l1" | "l2">("l1");
 
   if (!currentDraw) { navigate("/home"); return null; }

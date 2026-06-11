@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCurrentDraw } from "@/hooks/useApi";
 import { MediaPlayer } from "@/components/MediaPlayer";
+import { useStore } from "@/store/useStore";
 
 export function MeditationScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { data: currentDraw } = useCurrentDraw();
+  const markJourneyStep = useStore(state => state.markJourneyStep);
   const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    markJourneyStep("experience");
+  }, [markJourneyStep]);
 
   // Forced to "1.mp3" (Aleph) for now as requested
   const audioSrc = `/video/audio/1.mp3`;
