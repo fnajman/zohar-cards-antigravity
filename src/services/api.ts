@@ -57,12 +57,16 @@ export const api = {
     return flattenLetter(letters[idx], lang);
   },
 
-  createDraw: async (lang: string = 'fr', selectedIds?: [number, number]): Promise<Draw> => {
+  createDraw: async (lang: string = 'fr', selectedIds?: number[]): Promise<Draw> => {
     await delay(600); // Simulate drawing logic
-    let dbCard1, dbCard2;
-    if (selectedIds) {
+    let dbCard1: DBLetter, dbCard2: DBLetter;
+    if (selectedIds && selectedIds.length === 2) {
       dbCard1 = letters.find(l => l.id === selectedIds[0]) || letters[0];
       dbCard2 = letters.find(l => l.id === selectedIds[1]) || letters[1];
+    } else if (selectedIds && selectedIds.length === 1) {
+      dbCard1 = letters.find(l => l.id === selectedIds[0]) || letters[0];
+      const others = letters.filter(l => l.id !== dbCard1.id);
+      dbCard2 = others[Math.floor(Math.random() * others.length)];
     } else {
       [dbCard1, dbCard2] = getRandomLetters();
     }

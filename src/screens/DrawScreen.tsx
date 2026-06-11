@@ -48,11 +48,22 @@ export function DrawScreen() {
     });
   };
 
-  const resetMode = (id: DrawStyle) => {
+  const changeMode = (id: DrawStyle) => {
     setDrawStyle(id);
-    setSelected([]);
-    setRevealed(new Set());
   };
+
+  const handleHoldComplete = useCallback(() => {
+    if (isPending) return;
+    if (selected.length === 1) {
+      performDraw({ selectedIds: [selected[0].id] as any }, {
+        onSuccess: () => setTimeout(() => navigate("/reveal"), 600)
+      });
+    } else {
+      performDraw(undefined, {
+        onSuccess: () => setTimeout(() => navigate("/reveal"), 600)
+      });
+    }
+  }, [selected, performDraw, navigate, isPending]);
 
   if (letters.length === 0) {
     return <div className="h-full bg-night" />;
@@ -76,7 +87,7 @@ export function DrawScreen() {
           {drawStyle === "chaos" && <ChaosMode key="chaos" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
           {drawStyle === "fan" && <FanMode key="fan" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
           {drawStyle === "slider" && <SliderMode key="slider" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
-          {drawStyle === "hold" && <HoldMode key="hold" />}
+          {drawStyle === "hold" && <HoldMode key="hold" onComplete={handleHoldComplete} />}
         </AnimatePresence>
       </main>
 
@@ -91,7 +102,7 @@ export function DrawScreen() {
           {MODE_META.map((m) => (
             <button
               key={m.id}
-              onClick={() => resetMode(m.id)}
+              onClick={() => changeMode(m.id)}
               className={`flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all duration-300 ${drawStyle === m.id ? "text-parchment" : "text-ash/50 hover:text-ash"
                 }`}
             >
@@ -312,10 +323,8 @@ function SliderMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l:
 }
 
 // --- HOLD MODE ---
-function HoldMode() {
+function HoldMode({ onComplete }: { onComplete?: () => void }) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { mutate: performDraw } = useCreateDraw();
   const [phase, setPhase] = useState<"ready" | "charging" | "done">("ready");
   const [progress, setProgress] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -329,15 +338,15 @@ function HoldMode() {
           clearInterval(timerRef.current!);
           timerRef.current = null;
           setPhase("done");
-          performDraw(undefined, {
-            onSuccess: () => setTimeout(() => navigate("/reveal"), 600)
-          });
+          if (onComplete) {
+            onComplete();
+          }
           return 100;
         }
         return p + 2;
       });
     }, 30);
-  }, [performDraw, navigate]);
+  }, [onComplete]);
 
   const endHold = useCallback(() => {
     if (timerRef.current) {

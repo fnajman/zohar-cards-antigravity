@@ -38,7 +38,7 @@ export function useCreateDraw() {
   const queryClient = useQueryClient();
   const { i18n } = useTranslation();
   return useMutation({
-    mutationFn: (variables?: { selectedIds?: [number, number] }) => 
+    mutationFn: (variables?: { selectedIds?: number[] }) => 
       api.createDraw(i18n.language, variables?.selectedIds),
     onSuccess: (data) => {
       queryClient.setQueryData(['currentDraw', i18n.language], data);
