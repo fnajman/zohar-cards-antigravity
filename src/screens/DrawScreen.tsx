@@ -36,7 +36,7 @@ export function DrawScreen() {
   useEffect(() => {
     if (selected.length === 2 && !isPending) {
       performDraw({ selectedIds: [selected[0].id, selected[1].id] }, {
-        onSuccess: () => setTimeout(() => navigate("/reveal"), 1200)
+        onSuccess: () => setTimeout(() => navigate("/reveal"), 2000)
       });
     }
   }, [selected, isPending, performDraw, navigate]);
@@ -62,7 +62,7 @@ export function DrawScreen() {
     <div className="h-full flex flex-col bg-night">
       <header className="px-6 pt-12 pb-3 flex items-center justify-between">
         <button onClick={() => navigate("/home")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           {t('common.back')}
         </button>
         <button onClick={handleAutoSelect} className="text-xs text-ash/50 hover:text-ash transition-colors">
@@ -92,13 +92,11 @@ export function DrawScreen() {
             <button
               key={m.id}
               onClick={() => resetMode(m.id)}
-              className={`flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all duration-300 ${
-                drawStyle === m.id ? "text-parchment" : "text-ash/50 hover:text-ash"
-              }`}
+              className={`flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all duration-300 ${drawStyle === m.id ? "text-parchment" : "text-ash/50 hover:text-ash"
+                }`}
             >
-              <div className={`w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 ${
-                drawStyle === m.id ? "bg-parchment/10" : ""
-              }`}>
+              <div className={`w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 ${drawStyle === m.id ? "bg-parchment/10" : ""
+                }`}>
                 {m.icon}
               </div>
               <span className="text-[9px] tracking-wide">{m.label}</span>
@@ -112,10 +110,10 @@ export function DrawScreen() {
 
 // --- CARD BACK (decorative motif) ---
 function CardBack({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
-  const sizes = { 
-    sm: "w-[16vw] max-w-[65px] aspect-[2/3]", 
-    md: "w-[22vw] max-w-[90px] aspect-[2/3]", 
-    lg: "w-[30vw] max-w-[120px] aspect-[2/3]" 
+  const sizes = {
+    sm: "w-[16vw] max-w-[65px] aspect-[2/3]",
+    md: "w-[22vw] max-w-[90px] aspect-[2/3]",
+    lg: "w-[30vw] max-w-[120px] aspect-[2/3]"
   };
   return (
     <div className={`${sizes[size]} rounded-xl bg-night-light border border-parchment/12 flex items-center justify-center relative overflow-hidden`}>
@@ -136,20 +134,29 @@ function FlipCard({ letter, isRevealed, onClick, size = "md", hebrewFont = "Lalo
   size?: "sm" | "md" | "lg";
   hebrewFont?: HebrewFontStyle;
 }) {
-  const sizes = { 
-    sm: "w-[16vw] max-w-[65px] aspect-[2/3]", 
-    md: "w-[22vw] max-w-[90px] aspect-[2/3]", 
-    lg: "w-[30vw] max-w-[120px] aspect-[2/3]" 
+  const sizes = {
+    sm: "w-[16vw] max-w-[65px] aspect-[2/3]",
+    md: "w-[22vw] max-w-[90px] aspect-[2/3]",
+    lg: "w-[30vw] max-w-[120px] aspect-[2/3]"
   };
   const glyphSizes = { sm: "xs" as const, md: "sm" as const, lg: "md" as const };
 
   return (
-    <motion.div 
-      className={`${sizes[size]} perspective-500 cursor-pointer`} 
+    <motion.div
+      className={`${sizes[size]} perspective-500 cursor-pointer`}
       onClick={onClick}
-      whileHover={{ scale: 1.05, y: -2 }}
-      whileTap={{ scale: 0.92 }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      whileHover={!isRevealed ? { scale: 1.05, y: -2 } : {}}
+      whileTap={!isRevealed ? { scale: 0.92 } : {}}
+      animate={isRevealed ? {
+        scale: [1, 1.8, 1.8, 0],
+        opacity: [1, 1, 1, 0]
+      } : { scale: 1, opacity: 1 }}
+      transition={isRevealed ? {
+        duration: 2,
+        times: [0, 0.25, 0.85, 1],
+        ease: "easeInOut"
+      } : { type: "spring", stiffness: 400, damping: 25 }}
+      style={{ zIndex: isRevealed ? 50 : "auto" }}
     >
       <motion.div
         animate={{ rotateY: isRevealed ? 180 : 0 }}
@@ -166,7 +173,8 @@ function FlipCard({ letter, isRevealed, onClick, size = "md", hebrewFont = "Lalo
           </svg>
         </div>
         {/* Front (revealed) */}
-        <div className="absolute inset-0 rounded-xl bg-parchment/[0.08] border border-parchment/25 flex items-center justify-center" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
+        <div className="absolute inset-0 rounded-xl bg-night-light border border-parchment/25 flex items-center justify-center overflow-hidden shadow-2xl shadow-black/60" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
+          <div className="absolute inset-0 bg-parchment/[0.04]" />
           <HebrewGlyph letter={letter} style={hebrewFont} size={glyphSizes[size]} />
         </div>
       </motion.div>
@@ -219,6 +227,7 @@ function ChaosMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: 
             top: `${positions[i].y}%`,
             translate: "-50% -50%",
             transform: `rotate(${positions[i].rotate}deg)`,
+            zIndex: revealed.has(l.id) ? 50 : 1,
           }}
         >
           <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} />
@@ -255,7 +264,7 @@ function FanMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Le
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.02, duration: 0.4 }}
-              className="absolute origin-bottom hover:z-30 z-10"
+              className={`absolute origin-bottom hover:z-30 ${revealed.has(l.id) ? "z-50" : "z-10"}`}
               style={{
                 left: `calc(50% + ${x}px)`,
                 bottom: `${radius - y + 10}px`,
@@ -291,7 +300,7 @@ function SliderMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l:
       >
         <div className="w-max flex gap-3 sm:gap-4 px-6 py-4 mx-auto">
           {letters.map((l) => (
-            <div key={l.id} className="flex-shrink-0">
+            <div key={l.id} className={`flex-shrink-0 relative ${revealed.has(l.id) ? "z-50" : "z-10"}`}>
               <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="lg" hebrewFont={hebrewFont} />
             </div>
           ))}

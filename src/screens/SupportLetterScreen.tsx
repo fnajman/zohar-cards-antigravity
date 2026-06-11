@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useCurrentDraw } from "@/hooks/useApi";
+import { HebrewGlyph } from "@/components/LetterComponents";
 
 const text = `Cher voyageur,
 
@@ -17,6 +19,7 @@ Le silence qui suit est aussi precieux que les mots qui l'ont precede.`;
 export function SupportLetterScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { data: currentDraw } = useCurrentDraw();
 
   return (
     <div className="h-full flex flex-col bg-night overflow-y-auto">
@@ -31,7 +34,12 @@ export function SupportLetterScreen() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="flex-1">
           <div className="text-center mb-6">
             <p className="text-[11px] tracking-[0.2em] uppercase text-ash mb-2">{t('support.title')}</p>
-            <div className="w-8 h-px bg-parchment/20 mx-auto" />
+            <div className="w-8 h-px bg-parchment/20 mx-auto mb-6" />
+            {currentDraw && (
+              <div className="flex justify-center mb-6 opacity-80">
+                <HebrewGlyph symbol={currentDraw.card_1.symbol} size="lg" letter={currentDraw.card_1} />
+              </div>
+            )}
           </div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 1 }}
             className="bg-parchment/[0.03] rounded-2xl p-6 border border-parchment/5">

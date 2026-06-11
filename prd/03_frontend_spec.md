@@ -111,9 +111,10 @@ Chaque carte a un dos decore (pattern subtil) et un verso avec le glyphe revele.
 - Pas de bounce, pas d'elastic, pas de glow.
 - Scale maximale : 1.02.
 
-### 5.2 Flip Card
-- Rotation Y 3D (180deg) pour retourner une carte.
-- Duration : 600ms.
+### 5.2 Flip Card & Cartes Interactives
+- Rotation Y 3D (180deg) pour retourner une carte (duree 600ms).
+- Micro-interactions (hover/tap) : Survol (`scale: 1.05`, `y: -2`) et Clic/Touch (`scale: 0.92`) via Framer Motion pour un feedback "physique".
+- Tailles relatives (`vw`) couplées à `aspect-[2/3]` pour garantir une taille optimale et un espace de respiration ("ne pas etouffer l'ecran") sur mobile et desktop.
 - `perspective: 500px` sur le container.
 
 ### 5.3 Transitions d'ecran

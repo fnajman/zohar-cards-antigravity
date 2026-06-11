@@ -10,7 +10,7 @@ export function ReadingScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { data: currentDraw } = useCurrentDraw();
-  const [tab, setTab] = useState<"combo" | "l1" | "l2">("combo");
+  const [tab, setTab] = useState<"combo" | "l1" | "l2">("l1");
 
   if (!currentDraw) { navigate("/home"); return null; }
   const { card_1, card_2, combination } = currentDraw;
@@ -32,7 +32,7 @@ export function ReadingScreen() {
         </div>
 
         <div className="flex gap-1 mb-6 bg-night-light rounded-full p-1">
-          {([["combo", t('reading.tab_combo')], ["l1", card_1.name], ["l2", card_2.name]] as const).map(([key, label]) => (
+          {([["l1", card_1.name], ["l2", card_2.name], ["combo", t('reading.tab_combo')]] as const).map(([key, label]) => (
             <button key={key} onClick={() => setTab(key)} className={`flex-1 py-2 rounded-full text-xs font-medium transition-all duration-300 ${tab === key ? "bg-parchment/10 text-parchment" : "text-ash hover:text-parchment/70"}`}>
               {label}
             </button>

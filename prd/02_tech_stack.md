@@ -15,7 +15,7 @@ Ce document definit la stack technique de Zohar Cards.
 | **Routing** | React Router 7 | Navigation SPA |
 | **State** | Zustand | Etat global (tirages, preferences) |
 | **Backend** | Supabase (prevu) | Auth, DB, Edge Functions |
-| **Deploiement** | Netlify/Vercel | Hosting statique + SPA |
+| **Deploiement** | GitHub + Railway | Hosting CI/CD statique via `serve` |
 
 ---
 
@@ -125,13 +125,14 @@ Nommage : `{position}.{ext}` (ex: `01.svg`, `22.png`).
 - `zustand` (latest)
 - `@tanstack/react-query` (latest)
 
-### Developpement
+### Developpement & Build
 - `vite` ^6.3.5
 - `@vitejs/plugin-react` ^4.5.2
 - `tailwindcss` ^4.1.8
 - `@tailwindcss/vite` ^4.1.8
 - `typescript` ~5.8.3
 - `vite-plugin-pwa` (latest)
+- `serve` (latest - pour le script start sur Railway)
 
 ---
 
