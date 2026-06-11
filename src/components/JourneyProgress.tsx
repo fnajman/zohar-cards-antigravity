@@ -23,8 +23,8 @@ export function JourneyProgress() {
   }
 
   return (
-    <div className="absolute top-4 left-0 w-full px-8 z-50 flex items-center justify-center">
-      <div className="relative w-full max-w-[200px] flex items-center justify-between">
+    <div className="absolute top-[48px] left-0 w-full z-50 pointer-events-none flex items-center justify-center h-8">
+      <div className="relative w-[180px] flex items-center justify-between">
         {/* Background Line */}
         <div className="absolute left-0 right-0 h-[1px] bg-parchment/10" />
 
@@ -34,7 +34,7 @@ export function JourneyProgress() {
           const isLast = index === STEPS.length - 1;
           
           return (
-            <div key={step} className="relative z-10 flex items-center justify-center bg-night px-1">
+            <div key={step} className="relative z-10 flex items-center justify-center bg-night px-0.5">
               <motion.div
                 initial={false}
                 animate={{

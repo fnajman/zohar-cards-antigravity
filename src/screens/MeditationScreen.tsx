@@ -13,10 +13,6 @@ export function MeditationScreen() {
   const markJourneyStep = useStore(state => state.markJourneyStep);
   const [ready, setReady] = useState(false);
 
-  useEffect(() => {
-    markJourneyStep("experience");
-  }, [markJourneyStep]);
-
   // Forced to "1.mp3" (Aleph) for now as requested
   const audioSrc = `/video/audio/1.mp3`;
 
@@ -45,7 +41,10 @@ export function MeditationScreen() {
                 {t('experience.meditation_desc')}
               </p>
               <button
-                onClick={() => setReady(true)}
+                onClick={() => {
+                  setReady(true);
+                  markJourneyStep("experience");
+                }}
                 className="px-8 py-3 rounded-full border border-parchment/20 text-parchment text-sm hover:bg-parchment/5 transition-colors"
               >
                 {t('experience.ready_btn')}

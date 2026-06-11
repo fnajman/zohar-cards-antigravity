@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -12,13 +12,14 @@ export function QuestionScreen() {
   const { data: currentDraw } = useCurrentDraw();
   const [question, setQuestion] = useState("");
 
-  useEffect(() => {
-    markJourneyStep("question");
-  }, [markJourneyStep]);
-
   if (!currentDraw) { navigate("/home"); return null; }
 
   const handleReveal = () => {
+    markJourneyStep("question");
+    navigate("/interpretation");
+  };
+
+  const handleSkip = () => {
     navigate("/interpretation");
   };
 
@@ -63,7 +64,7 @@ export function QuestionScreen() {
               >
                 {t('question.reveal_btn')}
               </button>
-              <button onClick={handleReveal} className="w-full py-3 text-ash text-sm hover:text-parchment transition-colors">
+              <button onClick={handleSkip} className="w-full py-3 text-ash text-sm hover:text-parchment transition-colors">
                 {t('question.reveal_skip_btn')}
               </button>
             </motion.div>
