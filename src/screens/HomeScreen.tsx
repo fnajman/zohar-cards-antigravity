@@ -15,7 +15,22 @@ export function HomeScreen() {
           <div className="w-8 h-8 rounded-full bg-parchment/10 flex items-center justify-center">
             <span className="text-xs text-parchment font-medium">{user.full_name[0]}</span>
           </div>
-          <span className="text-[11px] text-ash">{t('common.credits_left', { count: user.credits })}</span>
+          <span 
+            className="text-[11px] text-ash select-none cursor-pointer"
+            onClick={(e) => {
+              if (e.detail === 1) {
+                // Wait to see if it's a double click
+                (window as any)._creditTimeout = setTimeout(() => {
+                  useStore.getState().setUserCredits(user.credits + 1);
+                }, 250);
+              } else if (e.detail === 2) {
+                clearTimeout((window as any)._creditTimeout);
+                useStore.getState().setUserCredits(Math.max(0, user.credits - 1));
+              }
+            }}
+          >
+            {t('common.credits_left', { count: user.credits })}
+          </span>
         </div>
         <button onClick={() => navigate("/settings")} className="w-8 h-8 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" stroke="#8E8E93" strokeWidth="1.2"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2" stroke="#8E8E93" strokeWidth="1.2" strokeLinecap="round"/></svg>

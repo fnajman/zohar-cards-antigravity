@@ -21,7 +21,7 @@ export function InterpretationScreen() {
   const { t, i18n } = useTranslation();
   const { data: currentDraw } = useCurrentDraw();
   const { mutate: selectKeywords } = useAddKeywords();
-  const markJourneyStep = useStore(state => state.markJourneyStep);
+  const { user, markJourneyStep } = useStore();
   const [selected, setSelected] = useState<string[]>([]);
   const scrollRef = useScrollHint();
 
@@ -33,6 +33,24 @@ export function InterpretationScreen() {
 
   const toggle = (w: string) => setSelected((p) => p.includes(w) ? p.filter((x) => x !== w) : [...p, w]);
   const save = () => { selectKeywords({ drawId: currentDraw.id, keywords: selected }); navigate("/support-letter"); };
+
+  if (user.credits < 3) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center bg-night px-6 gap-6">
+        <p className="text-sm text-ash text-center max-w-[280px] leading-relaxed">
+          {t('interpretation.no_credits', 'Il vous faut au moins 3 crédits pour obtenir une interprétation personnelle profonde.')}
+        </p>
+        <div className="w-full max-w-[240px] flex flex-col gap-3">
+          <button onClick={() => navigate("/settings")} className="w-full py-4 border border-parchment/20 text-parchment rounded-full text-sm hover:border-parchment/40 transition-colors">
+            {t('interpretation.buy_credits', 'Acheter des crédits')}
+          </button>
+          <button onClick={() => navigate("/home")} className="w-full py-3 text-ash text-sm hover:text-parchment transition-colors">
+            {t('interpretation.home_btn', 'Retour à l\'accueil')}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">

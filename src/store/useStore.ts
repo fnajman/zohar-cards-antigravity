@@ -15,6 +15,7 @@ interface AppState {
   setHebrewFont: (font: HebrewFontStyle) => void;
   markJourneyStep: (step: JourneyStep) => void;
   resetJourney: () => void;
+  setUserCredits: (credits: number) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -29,4 +30,5 @@ export const useStore = create<AppState>((set) => ({
     journeyProgress: state.journeyProgress.includes(step) ? state.journeyProgress : [...state.journeyProgress, step] 
   })),
   resetJourney: () => set({ journeyProgress: [] }),
+  setUserCredits: (credits) => set((state) => ({ user: { ...state.user, credits } })),
 }));

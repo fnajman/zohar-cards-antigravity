@@ -80,7 +80,7 @@ Les tables `letters` et `combinations` sont en lecture publique (contenu statiqu
 - **Trigger** : L'utilisateur soumet une question apres un tirage.
 - **Input** : `draw_id`, `question`.
 - **Logique** :
-  1. Verifier credits.
+  1. Verifier credits >= 3.
   2. Charger les donnees des 2 lettres + combinaison.
   3. Construire le prompt avec garde-fous ethiques.
   4. Appeler Claude/OpenAI.

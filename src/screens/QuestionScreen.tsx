@@ -31,19 +31,10 @@ export function QuestionScreen() {
           
         </button>
         <div className="flex gap-2">
-          <span className="text-[11px] text-ash tracking-wide">{t('common.credits_left', { count: user.credits })}</span>
         </div>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center px-6">
-        {user.credits <= 0 ? (
-          <div className="h-full flex flex-col items-center justify-center gap-6">
-            <p className="text-sm text-ash text-center max-w-[240px]">{t('question.no_credits')}</p>
-            <button className="px-6 py-3 border border-parchment/20 text-parchment rounded-full text-sm hover:border-parchment/40 transition-colors">
-              {t('question.see_plans')}
-            </button>
-          </div>
-        ) : (
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-[300px] flex flex-col items-center gap-7">
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
               <h1 className="text-2xl font-medium tracking-tight text-parchment mb-2">{t('question.title')}</h1>
@@ -69,7 +60,6 @@ export function QuestionScreen() {
               </button>
             </motion.div>
           </motion.div>
-        )}
       </main>
     </div>
   );

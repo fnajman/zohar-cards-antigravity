@@ -47,7 +47,10 @@
     "subtitle": "Contextual interpretation",
     "resonance": "Which words resonate with you?",
     "your_resonance": "Your resonance:",
-    "support_btn": "Letter of support"
+    "support_btn": "Letter of support",
+    "no_credits": "You need at least 3 credits to receive a deep personal interpretation.",
+    "buy_credits": "Buy credits",
+    "home_btn": "Back to Home"
   },
   "question": {
     "no_credits": "You have no credits left to ask a personal question.",

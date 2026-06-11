@@ -47,7 +47,10 @@
     "subtitle": "Interprétation contextuelle",
     "resonance": "Quels mots résonnent en vous ?",
     "your_resonance": "Votre résonance :",
-    "support_btn": "Lettre de soutien"
+    "support_btn": "Lettre de soutien",
+    "no_credits": "Il vous faut au moins 3 crédits pour obtenir une interprétation personnelle profonde.",
+    "buy_credits": "Acheter des crédits",
+    "home_btn": "Retour à l'accueil"
   },
   "question": {
     "no_credits": "Vous n'avez plus de crédits pour poser une question personnelle.",

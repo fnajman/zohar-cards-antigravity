@@ -174,8 +174,8 @@ Ces endpoints suivent la **Règle Universelle de Langue** (voir `04_backend_spec
 *   **Trigger** : Utilisateur pose une question ou clique "Révéler".
 *   **Input** : `{ "draw_id": 105, "question": "Vais-je réussir ?" }`
 *   **Backend Logic** :
-    1.  Vérifie `user.credits > 0`.
-    2.  Débite 1 crédit.
+    1.  Vérifie `user.credits >= 3`. Si les crédits sont insuffisants, l'UI doit proposer un retour ou un achat.
+    2.  Décrémente les crédits de 3 (logique future, simulée pour la maquette).
     3.  Construit le **System Prompt** avec :
         *   Les définitions complètes des 2 lettres (Base de connaissance).
         *   La sémantique de la Combinaison (`pair_essence`, `reading_frames`).
