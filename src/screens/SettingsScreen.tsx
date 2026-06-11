@@ -66,6 +66,9 @@ export function SettingsScreen() {
           <h2 className="text-xl font-medium tracking-tight text-parchment mb-1">{t('settings.style_title')}</h2>
           <p className="text-xs text-ash">{t('settings.style_subtitle')}</p>
         </div>
+        <button onClick={() => setSection("main")} className="w-8 h-8 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="#8E8E93" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        </button>
       </header>
       <main className="flex-1 px-6 py-6 overflow-y-auto">
         <div className="space-y-2">
@@ -97,6 +100,9 @@ export function SettingsScreen() {
           <h2 className="text-xl font-medium tracking-tight text-parchment mb-1">{t('settings.font_title')}</h2>
           <p className="text-xs text-ash">{t('settings.font_subtitle')}</p>
         </div>
+        <button onClick={() => setSection("main")} className="w-8 h-8 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="#8E8E93" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        </button>
       </header>
       <main className="flex-1 px-6 py-6 overflow-y-auto">
         <div className="space-y-2">
