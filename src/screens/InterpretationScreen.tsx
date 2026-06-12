@@ -55,8 +55,12 @@ export function InterpretationScreen() {
 
           for await (const chunk of stream) {
             const content = chunk.choices[0]?.delta?.content || "";
-            fullResponse += content;
-            setMessages([{ id: "msg-0", role: "assistant", content: fullResponse }]);
+            if (content) {
+              fullResponse += content;
+              setMessages([{ id: "msg-0", role: "assistant", content: fullResponse }]);
+              // Artificial delay for a more natural typing rhythm
+              await new Promise(r => setTimeout(r, 25));
+            }
           }
 
           setMessages(prev => [
@@ -146,12 +150,16 @@ export function InterpretationScreen() {
 
       for await (const chunk of stream) {
         const content = chunk.choices[0]?.delta?.content || "";
-        fullResponse += content;
-        setMessages(prev => {
-          const newMsgs = [...prev];
-          newMsgs[newMsgs.length - 1] = { id: newMsgId, role: "assistant", content: fullResponse };
-          return newMsgs;
-        });
+        if (content) {
+          fullResponse += content;
+          setMessages(prev => {
+            const newMsgs = [...prev];
+            newMsgs[newMsgs.length - 1] = { id: newMsgId, role: "assistant", content: fullResponse };
+            return newMsgs;
+          });
+          // Artificial delay for a more natural typing rhythm
+          await new Promise(r => setTimeout(r, 25));
+        }
       }
     } catch (error) {
       console.error(error);
