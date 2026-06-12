@@ -34,14 +34,22 @@ export function DrawScreen() {
     }
   }, [letters, shuffledLetters.length]);
 
+  const lastClickTime = useRef<number>(0);
+  const clickCount = useRef<number>(0);
+
   const handleTitleClick = useCallback(() => {
-    setDebugCount(c => {
-      if (c + 1 >= 5) {
-        setDebugMode(true);
-        return 0;
-      }
-      return c + 1;
-    });
+    const now = Date.now();
+    if (now - lastClickTime.current < 600) {
+      clickCount.current += 1;
+    } else {
+      clickCount.current = 1;
+    }
+    lastClickTime.current = now;
+
+    if (clickCount.current >= 5) {
+      setDebugMode(true);
+      clickCount.current = 0;
+    }
   }, []);
 
   const handleSelect = useCallback((letter: Letter) => {
@@ -223,7 +231,7 @@ function GridMode({ onSelect, revealed, hebrewFont, letters, debugMode, onTitleC
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
       className="h-full px-4 py-4 overflow-y-auto"
     >
-      <p className="text-center text-sm text-ash mb-4 cursor-pointer select-none" onClick={onTitleClick}>{t('draw.grid_desc')}</p>
+      <p className="text-center text-sm text-ash mb-4 cursor-pointer select-none touch-manipulation" onClick={onTitleClick}>{t('draw.grid_desc')}</p>
       <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 sm:gap-4 justify-items-center max-w-2xl mx-auto">
         {letters.map((l) => (
           <FlipCard key={l.id} letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} debugMode={debugMode} />
@@ -270,7 +278,7 @@ function ChaosMode({ onSelect, revealed, hebrewFont, letters, debugMode, onTitle
       className="h-full w-full relative overflow-hidden"
       onClick={handleContainerClick}
     >
-      <p className="absolute top-8 left-0 right-0 text-center text-sm text-ash z-10 px-4 cursor-pointer select-none" onClick={onTitleClick}>{t('draw.chaos_desc')}</p>
+      <p className="absolute top-8 left-0 right-0 text-center text-sm text-ash z-10 px-4 cursor-pointer select-none touch-manipulation" onClick={onTitleClick}>{t('draw.chaos_desc')}</p>
       <div className="absolute inset-0 max-w-3xl mx-auto">
         {letters.map((l, i) => (
           <motion.div
@@ -314,7 +322,7 @@ function FanMode({ onSelect, revealed, hebrewFont, letters, debugMode, onTitleCl
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
       className="h-full flex items-end justify-center relative overflow-hidden pb-4"
     >
-      <p className="absolute top-4 left-0 right-0 text-center text-sm text-ash z-10 cursor-pointer select-none" onClick={onTitleClick}>{t('draw.fan_desc')}</p>
+      <p className="absolute top-4 left-0 right-0 text-center text-sm text-ash z-10 cursor-pointer select-none touch-manipulation" onClick={onTitleClick}>{t('draw.fan_desc')}</p>
       <div className="relative" style={{ width: "100%", height: `${radius + 80}px` }}>
         {letters.map((l, i) => {
           const angle = startAngle + i * angleStep;
@@ -356,7 +364,7 @@ function SliderMode({ onSelect, revealed, hebrewFont, letters, debugMode, onTitl
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
       className="h-full flex flex-col items-center justify-center"
     >
-      <p className="text-sm text-ash mb-6 cursor-pointer select-none" onClick={onTitleClick}>{t('draw.slider_desc')}</p>
+      <p className="text-sm text-ash mb-6 cursor-pointer select-none touch-manipulation" onClick={onTitleClick}>{t('draw.slider_desc')}</p>
       <div
         ref={scrollRef}
         className="w-full overflow-x-auto no-scrollbar"

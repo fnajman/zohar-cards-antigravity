@@ -11,11 +11,10 @@ export function LetterOfDayScreen() {
   const { t } = useTranslation();
   const { data: letter, isLoading } = useLetterOfDay();
   const [showDetails, setShowDetails] = useState(false);
+  const scrollRef = useScrollHint();
 
   if (isLoading) return <div className="h-full bg-night" />;
   if (!letter) { navigate("/home"); return null; }
-
-  const scrollRef = useScrollHint();
 
   return (
     <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">
