@@ -95,13 +95,6 @@ export function InterpretationScreen() {
             ))}
           </div>
 
-          {selected.length > 0 && (
-            <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="bg-night-light rounded-xl p-4 border border-parchment/5 mb-6">
-              <p className="text-xs text-ash mb-1">{t('interpretation.your_resonance')}</p>
-              <p className="text-sm text-parchment">{selected.join(" \u00B7 ")}</p>
-            </motion.div>
-          )}
-
           <div className="flex flex-col gap-3">
             <button onClick={save} className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors">{t('interpretation.support_btn')}</button>
             <button onClick={() => navigate("/home")} className="w-full py-3 text-ash text-sm hover:text-parchment transition-colors">{t('common.close_draw')}</button>
