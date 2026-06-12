@@ -18,6 +18,7 @@ interface Message {
   id: string;
   role: "system" | "user" | "assistant";
   content: string;
+  action?: "support-letter";
 }
 
 export function InterpretationScreen() {
@@ -44,15 +45,28 @@ export function InterpretationScreen() {
             currentDraw,
             currentQuestion,
             currentDraw.selected_keywords || [],
-            []
+            [],
+            i18n.language
           );
           setMessages([
-            { id: "msg-0", role: "assistant", content: firstResponse }
+            { id: "msg-0", role: "assistant", content: firstResponse },
+            { 
+              id: "msg-0-action", 
+              role: "system", 
+              content: t('interpretation.followup_text', "Vous pouvez continuer à dialoguer avec moi, ou découvrir votre Lettre de soutien et ses exercices d'intégration quand vous serez prêt(e)."),
+              action: "support-letter"
+            }
           ]);
         } catch (error) {
           console.error(error);
           setMessages([
-            { id: "msg-0", role: "assistant", content: i18n.language === 'en' ? '[EN] The encounter of these two letters opens a space for deep reflection...\n\n(Placeholder)' : fakeAI }
+            { id: "msg-0", role: "assistant", content: i18n.language === 'en' ? '[EN] The encounter of these two letters opens a space for deep reflection...\n\n(Placeholder)' : fakeAI },
+            { 
+              id: "msg-0-action", 
+              role: "system", 
+              content: t('interpretation.followup_text', "Vous pouvez continuer à dialoguer avec moi, ou découvrir votre Lettre de soutien et ses exercices d'intégration quand vous serez prêt(e)."),
+              action: "support-letter"
+            }
           ]);
         } finally {
           setIsTyping(false);
@@ -110,7 +124,8 @@ export function InterpretationScreen() {
         currentDraw,
         currentQuestion,
         currentDraw.selected_keywords || [],
-        newHistory.map(m => ({ role: m.role, content: m.content } as ChatMessage))
+        newHistory.map(m => ({ role: m.role, content: m.content } as ChatMessage)),
+        i18n.language
       );
       
       setMessages(prev => [...prev, {
@@ -151,16 +166,26 @@ export function InterpretationScreen() {
               key={msg.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex w-full ${msg.role === 'user' ? 'justify-end' : msg.role === 'system' ? 'justify-center' : 'justify-start'}`}
             >
               <div 
                 className={`max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed whitespace-pre-wrap shadow-sm ${
                   msg.role === 'user' 
                     ? 'bg-parchment/10 text-parchment rounded-br-sm' 
+                    : msg.role === 'system'
+                    ? 'bg-transparent text-ash text-center italic border border-parchment/10 text-xs w-full max-w-[90%]'
                     : 'bg-night-light border border-parchment/5 text-parchment/90 rounded-bl-sm'
                 }`}
               >
                 {msg.content}
+                {msg.action === 'support-letter' && (
+                  <button 
+                    onClick={() => navigate("/support-letter")}
+                    className="mt-3 w-full py-2 bg-parchment text-ink rounded-full text-[11px] uppercase tracking-wider font-semibold hover:bg-bone transition-all shadow-sm"
+                  >
+                    {t('interpretation.support_btn', 'Voir ma lettre de soutien')}
+                  </button>
+                )}
               </div>
             </motion.div>
           ))}

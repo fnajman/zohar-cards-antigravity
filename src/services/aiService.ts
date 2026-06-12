@@ -25,14 +25,15 @@ export async function getAiResponse(
   draw: Draw,
   userQuestion: string,
   selectedKeywords: string[],
-  chatHistory: ChatMessage[]
+  chatHistory: ChatMessage[],
+  language: string
 ): Promise<string> {
   if (!import.meta.env.VITE_OPENROUTER_API_KEY) {
     throw new Error("Clé API OpenRouter manquante. Veuillez l'ajouter dans le fichier .env.local.");
   }
 
   // 1. Generate the contextual system prompt
-  const systemPrompt = generateSystemPrompt({ draw, userQuestion, selectedKeywords });
+  const systemPrompt = generateSystemPrompt({ draw, userQuestion, selectedKeywords, language });
 
   // 2. Prepare the full message array
   const messages: ChatMessage[] = [
