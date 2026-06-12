@@ -51,25 +51,78 @@ export function ReadingScreen() {
             <div className="space-y-5">
               <div>
                 <h2 className="text-xl font-medium text-parchment mb-2">{combination.title}</h2>
-                <p className="text-sm text-ash leading-relaxed">{combination.content_medium}</p>
+                <div className="bg-night-light rounded-2xl p-4 border border-parchment/5">
+                  <p className="text-sm text-ash leading-relaxed">
+                    {combination.content_medium}
+                  </p>
+                  
+                  {combination.content_long && (
+                    <div className="mt-4 border-t border-parchment/10 pt-4">
+                      <details className="group">
+                        <summary className="flex justify-between items-center cursor-pointer list-none text-[11px] tracking-[0.1em] uppercase text-parchment/70 hover:text-parchment transition-colors">
+                          <span>{t('reading.read_more', 'Lire plus')}</span>
+                          <span className="text-parchment/50 group-open:rotate-45 transition-transform duration-300">
+                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </span>
+                        </summary>
+                        <div className="pt-4 space-y-3">
+                          {combination.content_long.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+                            <p key={i} className="text-sm text-ash leading-relaxed">{para.trim()}</p>
+                          ))}
+                        </div>
+                      </details>
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="bg-night-light rounded-2xl p-4 border border-parchment/5">
-                <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60 mb-2">{t('reading.theme')}</p>
+                <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60 mb-2">{t('reading.theme', 'THÈME')}</p>
                 <p className="text-sm text-parchment">{combination.pair_essence.core_theme}</p>
               </div>
               <div className="bg-night-light rounded-2xl p-4 border border-parchment/5">
-                <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60 mb-2">{t('reading.archetypal_question')}</p>
+                <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60 mb-2">{t('reading.archetypal_question', 'QUESTION ARCHÉTYPALE')}</p>
                 <p className="text-sm text-parchment italic">{combination.pair_essence.archetypal_question}</p>
               </div>
-              <div className="space-y-2">
-                <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60">{t('reading.frames')}</p>
-                {(["general", "relationships", "work", "inner_life"] as const).map((k) => (
-                  <div key={k} className="bg-night-light rounded-xl p-3 border border-parchment/5">
-                    <span className="text-[10px] text-ash capitalize">{k === "inner_life" ? t('reading.frame_inner') : k === "relationships" ? t('reading.frame_relationships') : k === "work" ? t('reading.frame_work') : t('reading.frame_general')}</span>
-                    <p className="text-sm text-parchment/90 mt-1">{combination.reading_frames[k]}</p>
-                  </div>
-                ))}
+              <div className="space-y-3">
+                <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60">{t('reading.frames', 'CADRES DE LECTURE')}</p>
+                {(["general", "relationships", "work_and_projects", "inner_life"] as const).map((k) => {
+                  const frame = combination.reading_frames[k];
+                  if (!frame) return null;
+                  
+                  return (
+                    <div key={k} className="bg-night-light rounded-xl p-4 border border-parchment/5">
+                      <span className="text-[10px] tracking-[0.1em] text-ash uppercase mb-2 block">
+                        {k === "inner_life" ? t('reading.frame_inner', 'Vie intérieure') : k === "relationships" ? t('reading.frame_relationships', 'Relations') : k === "work_and_projects" ? t('reading.frame_work', 'Travail & Projets') : t('reading.frame_general', 'Général')}
+                      </span>
+                      <ul className="list-none space-y-1 mb-3">
+                        {frame.what_to_observe?.map((obs, i) => (
+                          <li key={i} className="text-sm text-parchment/80 flex items-start">
+                            <span className="text-parchment/40 mr-2 mt-1 flex-shrink-0">•</span>
+                            <span>{obs}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="text-sm text-parchment/90 italic pt-2 border-t border-parchment/10">
+                        → {frame.what_it_points_to}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
+              
+              {combination.reflective_questions && combination.reflective_questions.length > 0 && (
+                <div className="bg-night-light rounded-2xl p-4 border border-parchment/5">
+                  <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60 mb-3">{t('reading.reflective_questions', 'QUESTIONS DE RÉFLEXION')}</p>
+                  <ul className="space-y-3">
+                    {combination.reflective_questions.map((q, i) => (
+                      <li key={i} className="text-sm text-parchment/90 flex items-start">
+                        <span className="text-parchment/30 mr-2 flex-shrink-0">{(i + 1).toString().padStart(2, '0')}.</span>
+                        <span>{q}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
           {tab === "l1" && <LetterCard letter={card_1} />}

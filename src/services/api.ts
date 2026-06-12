@@ -50,14 +50,22 @@ function flattenLetter(dbLetter: DBLetter, lang: string): Letter {
   } as Letter;
 }
 
-function flattenCombination(dbCombo: DBCombination, lang: string): Combination {
-  const content = dbCombo.i18n_content[lang === 'en' ? 'en' : 'fr'] || dbCombo.i18n_content.fr;
+function flattenCombination(dbCombo: any, lang: string): Combination {
+  // If the API returned a flattened object (e.g. title is at the root)
+  if (dbCombo.title) {
+    return dbCombo as Combination;
+  }
+  // Otherwise, it's the fallback mock data which has i18n_content
+  const content = dbCombo.i18n_content?.[lang === 'en' ? 'en' : 'fr'] || dbCombo.i18n_content?.fr;
+  if (!content) {
+    return dbCombo as Combination; // Safe fallback
+  }
   return {
     id: dbCombo.id,
     position_1_id: dbCombo.position_1_id,
     position_2_id: dbCombo.position_2_id,
     ...content
-  };
+  } as Combination;
 }
 
 function flattenDraw(dbDraw: DBDraw, lang: string): Draw {
@@ -110,10 +118,26 @@ export const api = {
       [dbCard1, dbCard2] = await getRandomLetters();
     }
     
-    // We pass the FR version to getCombination for the placeholders
-    const c1Fr = flattenLetter(dbCard1, 'fr');
-    const c2Fr = flattenLetter(dbCard2, 'fr');
-    const dbCombo = getCombination(c1Fr, c2Fr);
+    // Appelle l'API avec les symboles hébraïques exacts (ex: א et ב)
+    // S'ils ne sont pas encore générés dans la base, l'API renverra une erreur et ça passera dans le bloc catch (fallback).
+    let dbCombo: DBCombination;
+    try {
+      const token = "y26ZAel6VjBsRt3MTGnQdBFNYNc";
+      const s1 = encodeURIComponent(dbCard1.symbol);
+      const s2 = encodeURIComponent(dbCard2.symbol);
+      const comboRes = await fetch(`${XANO_URL}/combination/symbol/${s1}/${s2}?token=${token}&lang=${lang}`);
+      
+      if (comboRes.ok) {
+        dbCombo = await comboRes.json();
+      } else {
+        throw new Error("Combo fetch failed");
+      }
+    } catch (err) {
+      console.error("Failed to fetch combination from Xano, using fake data:", err);
+      const c1Fr = flattenLetter(dbCard1, 'fr');
+      const c2Fr = flattenLetter(dbCard2, 'fr');
+      dbCombo = getCombination(c1Fr, c2Fr);
+    }
     
     const dbDraw: DBDraw = {
       id: Date.now(),

@@ -88,17 +88,20 @@ export interface Combination {
   position_1_id: number;
   position_2_id: number;
   title: string;
+  content_long: string;
   content_short: string;
   content_medium: string;
   pair_essence: {
+    pair_name: string;
     core_theme: string;
     archetypal_question: string;
+    one_sentence_summary: string;
   };
   reading_frames: {
-    general: string;
-    relationships: string;
-    work: string;
-    inner_life: string;
+    general: { what_to_observe: string[]; what_it_points_to: string; };
+    relationships: { what_to_observe: string[]; what_it_points_to: string; };
+    work_and_projects: { what_to_observe: string[]; what_it_points_to: string; };
+    inner_life: { what_to_observe: string[]; what_it_points_to: string; };
   };
   reflective_questions: string[];
 }

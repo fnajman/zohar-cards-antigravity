@@ -143,6 +143,9 @@ Ces endpoints suivent la **Règle Universelle de Langue** (voir `04_backend_spec
 *   `GET /letter/{letter_id}`
     *   Use Case: Récupération d'une seule lettre par ID (1-22).
     *   Logic: Filtre par ID + Flattening i18n si `lang` est fourni. (Authentifié)
+*   `GET /combination/symbol/{symbol_1}/{symbol_2}`
+    *   Use Case: Récupération ciblée du contenu d'une combinaison de deux lettres (ex: א et ב).
+    *   Logic: Filtre par les symboles respectifs (position 1 et 2). Si `lang` est fourni (`?lang=fr`), le backend renvoie le contenu déjà aplati pour la langue spécifiée. Si l'appel échoue (ex: combinaison non trouvée 404), le frontend bascule automatiquement sur un fallback local généré à la volée.
 *   `GET /content/assets`
     *   Use Case: Au lancement, récupérer les Dos (Card Backs) actifs.
     *   Response: `[ { "key": "card_back_cosmos", "url": "..." }, ... ]`
@@ -272,3 +275,12 @@ sequenceDiagram
 
 ### 5.3 Logs
 *   Utilisation de `POST /log/user` pour remonter les crashs ou erreurs critiques du client vers la table `UserLog`, permettant un débogage proactif sans accès physique au device de l'utilisateur.
+
+---
+
+## 6. Outils et Scripts d'Administration
+
+### 6.1 Générateur de Combinaisons
+Un script local Node.js (`scripts/generate_combinations.js`) est utilisé pour pré-générer les combinaisons manquantes via l'API OpenAI (GPT-4o) et les injecter directement dans la base Xano.
+*   **Fonctionnement** : Le script interroge d'abord la base Xano (`GET /combination`) pour recenser les paires déjà créées. Il itère ensuite sur les paires restantes, appelle l'API d'OpenAI avec un prompt détaillé contenant la sémantique de chaque lettre, puis poste le résultat structuré en JSON (anglais et français) sur Xano via `POST /combination`.
+*   **Usage** : `node scripts/generate_combinations.js` (nécessite `.env` avec `OPENAI_API_KEY`).

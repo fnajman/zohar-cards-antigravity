@@ -24,6 +24,25 @@ export function DrawScreen() {
   const { data: letters = [] } = useLetters();
   const [selected, setSelected] = useState<Letter[]>([]);
   const [revealed, setRevealed] = useState<Set<number>>(new Set());
+  const [shuffledLetters, setShuffledLetters] = useState<Letter[]>([]);
+  const [debugCount, setDebugCount] = useState(0);
+  const [debugMode, setDebugMode] = useState(false);
+
+  useEffect(() => {
+    if (letters.length > 0 && shuffledLetters.length === 0) {
+      setShuffledLetters([...letters].sort(() => Math.random() - 0.5));
+    }
+  }, [letters, shuffledLetters.length]);
+
+  const handleTitleClick = useCallback(() => {
+    setDebugCount(c => {
+      if (c + 1 >= 5) {
+        setDebugMode(true);
+        return 0;
+      }
+      return c + 1;
+    });
+  }, []);
 
   const handleSelect = useCallback((letter: Letter) => {
     if (isPending || revealed.has(letter.id)) return;
@@ -67,7 +86,7 @@ export function DrawScreen() {
     }
   }, [selected, performDraw, navigate, isPending, markJourneyStep]);
 
-  if (letters.length === 0) {
+  if (letters.length === 0 || shuffledLetters.length === 0) {
     return <div className="h-full bg-night" />;
   }
 
@@ -81,10 +100,10 @@ export function DrawScreen() {
 
       <main className="flex-1 overflow-hidden relative">
         <AnimatePresence mode="wait">
-          {drawStyle === "grid" && <GridMode key="grid" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
-          {drawStyle === "chaos" && <ChaosMode key="chaos" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
-          {drawStyle === "fan" && <FanMode key="fan" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
-          {drawStyle === "slider" && <SliderMode key="slider" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={letters} />}
+          {drawStyle === "grid" && <GridMode key="grid" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={shuffledLetters} debugMode={debugMode} onTitleClick={handleTitleClick} />}
+          {drawStyle === "chaos" && <ChaosMode key="chaos" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={shuffledLetters} debugMode={debugMode} onTitleClick={handleTitleClick} />}
+          {drawStyle === "fan" && <FanMode key="fan" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={shuffledLetters} debugMode={debugMode} onTitleClick={handleTitleClick} />}
+          {drawStyle === "slider" && <SliderMode key="slider" onSelect={handleSelect} revealed={revealed} hebrewFont={hebrewFont} letters={shuffledLetters} debugMode={debugMode} onTitleClick={handleTitleClick} />}
           {drawStyle === "hold" && <HoldMode key="hold" onComplete={handleHoldComplete} />}
         </AnimatePresence>
       </main>
@@ -136,12 +155,13 @@ function CardBack({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
 }
 
 // --- FLIPPING CARD ---
-function FlipCard({ letter, isRevealed, onClick, size = "md", hebrewFont = "Lalou" }: {
+function FlipCard({ letter, isRevealed, onClick, size = "md", hebrewFont = "Lalou", debugMode = false }: {
   letter: Letter;
   isRevealed: boolean;
   onClick: () => void;
   size?: "sm" | "md" | "lg";
   hebrewFont?: HebrewFontStyle;
+  debugMode?: boolean;
 }) {
   const sizes = {
     sm: "w-[16vw] max-w-[65px] aspect-[2/3]",
@@ -180,6 +200,7 @@ function FlipCard({ letter, isRevealed, onClick, size = "md", hebrewFont = "Lalo
             <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#F5F1E8" strokeWidth="1" />
             <circle cx="12" cy="12" r="3" stroke="#F5F1E8" strokeWidth="0.7" />
           </svg>
+          {debugMode && <span className="absolute inset-0 flex items-center justify-center text-parchment/30 text-3xl font-bold z-10 pointer-events-none select-none">{letter.symbol}</span>}
         </div>
         {/* Front (revealed) */}
         <div className="absolute inset-0 rounded-xl bg-night-light border border-parchment/25 flex items-center justify-center overflow-hidden shadow-2xl shadow-black/60" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
@@ -192,16 +213,16 @@ function FlipCard({ letter, isRevealed, onClick, size = "md", hebrewFont = "Lalo
 }
 
 // --- GRID MODE ---
-function GridMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[] }) {
+function GridMode({ onSelect, revealed, hebrewFont, letters, debugMode, onTitleClick }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[]; debugMode: boolean; onTitleClick: () => void }) {
   const { t } = useTranslation();
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
       className="h-full px-4 py-4 overflow-y-auto"
     >
-      <p className="text-center text-sm text-ash mb-4">{t('draw.grid_desc')}</p>
+      <p className="text-center text-sm text-ash mb-4 cursor-pointer select-none" onClick={onTitleClick}>{t('draw.grid_desc')}</p>
       <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 sm:gap-4 justify-items-center max-w-2xl mx-auto">
         {letters.map((l) => (
-          <FlipCard key={l.id} letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} />
+          <FlipCard key={l.id} letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} debugMode={debugMode} />
         ))}
       </div>
     </motion.div>
@@ -209,7 +230,7 @@ function GridMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: L
 }
 
 // --- CHAOS MODE ---
-function ChaosMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[] }) {
+function ChaosMode({ onSelect, revealed, hebrewFont, letters, debugMode, onTitleClick }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[]; debugMode: boolean; onTitleClick: () => void }) {
   const { t } = useTranslation();
   
   const generatePositions = useCallback(() => {
@@ -245,7 +266,7 @@ function ChaosMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: 
       className="h-full w-full relative overflow-hidden"
       onClick={handleContainerClick}
     >
-      <p className="absolute top-8 left-0 right-0 text-center text-sm text-ash z-10 px-4">{t('draw.chaos_desc')}</p>
+      <p className="absolute top-8 left-0 right-0 text-center text-sm text-ash z-10 px-4 cursor-pointer select-none" onClick={onTitleClick}>{t('draw.chaos_desc')}</p>
       <div className="absolute inset-0 max-w-3xl mx-auto">
         {letters.map((l, i) => (
           <motion.div
@@ -268,7 +289,7 @@ function ChaosMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: 
             className="absolute -translate-x-1/2 -translate-y-1/2"
             style={{ zIndex: revealed.has(l.id) ? 50 : 1 }}
           >
-            <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} />
+            <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} debugMode={debugMode} />
           </motion.div>
         ))}
       </div>
@@ -277,7 +298,7 @@ function ChaosMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: 
 }
 
 // --- FAN MODE ---
-function FanMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[] }) {
+function FanMode({ onSelect, revealed, hebrewFont, letters, debugMode, onTitleClick }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[]; debugMode: boolean; onTitleClick: () => void }) {
   const { t } = useTranslation();
   const total = letters.length;
   const arcSpread = 140;
@@ -289,7 +310,7 @@ function FanMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Le
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
       className="h-full flex items-end justify-center relative overflow-hidden pb-4"
     >
-      <p className="absolute top-4 left-0 right-0 text-center text-sm text-ash z-10">{t('draw.fan_desc')}</p>
+      <p className="absolute top-4 left-0 right-0 text-center text-sm text-ash z-10 cursor-pointer select-none" onClick={onTitleClick}>{t('draw.fan_desc')}</p>
       <div className="relative" style={{ width: "100%", height: `${radius + 80}px` }}>
         {letters.map((l, i) => {
           const angle = startAngle + i * angleStep;
@@ -312,7 +333,7 @@ function FanMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Le
               }}
             >
               <div style={{ transform: `rotate(0deg)` }}>
-                <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} />
+                <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="sm" hebrewFont={hebrewFont} debugMode={debugMode} />
               </div>
             </motion.div>
           );
@@ -323,7 +344,7 @@ function FanMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Le
 }
 
 // --- SLIDER MODE ---
-function SliderMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[] }) {
+function SliderMode({ onSelect, revealed, hebrewFont, letters, debugMode, onTitleClick }: { onSelect: (l: Letter) => void; revealed: Set<number>; hebrewFont: HebrewFontStyle; letters: Letter[]; debugMode: boolean; onTitleClick: () => void }) {
   const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -331,7 +352,7 @@ function SliderMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l:
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
       className="h-full flex flex-col items-center justify-center"
     >
-      <p className="text-sm text-ash mb-6">{t('draw.slider_desc')}</p>
+      <p className="text-sm text-ash mb-6 cursor-pointer select-none" onClick={onTitleClick}>{t('draw.slider_desc')}</p>
       <div
         ref={scrollRef}
         className="w-full overflow-x-auto no-scrollbar"
@@ -340,7 +361,7 @@ function SliderMode({ onSelect, revealed, hebrewFont, letters }: { onSelect: (l:
         <div className="w-max flex gap-3 sm:gap-4 px-6 py-4 mx-auto">
           {letters.map((l) => (
             <div key={l.id} className={`flex-shrink-0 relative ${revealed.has(l.id) ? "z-50" : "z-10"}`}>
-              <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="lg" hebrewFont={hebrewFont} />
+              <FlipCard letter={l} isRevealed={revealed.has(l.id)} onClick={() => onSelect(l)} size="lg" hebrewFont={hebrewFont} debugMode={debugMode} />
             </div>
           ))}
         </div>

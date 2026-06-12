@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Letter } from "@/data/types";
 import { useStore } from "@/store/useStore";
+import { useTranslation } from "react-i18next";
 import { HebrewGlyph as GlyphRenderer } from "./HebrewGlyph";
 import { letters as allLetters } from "../data/fake-data";
 
@@ -87,13 +88,15 @@ function AccordionSection({ title, children }: { title: string; children: React.
 }
 
 export function LetterCard({ letter }: { letter: Letter }) {
+  const { t } = useTranslation();
+  
   return (
     <div className="space-y-5">
       <div className="text-center">
         <HebrewGlyph symbol={letter.symbol} size="lg" letter={letter} />
         <h2 className="text-xl font-medium text-parchment mt-3">{letter.identity?.name || letter.latin_id}</h2>
-        <p className="text-xs text-ash mt-1">
-          Position {letter.identity?.alphabet_position || "?"} | Valeur {letter.identity?.gematria_value || "?"} | {letter.kabbalistic_correspondences?.letter_type || "?"}
+        <p className="text-[11px] sm:text-xs text-ash mt-2 max-w-[280px] sm:max-w-md mx-auto leading-relaxed">
+          {t('letter.position')} {letter.identity?.alphabet_position || "?"} | {t('letter.value')} {letter.identity?.gematria_value || "?"} | {letter.identity?.transliteration || "?"} | {letter.identity?.pronunciation || "?"}
         </p>
       </div>
 

@@ -58,6 +58,8 @@ L'utilisateur choisit son style dans les Parametres. Le style selectionne s'appl
 - Navigation : Parametres, Identification.
 
 ### 4.3 Draw (`/draw`)
+Les cartes (22 lettres) sont toujours mélangées de manière aléatoire (non-reproductible) à l'arrivée sur l'écran, pour garantir le hasard du tirage.
+
 4 modes de tirage visuels :
 - **Grid** : Grille ordonnee 5x5 (tap pour retourner).
 - **Chaos** : Disposition aleatoire flottante.
@@ -65,6 +67,7 @@ L'utilisateur choisit son style dans les Parametres. Le style selectionne s'appl
 - **Slider** : Carrousel central (une carte a la fois).
 
 Chaque carte a un dos decore (pattern subtil) et un verso avec le glyphe revele.
+- **Cheat Mode (Debug)** : Appuyer 5 fois de suite rapidement sur l'instruction de l'écran (ex: "Choisissez deux cartes") fait apparaître le glyphe de chaque lettre en filigrane (opacité réduite) sur le dos de la carte, permettant d'orienter les tests.
 
 ### 4.4 Reveal (`/reveal`)
 - Presentation sequentielle des 2 lettres tirees.

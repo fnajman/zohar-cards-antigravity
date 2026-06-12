@@ -36,17 +36,20 @@ export function getCombination(l1: Letter, l2: Letter, lang: 'fr' | 'en' = 'fr')
     i18n_content: {
       fr: {
         title: `${n1} rencontre ${n2}`,
+        content_long: `Voici une longue description poétique et approfondie de la rencontre entre ${n1} et ${n2}, divisée en plusieurs paragraphes pour faciliter la lecture et la méditation.`,
         content_short: `${l1.symbolic_essence.core_idea} et ${l2.symbolic_essence.core_idea} se croisent.`,
         content_medium: `La rencontre de ${n1} (${l1.symbolic_essence.core_idea}) et ${n2} (${l2.symbolic_essence.core_idea}) ouvre un espace de reflexion sur la tension entre ces deux forces. ${n1} apporte son impulsion de ${l1.symbolic_essence.core_idea.toLowerCase()} vers ${n2} qui offre ${l2.symbolic_essence.core_idea.toLowerCase()} comme cadre de reception.`,
         pair_essence: {
+          pair_name: `${n1} rencontre ${n2}`,
           core_theme: `De ${l1.symbolic_essence.core_idea} vers ${l2.symbolic_essence.core_idea}`,
           archetypal_question: `Comment ${l1.symbolic_essence.core_idea.toLowerCase()} peut-elle nourrir ${l2.symbolic_essence.core_idea.toLowerCase()} ?`,
+          one_sentence_summary: `Résumé de l'interaction.`
         },
         reading_frames: {
-          general: `Un dialogue s'ouvre entre ${l1.symbolic_essence.core_idea.toLowerCase()} et ${l2.symbolic_essence.core_idea.toLowerCase()}.`,
-          relationships: `Dans vos liens, ${l1.symbolic_essence.core_idea.toLowerCase()} rencontre ${l2.symbolic_essence.core_idea.toLowerCase()}.`,
-          work: `Votre travail est traverse par la tension entre ${l1.symbolic_essence.core_idea.toLowerCase()} et ${l2.symbolic_essence.core_idea.toLowerCase()}.`,
-          inner_life: `Interieurement, ${l1.symbolic_essence.core_idea.toLowerCase()} et ${l2.symbolic_essence.core_idea.toLowerCase()} cherchent a coexister.`,
+          general: { what_to_observe: [`Un dialogue s'ouvre entre ${l1.symbolic_essence.core_idea.toLowerCase()}`], what_it_points_to: "Conclusion générale" },
+          relationships: { what_to_observe: [`Dans vos liens, ${l1.symbolic_essence.core_idea.toLowerCase()} rencontre ${l2.symbolic_essence.core_idea.toLowerCase()}.`], what_it_points_to: "Conclusion relations" },
+          work_and_projects: { what_to_observe: [`Votre travail est traverse par la tension entre ${l1.symbolic_essence.core_idea.toLowerCase()} et ${l2.symbolic_essence.core_idea.toLowerCase()}.`], what_it_points_to: "Conclusion travail" },
+          inner_life: { what_to_observe: [`Interieurement, ${l1.symbolic_essence.core_idea.toLowerCase()} et ${l2.symbolic_essence.core_idea.toLowerCase()} cherchent a coexister.`], what_it_points_to: "Conclusion intérieure" },
         },
         reflective_questions: [
           `Comment ${l1.symbolic_essence.core_idea.toLowerCase()} influence-t-elle ma vie en ce moment ?`,
@@ -56,17 +59,20 @@ export function getCombination(l1: Letter, l2: Letter, lang: 'fr' | 'en' = 'fr')
       },
       en: {
         title: `[EN] ${n1} meets ${n2}`,
+        content_long: `[EN] Here is a long, poetic and deep description of the encounter between ${n1} and ${n2}.`,
         content_short: `[EN] ${l1.symbolic_essence?.core_idea} and ${l2.symbolic_essence?.core_idea} cross paths.`,
         content_medium: `[EN] The encounter of ${n1} (${l1.symbolic_essence?.core_idea}) and ${n2} (${l2.symbolic_essence?.core_idea}) opens a space...`,
         pair_essence: {
+          pair_name: `[EN] ${n1} meets ${n2}`,
           core_theme: `[EN] From ${l1.symbolic_essence.core_idea} to ${l2.symbolic_essence.core_idea}`,
           archetypal_question: `[EN] How can ${l1.symbolic_essence.core_idea} nourish ${l2.symbolic_essence.core_idea}?`,
+          one_sentence_summary: `[EN] Summary of interaction.`
         },
         reading_frames: {
-          general: `[EN] A dialogue opens between ${l1.symbolic_essence.core_idea} and ${l2.symbolic_essence.core_idea}.`,
-          relationships: `[EN] In your bonds, ${l1.symbolic_essence.core_idea} meets ${l2.symbolic_essence.core_idea}.`,
-          work: `[EN] Your work is crossed by the tension between ${l1.symbolic_essence.core_idea} and ${l2.symbolic_essence.core_idea}.`,
-          inner_life: `[EN] Inwardly, ${l1.symbolic_essence.core_idea} and ${l2.symbolic_essence.core_idea} seek to coexist.`,
+          general: { what_to_observe: [`[EN] A dialogue opens between ${l1.symbolic_essence.core_idea}`], what_it_points_to: "[EN] General conclusion" },
+          relationships: { what_to_observe: [`[EN] In your bonds, ${l1.symbolic_essence.core_idea} meets ${l2.symbolic_essence.core_idea}.`], what_it_points_to: "[EN] Relationships conclusion" },
+          work_and_projects: { what_to_observe: [`[EN] Your work is crossed by the tension between ${l1.symbolic_essence.core_idea} and ${l2.symbolic_essence.core_idea}.`], what_it_points_to: "[EN] Work conclusion" },
+          inner_life: { what_to_observe: [`[EN] Inwardly, ${l1.symbolic_essence.core_idea} and ${l2.symbolic_essence.core_idea} seek to coexist.`], what_it_points_to: "[EN] Inner conclusion" },
         },
         reflective_questions: [
           `[EN] How does ${l1.symbolic_essence.core_idea} influence my life right now?`,
