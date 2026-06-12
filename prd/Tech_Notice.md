@@ -96,7 +96,7 @@ La base est relationnelle mais utilise fortement le type **JSON** pour la flexib
 
 ## 3. API & Endpoints (Spécifications)
 
-Base URL: `https://x8ki-letl-twmt.n7.xano.io/api:main` (Exemple)
+Base URL: `https://api.najman.app/api:hyEJD2He`
 
 ### 3.1 Authentification
 Toute requête authentifiée doit fournir le header: `Authorization: Bearer <token>`
@@ -134,12 +134,15 @@ sequenceDiagram
 Ces endpoints suivent la **Règle Universelle de Langue** (voir `04_backend_spec.md`).
 
 *   **Règle** : `?lang=fr` -> Filtre & Aplatit. Pas de param -> Renvoie Full JSON.
-*   `GET /content/letters`
-    *   Use Case: Au lancement (Splash) pour précharger les textes et URLs.
-    *   Logic: Renvoie toute la table `Letter`.
-*   `GET /content/letters/symbol/{symbol}`
-    *   Use Case: Récupération ciblée par glyphe.
-    *   Logic: Filtre par symbole + Flattening i18n via fonction `decode_i18n_content`.
+*   `GET /letter`
+    *   Use Case: Au lancement (Splash) pour précharger les textes et URLs. (22 entrées)
+    *   Logic: Renvoie toute la table `Letter`. Si `lang` est fourni, retourne le contenu localisé aplati. (Non authentifié)
+*   `GET /letter/symbol/{symbol}`
+    *   Use Case: Récupération ciblée par glyphe (ex: 'א').
+    *   Logic: Filtre par symbole + Flattening i18n si `lang` est fourni. (Authentifié)
+*   `GET /letter/{letter_id}`
+    *   Use Case: Récupération d'une seule lettre par ID (1-22).
+    *   Logic: Filtre par ID + Flattening i18n si `lang` est fourni. (Authentifié)
 *   `GET /content/assets`
     *   Use Case: Au lancement, récupérer les Dos (Card Backs) actifs.
     *   Response: `[ { "key": "card_back_cosmos", "url": "..." }, ... ]`
