@@ -195,12 +195,16 @@ function FlipCard({ letter, isRevealed, onClick, size = "md", hebrewFont = "Lalo
       >
         {/* Back */}
         <div className="absolute inset-0 rounded-xl bg-night-light border border-parchment/12 flex items-center justify-center overflow-hidden" style={{ backfaceVisibility: "hidden" }}>
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #F5F1E8 1px, transparent 1px)", backgroundSize: "8px 8px" }} />
-          <svg width="40%" height="40%" viewBox="0 0 24 24" fill="none" className="opacity-30">
-            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#F5F1E8" strokeWidth="1" />
-            <circle cx="12" cy="12" r="3" stroke="#F5F1E8" strokeWidth="0.7" />
-          </svg>
-          {debugMode && <span className="absolute inset-0 flex items-center justify-center text-parchment/30 text-3xl font-bold z-10 pointer-events-none select-none">{letter.symbol}</span>}
+          {!debugMode && (
+            <>
+              <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #F5F1E8 1px, transparent 1px)", backgroundSize: "8px 8px" }} />
+              <svg width="40%" height="40%" viewBox="0 0 24 24" fill="none" className="opacity-30">
+                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#F5F1E8" strokeWidth="1" />
+                <circle cx="12" cy="12" r="3" stroke="#F5F1E8" strokeWidth="0.7" />
+              </svg>
+            </>
+          )}
+          {debugMode && <span className="absolute inset-0 flex items-center justify-center text-parchment/50 text-5xl font-bold z-10 pointer-events-none select-none">{letter.symbol}</span>}
         </div>
         {/* Front (revealed) */}
         <div className="absolute inset-0 rounded-xl bg-night-light border border-parchment/25 flex items-center justify-center overflow-hidden shadow-2xl shadow-black/60" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>

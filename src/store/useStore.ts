@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { fakeUser } from "@/data/fake-data";
 import type { UserProfile } from "@/data/types";
 import type { HebrewFontStyle } from "@/components/HebrewGlyph";
@@ -18,17 +19,29 @@ interface AppState {
   setUserCredits: (credits: number) => void;
 }
 
-export const useStore = create<AppState>((set) => ({
-  user: fakeUser,
-  drawStyle: (fakeUser.preferences.default_layout as DrawStyle) || "chaos",
-  hebrewFont: "Lalou",
-  journeyProgress: [],
+export const useStore = create<AppState>()(
+  persist(
+    (set) => ({
+      user: fakeUser,
+      drawStyle: (fakeUser.preferences.default_layout as DrawStyle) || "chaos",
+      hebrewFont: "Lalou",
+      journeyProgress: [],
 
-  setDrawStyle: (style) => set({ drawStyle: style }),
-  setHebrewFont: (font) => set({ hebrewFont: font }),
-  markJourneyStep: (step) => set((state) => ({ 
-    journeyProgress: state.journeyProgress.includes(step) ? state.journeyProgress : [...state.journeyProgress, step] 
-  })),
-  resetJourney: () => set({ journeyProgress: [] }),
-  setUserCredits: (credits) => set((state) => ({ user: { ...state.user, credits } })),
-}));
+      setDrawStyle: (style) => set({ drawStyle: style }),
+      setHebrewFont: (font) => set({ hebrewFont: font }),
+      markJourneyStep: (step) => set((state) => ({ 
+        journeyProgress: state.journeyProgress.includes(step) ? state.journeyProgress : [...state.journeyProgress, step] 
+      })),
+      resetJourney: () => set({ journeyProgress: [] }),
+      setUserCredits: (credits) => set((state) => ({ user: { ...state.user, credits } })),
+    }),
+    {
+      name: 'zohar-storage',
+      // We only want to persist settings, not the user data (which will come from DB) or the journey progress
+      partialize: (state) => ({
+        drawStyle: state.drawStyle,
+        hebrewFont: state.hebrewFont
+      }),
+    }
+  )
+);
