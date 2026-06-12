@@ -147,15 +147,15 @@ export function InterpretationScreen() {
 
   return (
     <div className="h-full flex flex-col bg-night relative">
-      <header className="flex-none bg-night/95 backdrop-blur-sm px-6 pt-12 pb-4 border-b border-parchment/5 z-10 flex flex-col gap-2">
-        <div className="flex items-center gap-3">
+      <header className="flex-none bg-night/95 backdrop-blur-sm px-6 pt-12 pb-4 border-b border-parchment/5 z-10 flex flex-col gap-4">
+        <div className="flex items-center justify-between">
           <button onClick={() => navigate("/reading")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center justify-center w-8 h-8 rounded-full bg-parchment/5">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
-          <div>
-            <h2 className="text-sm font-medium text-parchment leading-tight">{currentDraw.combination.title}</h2>
-            <p className="text-[10px] uppercase tracking-wider text-ash/60">{t('interpretation.subtitle', 'Interprétation')}</p>
-          </div>
+        </div>
+        <div>
+          <h2 className="text-lg font-medium text-parchment leading-tight">{currentDraw.combination.title}</h2>
+          <p className="text-[10px] uppercase tracking-wider text-ash/60 mt-1">{t('interpretation.subtitle', 'Interprétation contextuelle')}</p>
         </div>
       </header>
 
