@@ -69,9 +69,11 @@ export function ExperienceMenuScreen() {
           <div className="text-center mb-10">
             <h1 className="text-2xl font-medium tracking-tight text-parchment mb-2">{t('experience.title')}</h1>
             {currentDraw && (
-              <p className="text-sm text-ash">
-                {currentDraw.card_1.name}
-              </p>
+              <div className="flex items-center justify-center gap-2 mb-2 text-ash/60">
+                <span className="text-[10px] uppercase tracking-wider">{currentDraw.card_1.identity?.name || currentDraw.card_1.latin_id}</span>
+                <span>+</span>
+                <span className="text-[10px] uppercase tracking-wider">{currentDraw.card_2.identity?.name || currentDraw.card_2.latin_id}</span>
+              </div>
             )}
           </div>
 

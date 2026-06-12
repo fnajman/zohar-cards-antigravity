@@ -1,6 +1,6 @@
 import type { Letter, Combination, UserProfile, DBLetter, DBCombination } from "./types";
 
-export const letters: DBLetter[] = [
+export const letters: any[] = [
   { id: 1, symbol: "א", latin_id: "aleph", identity: { gematria_value: 1, alphabet_position: 1, pronunciation: "silencieux", letter_type: "Mere", element: "Air" }, i18n_content: { fr: { name: "Aleph", content_short: "Le potentiel illimite avant toute forme. L'unite.", content_medium: "Aleph est le silence qui precede la parole, le souffle retenu avant le chant. Il incarne l'unite pure d'ou tout emerge sans encore se manifester.", symbolic_essence: { core_idea: "Unite", archetypal_question: "Comment l'invisible devient-il present ?", inner_movement: "Emergence de la conscience" }, semantic_field: { keywords: ["Unite", "Origine", "Silence", "Potentiel"], polarities: ["Presence / Absence", "Origine / Manifestation"] }, signature: "Aleph est le seuil silencieux ou le sens n'a pas encore choisi de forme." }, en: { name: "Aleph", content_short: "[EN] The unlimited potential before any form. Unity.", content_medium: "[EN] Aleph is the silence that precedes speech, the held breath before the song. It embodies pure unity from which everything emerges without yet manifesting.", symbolic_essence: { core_idea: "Unity", archetypal_question: "[EN] How does the invisible become present?", inner_movement: "[EN] Emergence of consciousness" }, semantic_field: { keywords: ["Unity", "Origin", "Silence", "Potential"], polarities: ["Presence / Absence", "Origin / Manifestation"] }, signature: "[EN] Aleph is the silent threshold where meaning hasn't chosen a form yet." } } },
   { id: 2, symbol: "ב", latin_id: "beth", identity: { gematria_value: 2, alphabet_position: 2, pronunciation: "b / v", letter_type: "Double", element: "Saturne" }, i18n_content: { fr: { name: "Beth", content_short: "La maison, le contenant, la demeure interieure.", content_medium: "Beth est la premiere lettre de la creation, le vaisseau qui accueille. Elle represente tout ce qui contient, protege et permet a la vie de se deployer.", symbolic_essence: { core_idea: "Demeure", archetypal_question: "Qu'est-ce que j'habite vraiment ?", inner_movement: "Accueil et contenance" }, semantic_field: { keywords: ["Maison", "Creation", "Interiorite", "Protection"], polarities: ["Ouverture / Fermeture", "Accueil / Rejet"] }, signature: "Beth est la maison ou le monde commence a exister." }, en: { name: "Beth", content_short: "[EN] The house, the container, the inner dwelling.", content_medium: "[EN] Beth is the first letter of creation, the vessel that welcomes. It represents everything that contains, protects and allows life to unfold.", symbolic_essence: { core_idea: "Dwelling", archetypal_question: "[EN] What do I truly inhabit?", inner_movement: "[EN] Welcoming and containment" }, semantic_field: { keywords: ["House", "Creation", "Interiority", "Protection"], polarities: ["Opening / Closing", "Welcome / Rejection"] }, signature: "[EN] Beth is the house where the world begins to exist." } } },
   { id: 3, symbol: "ג", latin_id: "gimel", identity: { gematria_value: 3, alphabet_position: 3, pronunciation: "g", letter_type: "Double", element: "Jupiter" }, i18n_content: { fr: { name: "Gimel", content_short: "Le mouvement, la marche, le don en mouvement.", content_medium: "Gimel est l'elan qui traverse, le chameau qui porte a travers le desert. Elle incarne la generosite en action, le mouvement qui donne sans s'arreter.", symbolic_essence: { core_idea: "Mouvement", archetypal_question: "Vers quoi suis-je en marche ?", inner_movement: "Traversee et don" }, semantic_field: { keywords: ["Marche", "Don", "Traversee", "Elan"], polarities: ["Donner / Recevoir", "Avancer / Stagner"] }, signature: "Gimel est la marche qui transforme le chemin en offrande." }, en: { name: "Gimel", content_short: "[EN] The movement, the walk, the moving gift.", content_medium: "[EN] Gimel is the momentum that crosses, the camel carrying through the desert. It embodies generosity in action, the movement that gives without stopping.", symbolic_essence: { core_idea: "Movement", archetypal_question: "[EN] What am I walking towards?", inner_movement: "[EN] Crossing and gift" }, semantic_field: { keywords: ["Walk", "Gift", "Crossing", "Momentum"], polarities: ["Give / Receive", "Advance / Stagnate"] }, signature: "[EN] Gimel is the walk that transforms the path into an offering." } } },
@@ -27,15 +27,17 @@ export const letters: DBLetter[] = [
 
 export function getCombination(l1: Letter, l2: Letter, lang: 'fr' | 'en' = 'fr'): DBCombination {
   const isEn = lang === 'en';
+  const n1 = l1.identity?.name || l1.latin_id;
+  const n2 = l2.identity?.name || l2.latin_id;
   return {
     id: l1.id * 100 + l2.id,
     position_1_id: l1.id,
     position_2_id: l2.id,
     i18n_content: {
       fr: {
-        title: `${l1.name} rencontre ${l2.name}`,
+        title: `${n1} rencontre ${n2}`,
         content_short: `${l1.symbolic_essence.core_idea} et ${l2.symbolic_essence.core_idea} se croisent.`,
-        content_medium: `La rencontre de ${l1.name} (${l1.symbolic_essence.core_idea}) et ${l2.name} (${l2.symbolic_essence.core_idea}) ouvre un espace de reflexion sur la tension entre ces deux forces. ${l1.name} apporte son impulsion de ${l1.symbolic_essence.core_idea.toLowerCase()} vers ${l2.name} qui offre ${l2.symbolic_essence.core_idea.toLowerCase()} comme cadre de reception.`,
+        content_medium: `La rencontre de ${n1} (${l1.symbolic_essence.core_idea}) et ${n2} (${l2.symbolic_essence.core_idea}) ouvre un espace de reflexion sur la tension entre ces deux forces. ${n1} apporte son impulsion de ${l1.symbolic_essence.core_idea.toLowerCase()} vers ${n2} qui offre ${l2.symbolic_essence.core_idea.toLowerCase()} comme cadre de reception.`,
         pair_essence: {
           core_theme: `De ${l1.symbolic_essence.core_idea} vers ${l2.symbolic_essence.core_idea}`,
           archetypal_question: `Comment ${l1.symbolic_essence.core_idea.toLowerCase()} peut-elle nourrir ${l2.symbolic_essence.core_idea.toLowerCase()} ?`,
@@ -53,9 +55,9 @@ export function getCombination(l1: Letter, l2: Letter, lang: 'fr' | 'en' = 'fr')
         ],
       },
       en: {
-        title: `[EN] ${l1.name} meets ${l2.name}`,
-        content_short: `[EN] ${l1.symbolic_essence.core_idea} and ${l2.symbolic_essence.core_idea} cross paths.`,
-        content_medium: `[EN] The encounter of ${l1.name} (${l1.symbolic_essence.core_idea}) and ${l2.name} (${l2.symbolic_essence.core_idea}) opens a space...`,
+        title: `[EN] ${n1} meets ${n2}`,
+        content_short: `[EN] ${l1.symbolic_essence?.core_idea} and ${l2.symbolic_essence?.core_idea} cross paths.`,
+        content_medium: `[EN] The encounter of ${n1} (${l1.symbolic_essence?.core_idea}) and ${n2} (${l2.symbolic_essence?.core_idea}) opens a space...`,
         pair_essence: {
           core_theme: `[EN] From ${l1.symbolic_essence.core_idea} to ${l2.symbolic_essence.core_idea}`,
           archetypal_question: `[EN] How can ${l1.symbolic_essence.core_idea} nourish ${l2.symbolic_essence.core_idea}?`,

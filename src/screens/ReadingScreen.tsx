@@ -33,13 +33,13 @@ export function ReadingScreen() {
 
       <main className="flex-1 px-6 pb-8">
         <div className="flex items-center justify-center gap-4 mb-6">
-          <div className="flex flex-col items-center"><HebrewGlyph symbol={card_1.symbol} size="md" letter={card_1} /><span className="text-xs text-ash mt-1">{card_1.name}</span></div>
+          <div className="flex flex-col items-center"><HebrewGlyph symbol={card_1.symbol} size="md" letter={card_1} /><span className="text-xs text-ash mt-1">{card_1.identity?.name || card_1.latin_id}</span></div>
           <span className="text-ash">+</span>
-          <div className="flex flex-col items-center"><HebrewGlyph symbol={card_2.symbol} size="md" letter={card_2} /><span className="text-xs text-ash mt-1">{card_2.name}</span></div>
+          <div className="flex flex-col items-center"><HebrewGlyph symbol={card_2.symbol} size="md" letter={card_2} /><span className="text-xs text-ash mt-1">{card_2.identity?.name || card_2.latin_id}</span></div>
         </div>
 
         <div className="flex gap-1 mb-6 bg-night-light rounded-full p-1">
-          {([["l1", card_1.name], ["l2", card_2.name], ["combo", t('reading.tab_combo')]] as const).map(([key, label]) => (
+          {([["l1", card_1.identity?.name || card_1.latin_id], ["l2", card_2.identity?.name || card_2.latin_id], ["combo", t('reading.tab_combo')]] as const).map(([key, label]) => (
             <button key={key} onClick={() => setTab(key)} className={`flex-1 py-2 rounded-full text-xs font-medium transition-all duration-300 ${tab === key ? "bg-parchment/10 text-parchment" : "text-ash hover:text-parchment/70"}`}>
               {label}
             </button>

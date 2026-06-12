@@ -32,8 +32,8 @@ export function RevealScreen() {
             <HebrewGlyph symbol={card_1.symbol} size="xl" letter={card_1} />
             <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.5 }} className="text-center">
               <p className="text-[11px] tracking-[0.2em] uppercase text-ash mb-1">{t('reveal.first_letter')}</p>
-              <h2 className="text-2xl font-medium text-parchment">{card_1.name}</h2>
-              <p className="text-sm text-ash mt-2 max-w-[240px]">{card_1.content_short}</p>
+              <h2 className="text-2xl font-medium text-parchment">{card_1.identity?.name || card_1.latin_id}</h2>
+              <p className="text-sm text-ash mt-2 max-w-[240px] italic">"{card_1.signature?.poetic_sentence || card_1.content_short}"</p>
             </motion.div>
             <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
               onClick={() => setPhase(2)}
@@ -46,8 +46,8 @@ export function RevealScreen() {
             <HebrewGlyph symbol={card_2.symbol} size="xl" letter={card_2} />
             <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.5 }} className="text-center">
               <p className="text-[11px] tracking-[0.2em] uppercase text-ash mb-1">{t('reveal.second_letter')}</p>
-              <h2 className="text-2xl font-medium text-parchment">{card_2.name}</h2>
-              <p className="text-sm text-ash mt-2 max-w-[240px]">{card_2.content_short}</p>
+              <h2 className="text-2xl font-medium text-parchment">{card_2.identity?.name || card_2.latin_id}</h2>
+              <p className="text-sm text-ash mt-2 max-w-[240px] italic">"{card_2.signature?.poetic_sentence || card_2.content_short}"</p>
             </motion.div>
             <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
               onClick={() => navigate("/reading")}

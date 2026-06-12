@@ -46,13 +46,15 @@ export function HebrewGlyph({ letter, style, size = "md", className = "" }: Hebr
 
   if (style === "standard" || imgError) {
     return (
-      <span className={`font-hebrew ${sizeConfig.font} text-parchment ${className}`}>
+    <div className={`relative flex items-center justify-center font-hebrew ${className}`} aria-label={`Letter ${letter?.identity?.name || letter.symbol}`}>
+      <span className={`${sizeConfig.font} text-parchment`}>
         {letter.symbol}
       </span>
+    </div>
     );
   }
 
-  const position = letter.identity.alphabet_position;
+  const position = letter.identity?.alphabet_position || 1;
   const config = getStyleConfig(style);
   const num = config.padded ? position.toString().padStart(2, "0") : position.toString();
   const src = `/fonts/${style}/${num}.${config.ext}`;
@@ -60,7 +62,7 @@ export function HebrewGlyph({ letter, style, size = "md", className = "" }: Hebr
   return (
     <img
       src={src}
-      alt={letter.name}
+      alt={letter.identity?.name || letter.latin_id}
       className={`${sizeConfig.img} object-contain ${className}`}
       draggable={false}
       onError={() => setImgError(true)}

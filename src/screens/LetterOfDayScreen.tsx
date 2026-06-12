@@ -35,7 +35,7 @@ export function LetterOfDayScreen() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.5 }} className="text-center mb-6 max-w-[280px]">
-          <h2 className="text-2xl font-medium text-parchment mb-2">{letter.name}</h2>
+          <h2 className="text-2xl font-medium text-parchment text-center mt-6">{letter.identity?.name || letter.latin_id}</h2>
         </motion.div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="w-full max-w-[300px] space-y-4">
@@ -55,7 +55,9 @@ export function LetterOfDayScreen() {
             ))}
           </div>
           <div className="border-t border-parchment/5 pt-4">
-            <p className="text-sm text-parchment/60 italic text-center leading-relaxed">"{letter.signature}"</p>
+            <p className="text-sm text-parchment/60 italic border-t border-parchment/5 pt-4 text-center">
+              {letter.signature?.poetic_sentence}
+            </p>
           </div>
         </motion.div>
 

@@ -2,36 +2,84 @@ export interface Letter {
   id: number;
   symbol: string;
   latin_id: string;
-  name: string;
-  content_short: string;
-  content_medium: string;
-  symbolic_essence: {
-    core_idea: string;
-    archetypal_question: string;
-    inner_movement: string;
+  visual_content: Record<string, string> | null;
+  meta?: {
+    version: string;
+    last_updated: string;
+    source_traditions: string[];
   };
   identity: {
-    gematria_value: number;
-    alphabet_position: number;
+    name: string;
+    hebrew_letter: string;
     pronunciation: string;
-    letter_type: string;
-    element: string;
+    gematria_value: number;
+    transliteration: string;
+    alphabet_position: number;
+  };
+  signature: {
+    poetic_sentence: string;
+  };
+  content_short: string;
+  content_medium: string;
+  content_long: string;
+  form_symbolism: {
+    visual_dynamics: { movement: string; openness: string; orientation: string; };
+    formal_description: string;
+    calligraphic_reading: string;
   };
   semantic_field: {
     keywords: string[];
+    imbalances: string[];
     polarities: string[];
   };
-  signature: string;
+  symbolic_essence: {
+    core_idea: string;
+    inner_movement: string;
+    archetypal_question: string;
+  };
+  symbolic_practices: {
+    focus: string;
+    movement: string;
+    breathing: string;
+    visualization: string;
+  };
+  body_correspondence: {
+    body_area: string;
+    felt_quality: string;
+    symbolic_function: string;
+  };
+  existential_reading: {
+    ethical_note: string;
+    life_phase_evocation: string;
+    personal_reflection_focus: string;
+  };
+  letter_relationships: {
+    next_letter: string | null;
+    previous_letter: string | null;
+    transition_logic: string;
+  };
+  vibrational_qualities: {
+    colors: string[];
+    inner_climate: string;
+    energy_profile: { tempo: string; density: string; polarity: string; };
+  };
+  kabbalistic_correspondences: {
+    element: string;
+    direction: string;
+    letter_type: string;
+    sefirah_associations: string[];
+  };
 }
 
 export interface DBLetter {
   id: number;
   symbol: string;
   latin_id: string;
-  identity: Letter["identity"];
+  visual_content: Record<string, string> | null;
   i18n_content: {
-    fr: Omit<Letter, "id" | "symbol" | "latin_id" | "identity">;
-    en: Omit<Letter, "id" | "symbol" | "latin_id" | "identity">;
+    fr: Omit<Letter, "id" | "symbol" | "latin_id" | "visual_content">;
+    en: Omit<Letter, "id" | "symbol" | "latin_id" | "visual_content">;
+    [key: string]: Omit<Letter, "id" | "symbol" | "latin_id" | "visual_content">;
   };
 }
 

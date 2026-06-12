@@ -1,16 +1,53 @@
-import { letters, getCombination } from "@/data/fake-data";
+import { letters as fakeLetters, getCombination } from "@/data/fake-data";
 import type { Draw, Letter, Combination, DBLetter, DBCombination, DBDraw } from "@/data/types";
+
+const XANO_URL = "https://api.najman.app/api:hyEJD2He";
+const CACHE_KEY = "zohar_letters_cache";
+
+let memoryCachedLetters: DBLetter[] | null = null;
+
+async function fetchDBLetters(): Promise<DBLetter[]> {
+  if (memoryCachedLetters) return memoryCachedLetters;
+  
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      memoryCachedLetters = JSON.parse(cached);
+      // Background update
+      fetch(`${XANO_URL}/letter`).then(r => r.json()).then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          memoryCachedLetters = data;
+          localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+        }
+      }).catch(console.error);
+      return memoryCachedLetters!;
+    }
+    
+    const res = await fetch(`${XANO_URL}/letter`);
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      memoryCachedLetters = data;
+      localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+      return data;
+    }
+    throw new Error("Invalid format");
+  } catch (err) {
+    console.error("Failed to fetch letters from Xano, falling back to local fake data:", err);
+    return fakeLetters as unknown as DBLetter[];
+  }
+}
 
 // Helper to flatten
 function flattenLetter(dbLetter: DBLetter, lang: string): Letter {
+  // If we're using fallback fake data, it might not have the new fields, so we do safe destructuring
   const content = dbLetter.i18n_content[lang === 'en' ? 'en' : 'fr'] || dbLetter.i18n_content.fr;
   return {
     id: dbLetter.id,
     symbol: dbLetter.symbol,
     latin_id: dbLetter.latin_id,
-    identity: dbLetter.identity,
+    visual_content: dbLetter.visual_content || null,
     ...content
-  };
+  } as Letter;
 }
 
 function flattenCombination(dbCombo: DBCombination, lang: string): Combination {
@@ -40,35 +77,37 @@ let currentDraw: DBDraw | null = null;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function getRandomLetters(): [DBLetter, DBLetter] {
-  const shuffled = [...letters].sort(() => Math.random() - 0.5);
+async function getRandomLetters(): Promise<[DBLetter, DBLetter]> {
+  const dbLetters = await fetchDBLetters();
+  const shuffled = [...dbLetters].sort(() => Math.random() - 0.5);
   return [shuffled[0], shuffled[1]];
 }
 
 export const api = {
   getLetters: async (lang: string = 'fr'): Promise<Letter[]> => {
-    await delay(300);
-    return letters.map(l => flattenLetter(l, lang));
+    const dbLetters = await fetchDBLetters();
+    return dbLetters.map(l => flattenLetter(l, lang));
   },
 
   getLetterOfTheDay: async (lang: string = 'fr'): Promise<Letter> => {
-    await delay(100);
-    const idx = new Date().getDate() % letters.length;
-    return flattenLetter(letters[idx], lang);
+    const dbLetters = await fetchDBLetters();
+    const idx = new Date().getDate() % dbLetters.length;
+    return flattenLetter(dbLetters[idx], lang);
   },
 
   createDraw: async (lang: string = 'fr', selectedIds?: number[]): Promise<Draw> => {
     await delay(600); // Simulate drawing logic
+    const dbLetters = await fetchDBLetters();
     let dbCard1: DBLetter, dbCard2: DBLetter;
     if (selectedIds && selectedIds.length === 2) {
-      dbCard1 = letters.find(l => l.id === selectedIds[0]) || letters[0];
-      dbCard2 = letters.find(l => l.id === selectedIds[1]) || letters[1];
+      dbCard1 = dbLetters.find(l => l.id === selectedIds[0]) || dbLetters[0];
+      dbCard2 = dbLetters.find(l => l.id === selectedIds[1]) || dbLetters[1];
     } else if (selectedIds && selectedIds.length === 1) {
-      dbCard1 = letters.find(l => l.id === selectedIds[0]) || letters[0];
-      const others = letters.filter(l => l.id !== dbCard1.id);
+      dbCard1 = dbLetters.find(l => l.id === selectedIds[0]) || dbLetters[0];
+      const others = dbLetters.filter(l => l.id !== dbCard1.id);
       dbCard2 = others[Math.floor(Math.random() * others.length)];
     } else {
-      [dbCard1, dbCard2] = getRandomLetters();
+      [dbCard1, dbCard2] = await getRandomLetters();
     }
     
     // We pass the FR version to getCombination for the placeholders

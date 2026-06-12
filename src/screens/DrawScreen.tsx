@@ -91,7 +91,7 @@ export function DrawScreen() {
 
       {selected.length > 0 && selected.length < 2 && drawStyle !== "hold" && (
         <div className="px-6 py-2 text-center">
-          <span className="text-xs text-ash">{t('draw.revealed', { name: selected[0].name })}</span>
+          <span className="text-xs text-ash">{t('draw.revealed', { name: selected[0].identity?.name || selected[0].latin_id })}</span>
         </div>
       )}
 
