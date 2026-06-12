@@ -20,3 +20,6 @@ Afin de garder une trace incrémentale et propre de l'évolution du projet, tu D
 - Cette version doit être stockée dans `src/version.ts` via `export const APP_VERSION = "vX.XX";`.
 - Elle est affichée en bas de l'écran principal (`HomeScreen.tsx`) à côté de "Paramètres".
 - L'incrémentation doit se faire **avant** de commiter et de pousser le code.
+
+## 4. Documentation et Outils Externes (Context7)
+- **Utilise l'outil `context7` (MCP Server)** pour vérifier la syntaxe exacte, la documentation à jour et les bonnes pratiques de TOUTES les bibliothèques externes et langages que tu utilises avant de les implémenter, afin d'éviter les APIs dépréciées.

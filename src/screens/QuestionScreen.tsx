@@ -9,7 +9,7 @@ import { useMemo } from "react";
 export function QuestionScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user, markJourneyStep } = useStore();
+  const { user, markJourneyStep, setCurrentQuestion } = useStore();
   const { data: currentDraw } = useCurrentDraw();
   const { mutate: selectKeywords } = useAddKeywords();
   const [question, setQuestion] = useState("");
@@ -36,6 +36,7 @@ export function QuestionScreen() {
 
   const saveAndNavigate = () => {
     markJourneyStep("question");
+    setCurrentQuestion(question.trim());
     if (selected.length > 0) {
       selectKeywords({ drawId: currentDraw.id, keywords: selected }, {
         onSuccess: () => navigate("/interpretation")

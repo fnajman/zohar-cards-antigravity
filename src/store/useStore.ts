@@ -12,9 +12,11 @@ interface AppState {
   drawStyle: DrawStyle;
   hebrewFont: HebrewFontStyle;
   journeyProgress: JourneyStep[];
+  currentQuestion: string;
   setDrawStyle: (style: DrawStyle) => void;
   setHebrewFont: (font: HebrewFontStyle) => void;
   markJourneyStep: (step: JourneyStep) => void;
+  setCurrentQuestion: (q: string) => void;
   resetJourney: () => void;
   setUserCredits: (credits: number) => void;
 }
@@ -26,13 +28,15 @@ export const useStore = create<AppState>()(
       drawStyle: (fakeUser.preferences.default_layout as DrawStyle) || "chaos",
       hebrewFont: "Lalou",
       journeyProgress: [],
+      currentQuestion: "",
 
       setDrawStyle: (style) => set({ drawStyle: style }),
       setHebrewFont: (font) => set({ hebrewFont: font }),
       markJourneyStep: (step) => set((state) => ({ 
         journeyProgress: state.journeyProgress.includes(step) ? state.journeyProgress : [...state.journeyProgress, step] 
       })),
-      resetJourney: () => set({ journeyProgress: [] }),
+      setCurrentQuestion: (q) => set({ currentQuestion: q }),
+      resetJourney: () => set({ journeyProgress: [], currentQuestion: "" }),
       setUserCredits: (credits) => set((state) => ({ user: { ...state.user, credits } })),
     }),
     {

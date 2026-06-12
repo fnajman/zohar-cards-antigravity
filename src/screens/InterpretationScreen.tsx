@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStore } from "@/store/useStore";
 import { useCurrentDraw } from "@/hooks/useApi";
+import { getAiResponse, ChatMessage } from "@/services/aiService";
 
 const fakeAI = `La rencontre de ces deux lettres ouvre un espace de reflexion profond.
 
@@ -15,7 +16,7 @@ L'espace entre ces deux forces est un lieu de contemplation. Il vous appartient 
 
 interface Message {
   id: string;
-  role: "user" | "assistant";
+  role: "system" | "user" | "assistant";
   content: string;
 }
 
@@ -23,10 +24,11 @@ export function InterpretationScreen() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { data: currentDraw } = useCurrentDraw();
-  const { user, markJourneyStep } = useStore();
+  const { user, markJourneyStep, currentQuestion } = useStore();
   
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,17 +36,31 @@ export function InterpretationScreen() {
   }, [markJourneyStep]);
 
   useEffect(() => {
-    // Initialize the first AI message only once
-    if (messages.length === 0 && currentDraw) {
-      setMessages([
-        {
-          id: "msg-0",
-          role: "assistant",
-          content: i18n.language === 'en' ? '[EN] The encounter of these two letters opens a space for deep reflection...\n\n(Placeholder)' : fakeAI
+    const initChat = async () => {
+      if (messages.length === 0 && currentDraw && !isTyping) {
+        setIsTyping(true);
+        try {
+          const firstResponse = await getAiResponse(
+            currentDraw,
+            currentQuestion,
+            currentDraw.selected_keywords || [],
+            []
+          );
+          setMessages([
+            { id: "msg-0", role: "assistant", content: firstResponse }
+          ]);
+        } catch (error) {
+          console.error(error);
+          setMessages([
+            { id: "msg-0", role: "assistant", content: i18n.language === 'en' ? '[EN] The encounter of these two letters opens a space for deep reflection...\n\n(Placeholder)' : fakeAI }
+          ]);
+        } finally {
+          setIsTyping(false);
         }
-      ]);
-    }
-  }, [currentDraw, messages.length, i18n.language]);
+      }
+    };
+    initChat();
+  }, [currentDraw, messages.length, i18n.language, currentQuestion]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -74,8 +90,8 @@ export function InterpretationScreen() {
     );
   }
 
-  const handleSend = () => {
-    if (!inputText.trim()) return;
+  const handleSend = async () => {
+    if (!inputText.trim() || !currentDraw || isTyping) return;
     
     const newUserMsg: Message = {
       id: Date.now().toString(),
@@ -83,17 +99,35 @@ export function InterpretationScreen() {
       content: inputText.trim()
     };
     
-    setMessages(prev => [...prev, newUserMsg]);
+    // Create the updated history locally to pass it to the API
+    const newHistory = [...messages, newUserMsg];
+    setMessages(newHistory);
     setInputText("");
+    setIsTyping(true);
     
-    // Fake AI response delay for prototype
-    setTimeout(() => {
+    try {
+      const response = await getAiResponse(
+        currentDraw,
+        currentQuestion,
+        currentDraw.selected_keywords || [],
+        newHistory.map(m => ({ role: m.role, content: m.content } as ChatMessage))
+      );
+      
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "Je comprends. L'impulsion de cette combinaison vous invite à regarder au-delà de l'évidence. Comment cela résonne-t-il avec ce que vous traversez actuellement ?"
+        content: response
       }]);
-    }, 1000);
+    } catch (error) {
+      console.error(error);
+      setMessages(prev => [...prev, {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: t('interpretation.error_api', "Je n'arrive pas à me concentrer. Veuillez réessayer.")
+      }]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   return (
@@ -130,6 +164,15 @@ export function InterpretationScreen() {
               </div>
             </motion.div>
           ))}
+          {isTyping && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
+              <div className="bg-night-light border border-parchment/5 rounded-2xl rounded-bl-sm p-4 text-sm text-parchment/60 flex gap-1 items-center">
+                <span className="w-1.5 h-1.5 bg-parchment/50 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                <span className="w-1.5 h-1.5 bg-parchment/50 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                <span className="w-1.5 h-1.5 bg-parchment/50 rounded-full animate-bounce"></span>
+              </div>
+            </motion.div>
+          )}
           <div ref={messagesEndRef} className="h-4" />
         </div>
       </main>
