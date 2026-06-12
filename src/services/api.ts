@@ -99,7 +99,22 @@ export const api = {
 
   getLetterOfTheDay: async (lang: string = 'fr'): Promise<Letter> => {
     const dbLetters = await fetchDBLetters();
-    const idx = new Date().getDate() % dbLetters.length;
+    const todayStr = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
+    
+    let savedData;
+    try {
+      const cached = localStorage.getItem('zohar_letter_of_day');
+      if (cached) savedData = JSON.parse(cached);
+    } catch(e) {}
+
+    let idx;
+    if (savedData && savedData.date === todayStr && typeof savedData.index === 'number') {
+      idx = savedData.index;
+    } else {
+      idx = Math.floor(Math.random() * dbLetters.length);
+      localStorage.setItem('zohar_letter_of_day', JSON.stringify({ date: todayStr, index: idx }));
+    }
+    
     return flattenLetter(dbLetters[idx], lang);
   },
 
