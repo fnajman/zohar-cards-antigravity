@@ -53,3 +53,32 @@ export async function getAiResponse(
     throw new Error("Impossible de se connecter à l'oracle. Réessayez plus tard.");
   }
 }
+export async function getAiResponseStream(
+  draw: Draw,
+  userQuestion: string,
+  selectedKeywords: string[],
+  chatHistory: ChatMessage[],
+  language: string
+) {
+  if (!import.meta.env.VITE_OPENROUTER_API_KEY) {
+    throw new Error("Clé API OpenRouter manquante. Veuillez l'ajouter dans le fichier .env.local.");
+  }
+
+  const systemPrompt = generateSystemPrompt({ draw, userQuestion, selectedKeywords, language });
+  const messages: ChatMessage[] = [
+    { role: "system", content: systemPrompt },
+    ...chatHistory
+  ];
+
+  try {
+    const stream = await openai.chat.completions.create({
+      model: DEFAULT_MODEL,
+      messages: messages as any,
+      stream: true,
+    });
+    return stream;
+  } catch (error) {
+    console.error("Erreur lors de l'appel à OpenRouter:", error);
+    throw new Error("Impossible de se connecter à l'oracle. Réessayez plus tard.");
+  }
+}

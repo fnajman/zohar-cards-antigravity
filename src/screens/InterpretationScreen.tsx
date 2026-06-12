@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStore } from "@/store/useStore";
 import { useCurrentDraw } from "@/hooks/useApi";
-import { getAiResponse, ChatMessage } from "@/services/aiService";
+import { getAiResponse, getAiResponseStream, ChatMessage } from "@/services/aiService";
 
 const fakeAI = `La rencontre de ces deux lettres ouvre un espace de reflexion profond.
 
@@ -41,15 +41,26 @@ export function InterpretationScreen() {
       if (messages.length === 0 && currentDraw && !isTyping) {
         setIsTyping(true);
         try {
-          const firstResponse = await getAiResponse(
+          const stream = await getAiResponseStream(
             currentDraw,
             currentQuestion,
             currentDraw.selected_keywords || [],
             [],
             i18n.language
           );
-          setMessages([
-            { id: "msg-0", role: "assistant", content: firstResponse },
+          
+          setIsTyping(false);
+          let fullResponse = "";
+          setMessages([{ id: "msg-0", role: "assistant", content: "" }]);
+
+          for await (const chunk of stream) {
+            const content = chunk.choices[0]?.delta?.content || "";
+            fullResponse += content;
+            setMessages([{ id: "msg-0", role: "assistant", content: fullResponse }]);
+          }
+
+          setMessages(prev => [
+            ...prev,
             { 
               id: "msg-0-action", 
               role: "system", 
@@ -120,7 +131,7 @@ export function InterpretationScreen() {
     setIsTyping(true);
     
     try {
-      const response = await getAiResponse(
+      const stream = await getAiResponseStream(
         currentDraw,
         currentQuestion,
         currentDraw.selected_keywords || [],
@@ -128,11 +139,20 @@ export function InterpretationScreen() {
         i18n.language
       );
       
-      setMessages(prev => [...prev, {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: response
-      }]);
+      setIsTyping(false);
+      const newMsgId = (Date.now() + 1).toString();
+      let fullResponse = "";
+      setMessages(prev => [...prev, { id: newMsgId, role: "assistant", content: "" }]);
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || "";
+        fullResponse += content;
+        setMessages(prev => {
+          const newMsgs = [...prev];
+          newMsgs[newMsgs.length - 1] = { id: newMsgId, role: "assistant", content: fullResponse };
+          return newMsgs;
+        });
+      }
     } catch (error) {
       console.error(error);
       setMessages(prev => [...prev, {
