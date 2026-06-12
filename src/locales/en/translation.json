@@ -50,7 +50,8 @@
     "support_btn": "Letter of support",
     "no_credits": "You need at least 3 credits to receive a deep personal interpretation.",
     "buy_credits": "Buy credits",
-    "home_btn": "Back to Home"
+    "home_btn": "Back to Home",
+    "followup_text": "You can continue discussing with me, or discover your Letter of Support and its integration exercises when you are ready."
   },
   "question": {
     "no_credits": "You have no credits left to ask a personal question.",
@@ -94,7 +95,8 @@
   "support": {
     "title": "Letter of support",
     "back_btn": "Return to silence",
-    "experience_btn": "Experience the letter"
+    "experience_btn": "Experience the letter",
+    "letter_text": "Dear traveler,\n\nWhat you have traversed today calls for neither resolution nor conclusion.\n\nThe letters ask for nothing. They promise nothing. They hold a space — a space you have agreed to look at.\n\nThere is nothing to achieve. There is nothing to fix. What has opened remains open as long as you wish.\n\nTake the time to let these symbols rest within you. They will work at their own pace, without your effort.\n\nThe silence that follows is as precious as the words that preceded it."
   },
   "experience": {
     "title": "Experience your letter",

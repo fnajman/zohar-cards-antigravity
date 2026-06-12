@@ -233,8 +233,8 @@ export function InterpretationScreen() {
                 handleSend();
               }
             }}
-            placeholder="Écrivez votre message..."
-            className="flex-1 max-h-[120px] min-h-[40px] bg-transparent text-sm text-parchment placeholder:text-ash/40 resize-none py-2 px-2 focus:outline-none"
+            placeholder={t('interpretation.placeholder', 'Écrivez votre message...')}
+            className="flex-1 max-h-[120px] min-h-[40px] bg-transparent text-base text-parchment placeholder:text-ash/40 resize-none py-2 px-2 focus:outline-none"
             rows={1}
             style={{ height: "auto" }}
           />

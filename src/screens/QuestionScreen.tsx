@@ -75,8 +75,8 @@ export function QuestionScreen() {
             </motion.div>
             <textarea
               value={question} onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ce qui occupe mon esprit..."
-              className="w-full h-28 bg-night-light border border-parchment/10 rounded-2xl px-4 py-3 text-sm text-parchment placeholder:text-ash/40 resize-none focus:outline-none focus:border-parchment/25 transition-colors mb-2"
+              placeholder={t('question.placeholder')}
+              className="w-full h-28 bg-night-light border border-parchment/10 rounded-2xl px-4 py-3 text-base text-parchment placeholder:text-ash/40 resize-none focus:outline-none focus:border-parchment/25 transition-colors mb-2"
             />
             
             <div className="w-full text-left">

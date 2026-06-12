@@ -50,7 +50,8 @@
     "support_btn": "Lettre de soutien",
     "no_credits": "Il vous faut au moins 3 crédits pour obtenir une interprétation personnelle profonde.",
     "buy_credits": "Acheter des crédits",
-    "home_btn": "Retour à l'accueil"
+    "home_btn": "Retour à l'accueil",
+    "followup_text": "Vous pouvez continuer à dialoguer avec moi, ou découvrir votre Lettre de soutien et ses exercices d'intégration quand vous serez prêt(e)."
   },
   "question": {
     "no_credits": "Vous n'avez plus de crédits pour poser une question personnelle.",
@@ -94,7 +95,8 @@
   "support": {
     "title": "Lettre de soutien",
     "back_btn": "Retour au silence",
-    "experience_btn": "Vivre l'expérience de la lettre"
+    "experience_btn": "Vivre l'expérience de la lettre",
+    "letter_text": "Cher voyageur,\n\nCe que vous avez traversé aujourd'hui n'appelle ni résolution ni conclusion.\n\nLes lettres ne demandent rien. Elles ne promettent rien. Elles tiennent un espace — un espace que vous avez accepté de regarder.\n\nIl n'y a rien à atteindre. Il n'y a rien à corriger. Ce qui s'est ouvert reste ouvert aussi longtemps que vous le souhaitez.\n\nPrenez le temps de laisser ces symboles reposer en vous. Ils travailleront à leur rythme, sans votre effort.\n\nLe silence qui suit est aussi précieux que les mots qui l'ont précédé."
   },
   "experience": {
     "title": "Vivre sa lettre",

@@ -7,17 +7,7 @@ import { useStore } from "@/store/useStore";
 import { HebrewGlyph } from "@/components/LetterComponents";
 import { useScrollHint } from "@/hooks/useScrollHint";
 
-const text = `Cher voyageur,
 
-Ce que vous avez traverse aujourd'hui n'appelle ni resolution ni conclusion.
-
-Les lettres ne demandent rien. Elles ne promettent rien. Elles tiennent un espace — un espace que vous avez accepte de regarder.
-
-Il n'y a rien a atteindre. Il n'y a rien a corriger. Ce qui s'est ouvert reste ouvert aussi longtemps que vous le souhaitez.
-
-Prenez le temps de laisser ces symboles reposer en vous. Ils travailleront a leur rythme, sans votre effort.
-
-Le silence qui suit est aussi precieux que les mots qui l'ont precede.`;
 
 export function SupportLetterScreen() {
   const navigate = useNavigate();
@@ -53,7 +43,7 @@ export function SupportLetterScreen() {
           </div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 1 }}
             className="bg-parchment/[0.03] rounded-2xl p-6 border border-parchment/5">
-            <p className="text-sm text-parchment/85 leading-[1.9] whitespace-pre-line font-light">{text}</p>
+            <p className="text-sm text-parchment/85 leading-[1.9] whitespace-pre-line font-light">{t('support.letter_text')}</p>
           </motion.div>
         </motion.div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="mt-8 flex flex-col gap-3">
