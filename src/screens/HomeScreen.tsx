@@ -13,24 +13,32 @@ export function HomeScreen() {
     <div className="h-full flex flex-col bg-night">
       <header className="flex items-center justify-between px-6 pt-12 pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-parchment/10 flex items-center justify-center">
-            <span className="text-xs text-parchment font-medium">{user.full_name[0]}</span>
-          </div>
+          <button onClick={() => navigate("/settings")} className="w-8 h-8 rounded-full bg-parchment/10 flex items-center justify-center hover:bg-parchment/20 transition-colors shrink-0">
+            {user ? (
+              <span className="text-xs text-parchment font-medium">{user.name?.[0]?.toUpperCase()}</span>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-parchment"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            )}
+          </button>
           <span 
             className="text-[11px] text-ash select-none cursor-pointer"
             onClick={(e) => {
               if (e.detail === 1) {
                 // Wait to see if it's a double click
                 (window as any)._creditTimeout = setTimeout(() => {
-                  useStore.getState().setUserCredits(user.credits + 1);
+                  if (user) {
+                    useStore.getState().setUserCredits((user.credits ?? 0) + 1);
+                  }
                 }, 250);
               } else if (e.detail === 2) {
                 clearTimeout((window as any)._creditTimeout);
-                useStore.getState().setUserCredits(Math.max(0, user.credits - 1));
+                if (user) {
+                  useStore.getState().setUserCredits(Math.max(0, (user.credits ?? 0) - 1));
+                }
               }
             }}
           >
-            {t('common.credits_left', { count: user.credits })}
+            {user ? t('common.credits_left', { count: user.credits ?? 0 }) : "Mode invité"}
           </span>
         </div>
         <button onClick={() => navigate("/settings")} className="w-8 h-8 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">

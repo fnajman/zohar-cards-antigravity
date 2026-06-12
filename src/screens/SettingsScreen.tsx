@@ -165,15 +165,14 @@ export function SettingsScreen() {
             { id: "plus", name: "Plus", price: "9.99", period: "mois", questions: "100", chat: true },
             { id: "unlimited", name: "Illimité", price: "19.99", period: "mois", questions: "∞", chat: true },
           ] as const).map((p) => (
-            <div key={p.name} className={`rounded-2xl p-4 border ${user.sub_tier === p.id ? "bg-parchment/5 border-parchment/20" : "bg-night-light border-parchment/5"}`}>
-              <div className="flex items-center justify-between mb-1">
+            <div key={p.name} className={`rounded-2xl p-4 border ${user?.sub_tier === p.id ? "bg-parchment/5 border-parchment/20" : "bg-night-light border-parchment/5"}`}>
+              <div className="flex justify-between items-start mb-2">
                 <h3 className="text-sm font-medium text-parchment">{p.name}</h3>
-                {user.sub_tier === p.id && <span className="text-[10px] uppercase text-ash bg-parchment/10 px-2 py-0.5 rounded-full">{t('settings.current_plan')}</span>}
+                {user?.sub_tier === p.id && <span className="text-[10px] uppercase text-ash bg-parchment/10 px-2 py-0.5 rounded-full">{t('settings.current_plan')}</span>}
               </div>
-              <p className="text-xs text-ash mb-2">{p.price} EUR / {p.period}</p>
-              <p className="text-xs text-parchment/70">{t('settings.questions_per_month', { q: p.questions })}</p>
-              <p className="text-xs text-parchment/70">{t('settings.ai_chat', { chat: p.chat ? t('settings.yes') : t('settings.no') })}</p>
-              {user.sub_tier !== p.id && <button className="mt-3 w-full py-2 border border-parchment/20 text-parchment rounded-full text-xs hover:border-parchment/40 transition-colors">{t('settings.choose_plan')}</button>}
+              <p className="text-[11px] text-ash/70 mb-3">{p.price} EUR / {p.period}</p>
+              <div className="text-sm text-parchment mb-4">{t('settings.questions_per_month', { q: p.questions })}</div>
+              {user?.sub_tier !== p.id && <button className="mt-3 w-full py-2 border border-parchment/20 text-parchment rounded-full text-xs hover:border-parchment/40 transition-colors">{t('settings.choose_plan')}</button>}
             </div>
           ))}
         </div>
@@ -193,13 +192,13 @@ export function SettingsScreen() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
           <section className="px-6 py-6 border-b border-parchment/5">
             <h2 className="text-[11px] tracking-[0.2em] uppercase text-ash/60 mb-6">{t('settings.account')}</h2>
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 rounded-full bg-parchment/10 flex items-center justify-center"><span className="text-lg text-parchment font-medium">{user.full_name[0]}</span></div>
-              <div><p className="text-sm font-medium text-parchment">{user.full_name}</p><p className="text-[11px] text-ash">{user.email}</p></div>
+            <div className="bg-night-light border border-parchment/10 rounded-2xl p-4 flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-full bg-parchment/10 flex items-center justify-center"><span className="text-lg text-parchment font-medium">{user ? user.name?.[0]?.toUpperCase() : '?'}</span></div>
+              <div><p className="text-sm font-medium text-parchment">{user ? user.name : "Invité"}</p><p className="text-[11px] text-ash">{user ? user.email : "Non connecté"}</p></div>
             </div>
             <div className="flex gap-4">
-              <div className="flex-1 bg-night-light rounded-xl p-4 border border-parchment/5"><p className="text-[10px] uppercase text-ash mb-1">Abonnement</p><p className="text-sm text-parchment capitalize">{user.sub_tier}</p></div>
-              <div className="flex-1 bg-night-light rounded-xl p-4 border border-parchment/5"><p className="text-[10px] uppercase text-ash mb-1">Credits</p><p className="text-sm text-parchment">{user.credits}</p></div>
+              <div className="flex-1 bg-night-light rounded-xl p-4 border border-parchment/5"><p className="text-[10px] uppercase text-ash mb-1">Abonnement</p><p className="text-sm text-parchment capitalize">{user ? user.sub_tier : "Gratuit"}</p></div>
+              <div className="flex-1 bg-night-light rounded-xl p-4 border border-parchment/5"><p className="text-[10px] uppercase text-ash mb-1">Credits</p><p className="text-sm text-parchment">{user ? user.credits : 0}</p></div>
             </div>
           </section>
           <section className="border-b border-parchment/5">

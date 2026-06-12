@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen } from "@/screens/SplashScreen";
 import { JourneyProgress } from "@/components/JourneyProgress";
+import { useStore } from "@/store/useStore";
+import { getMe } from "@/services/authApi";
 
 const HomeScreen = React.lazy(() => import("@/screens/HomeScreen").then(m => ({ default: m.HomeScreen })));
 const DrawScreen = React.lazy(() => import("@/screens/DrawScreen").then(m => ({ default: m.DrawScreen })));
@@ -32,6 +34,18 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
+  const authToken = useStore(state => state.authToken);
+  const loginSession = useStore(state => state.loginSession);
+  const logout = useStore(state => state.logout);
+
+  React.useEffect(() => {
+    if (authToken) {
+      getMe(authToken)
+        .then(user => loginSession(authToken, user))
+        .catch(() => logout());
+    }
+  }, [authToken, loginSession, logout]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

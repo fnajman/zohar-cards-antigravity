@@ -86,8 +86,11 @@ export function getCombination(l1: Letter, l2: Letter, lang: 'fr' | 'en' = 'fr')
 
 export const fakeUser: UserProfile = {
   id: 1,
+  created_at: 1700000000000,
   email: "voyageur@zohar.app",
-  full_name: "Voyageur",
+  name: "Voyageur",
+  push_token: "",
+  role: "user",
   credits: 5,
   sub_tier: "free",
   preferences: {

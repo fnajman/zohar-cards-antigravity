@@ -1,14 +1,48 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useStore } from "@/store/useStore";
+import { login, signup, getMe } from "@/services/authApi";
 
 export function AuthScreen() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"login" | "signup" | "magic">("login");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const loginSession = useStore(state => state.loginSession);
 
-  const submit = (e: React.FormEvent) => { e.preventDefault(); navigate("/home"); };
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    
+    if (mode === "magic") {
+      // Magic link will be implemented in phase 2
+      setError("Le lien magique sera bientôt disponible.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      let token = "";
+      if (mode === "login") {
+        token = await login(email, password);
+      } else if (mode === "signup") {
+        if (!name) throw new Error("Le nom est requis");
+        token = await signup(name, email, password);
+      }
+      
+      const user = await getMe(token);
+      loginSession(token, user);
+      navigate("/home");
+    } catch (err: any) {
+      setError(err.message || "Une erreur est survenue");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="h-full flex flex-col bg-night">
@@ -29,14 +63,19 @@ export function AuthScreen() {
           </div>
 
           <form onSubmit={submit} className="space-y-3">
+            {mode === "signup" && (
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nom d'utilisateur"
+                className="w-full py-3 px-4 bg-night-light border border-parchment/10 rounded-full text-sm text-parchment placeholder:text-ash/40 focus:outline-none focus:border-parchment/25 transition-colors" />
+            )}
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"
               className="w-full py-3 px-4 bg-night-light border border-parchment/10 rounded-full text-sm text-parchment placeholder:text-ash/40 focus:outline-none focus:border-parchment/25 transition-colors" />
             {mode !== "magic" && (
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mot de passe"
                 className="w-full py-3 px-4 bg-night-light border border-parchment/10 rounded-full text-sm text-parchment placeholder:text-ash/40 focus:outline-none focus:border-parchment/25 transition-colors" />
             )}
-            <button type="submit" className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors">
-              {mode === "login" ? "Se connecter" : mode === "signup" ? "Creer" : "Envoyer le code"}
+            {error && <p className="text-red-400 text-xs px-2">{error}</p>}
+            <button type="submit" disabled={loading} className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors disabled:opacity-50">
+              {loading ? "Chargement..." : mode === "login" ? "Se connecter" : mode === "signup" ? "Creer" : "Envoyer le code"}
             </button>
           </form>
 

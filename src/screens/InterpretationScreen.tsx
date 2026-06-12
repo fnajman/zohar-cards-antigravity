@@ -99,7 +99,7 @@ export function InterpretationScreen() {
 
   if (!currentDraw) { navigate("/home"); return null; }
 
-  if (user.credits < 3) {
+  if (user && user.credits < 3) {
     return (
       <div className="h-full flex flex-col items-center justify-center bg-night px-6 gap-6">
         <p className="text-sm text-ash text-center max-w-[280px] leading-relaxed">

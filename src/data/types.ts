@@ -136,14 +136,17 @@ export interface DBDraw {
 
 export interface UserProfile {
   id: number;
+  created_at: number;
+  name: string;
   email: string;
-  full_name: string;
+  push_token: string;
   credits: number;
-  sub_tier: "free" | "light" | "plus" | "unlimited";
+  sub_tier: "free" | "light" | "plus" | "unlimited" | string;
+  role: "admin" | "contrib" | "user" | "guest";
   preferences: {
-    language: string;
-    default_layout: string;
-    interaction_mode: string;
-    card_back: string;
-  };
+    language?: string;
+    default_layout?: string;
+    interaction_mode?: string;
+    card_back?: string;
+  } | null;
 }
