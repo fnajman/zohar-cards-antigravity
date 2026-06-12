@@ -83,7 +83,7 @@ Les tables `letters` et `combinations` sont en lecture publique (contenu statiqu
   1. Verifier credits >= 3.
   2. Charger les donnees des 2 lettres + combinaison.
   3. Construire le prompt avec garde-fous ethiques.
-  4. Appeler Claude/OpenAI.
+  4. Appeler l'API OpenRouter (OpenAI, Claude, etc.).
   5. Sauvegarder la reponse.
 - **CORS** : Headers standards requis.
 
