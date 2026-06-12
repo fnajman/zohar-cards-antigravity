@@ -40,19 +40,34 @@ export function HebrewGlyph({ symbol, size = "md", letter }: { symbol: string; s
 
 function ExpandableContent({ mediumText, longText }: { mediumText: string; longText: string }) {
   const [expanded, setExpanded] = useState(false);
+  const hasMoreText = longText && longText !== mediumText;
 
   return (
     <div className="relative">
       <motion.div initial={false} animate={{ height: "auto" }} className="overflow-hidden">
         <p className="text-sm text-parchment/90 leading-relaxed">
-          {expanded ? longText : mediumText}
-          <button 
-            onClick={() => setExpanded(!expanded)} 
-            className="inline-flex items-center justify-center w-6 h-6 ml-2 rounded-full border border-parchment/20 text-parchment/60 hover:text-parchment hover:border-parchment/40 transition-colors text-xs font-medium"
-          >
-            {expanded ? "-" : "+"}
-          </button>
+          {mediumText}
+          {hasMoreText && (
+            <button 
+              onClick={() => setExpanded(!expanded)} 
+              className="inline-flex items-center justify-center w-6 h-6 ml-2 rounded-full border border-parchment/20 text-parchment/60 hover:text-parchment hover:border-parchment/40 transition-colors text-xs font-medium align-middle"
+            >
+              {expanded ? "-" : "+"}
+            </button>
+          )}
         </p>
+        <AnimatePresence>
+          {expanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0, marginTop: 0 }}
+              animate={{ opacity: 1, height: "auto", marginTop: 12 }}
+              exit={{ opacity: 0, height: 0, marginTop: 0 }}
+              className="text-sm text-parchment/80 leading-relaxed overflow-hidden"
+            >
+              {longText}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </div>
   );
