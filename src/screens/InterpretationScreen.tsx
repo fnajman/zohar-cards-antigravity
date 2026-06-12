@@ -14,16 +14,31 @@ Ensemble, elles dessinent un paysage interieur ou le potentiel rencontre la form
 
 L'espace entre ces deux forces est un lieu de contemplation. Il vous appartient d'y lire ce que votre regard y depose.`;
 
-const resonanceWords = ["potentiel", "structure", "silence", "ouverture", "profondeur", "transformation", "passage", "lumiere", "miroir", "ancrage", "impulsion", "forme"];
-
+import { useMemo } from "react";
 export function InterpretationScreen() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { data: currentDraw } = useCurrentDraw();
   const { mutate: selectKeywords } = useAddKeywords();
   const { user, markJourneyStep } = useStore();
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>(currentDraw?.selected_keywords || []);
   const scrollRef = useScrollHint();
+
+  const resonanceWords = useMemo(() => {
+    if (!currentDraw) return [];
+    const c1 = currentDraw.card_1?.semantic_field || { keywords: [], imbalances: [] };
+    const c2 = currentDraw.card_2?.semantic_field || { keywords: [], imbalances: [] };
+    
+    const allWords = [
+      ...(c1.keywords || []),
+      ...(c1.imbalances || []),
+      ...(c2.keywords || []),
+      ...(c2.imbalances || [])
+    ];
+    
+    // Remove duplicates and shuffle
+    return Array.from(new Set(allWords)).sort(() => Math.random() - 0.5);
+  }, [currentDraw]);
 
   useEffect(() => {
     markJourneyStep("interpretation");
