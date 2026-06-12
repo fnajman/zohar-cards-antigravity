@@ -179,12 +179,14 @@ export function InterpretationScreen() {
               >
                 {msg.content}
                 {msg.action === 'support-letter' && (
-                  <button 
-                    onClick={() => navigate("/support-letter")}
-                    className="mt-3 w-full py-2 bg-parchment text-ink rounded-full text-[11px] uppercase tracking-wider font-semibold hover:bg-bone transition-all shadow-sm"
-                  >
-                    {t('interpretation.support_btn', 'Voir ma lettre de soutien')}
-                  </button>
+                  <div className="mt-3">
+                    <button 
+                      onClick={() => navigate("/support-letter")}
+                      className="text-[11px] uppercase tracking-widest text-parchment/80 hover:text-parchment font-medium underline underline-offset-4 decoration-parchment/30 hover:decoration-parchment transition-all"
+                    >
+                      {t('interpretation.support_btn_inline', 'Découvrir la lettre de soutien')}
+                    </button>
+                  </div>
                 )}
               </div>
             </motion.div>
