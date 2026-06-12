@@ -64,8 +64,8 @@ export function QuestionScreen() {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-6">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-[300px] flex flex-col items-center gap-7">
+      <main className="flex-1 overflow-y-auto px-6 py-6 flex flex-col items-center">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-[300px] flex flex-col items-center gap-7 my-auto pb-8">
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
               <h1 className="text-2xl font-medium tracking-tight text-parchment mb-2">{t('question.title')}</h1>
               <p className="text-sm text-ash leading-relaxed max-w-[280px]">
