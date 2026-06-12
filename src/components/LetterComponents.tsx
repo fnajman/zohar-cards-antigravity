@@ -143,6 +143,102 @@ export function LetterCard({ letter }: { letter: Letter }) {
         </div>
       </AccordionSection>
 
+      {letter.vibrational_qualities && (
+        <AccordionSection title="Qualités Vibratoires & Couleurs">
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              {letter.vibrational_qualities.colors?.map((color) => (
+                <span key={color} className="px-3 py-1 bg-parchment/5 border border-parchment/10 rounded-full text-xs text-parchment/80">{color}</span>
+              ))}
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-ash/60 mb-1">Climat Intérieur</p>
+              <p className="text-sm text-parchment/90 italic">{letter.vibrational_qualities.inner_climate}</p>
+            </div>
+            <div className="grid grid-cols-3 gap-2 border-t border-parchment/5 pt-3">
+              <div>
+                <p className="text-[9px] uppercase text-ash/60 mb-1">Tempo</p>
+                <p className="text-xs text-parchment/90">{letter.vibrational_qualities.energy_profile?.tempo}</p>
+              </div>
+              <div>
+                <p className="text-[9px] uppercase text-ash/60 mb-1">Densité</p>
+                <p className="text-xs text-parchment/90">{letter.vibrational_qualities.energy_profile?.density}</p>
+              </div>
+              <div>
+                <p className="text-[9px] uppercase text-ash/60 mb-1">Polarité</p>
+                <p className="text-xs text-parchment/90">{letter.vibrational_qualities.energy_profile?.polarity}</p>
+              </div>
+            </div>
+          </div>
+        </AccordionSection>
+      )}
+
+      {letter.form_symbolism && (
+        <AccordionSection title="Symbolisme de la Forme">
+          <div className="space-y-3">
+            <div>
+              <p className="text-[10px] uppercase text-ash/60 mb-1">Description Formelle</p>
+              <p className="text-sm text-parchment/90">{letter.form_symbolism.formal_description}</p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-ash/60 mb-1">Lecture Calligraphique</p>
+              <p className="text-sm text-parchment/90">{letter.form_symbolism.calligraphic_reading}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 border-t border-parchment/5 pt-3">
+              <div>
+                <p className="text-[9px] uppercase text-ash/60 mb-1">Mouvement</p>
+                <p className="text-xs text-parchment/90">{letter.form_symbolism.visual_dynamics?.movement}</p>
+              </div>
+              <div>
+                <p className="text-[9px] uppercase text-ash/60 mb-1">Ouverture</p>
+                <p className="text-xs text-parchment/90">{letter.form_symbolism.visual_dynamics?.openness}</p>
+              </div>
+            </div>
+          </div>
+        </AccordionSection>
+      )}
+
+      {letter.existential_reading && (
+        <AccordionSection title="Lecture Existentielle">
+          <div className="space-y-3">
+            <div>
+              <p className="text-[10px] uppercase text-ash/60 mb-1">Phase de Vie</p>
+              <p className="text-sm text-parchment/90">{letter.existential_reading.life_phase_evocation}</p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-ash/60 mb-1">Note Éthique</p>
+              <p className="text-sm text-parchment/90 italic">{letter.existential_reading.ethical_note}</p>
+            </div>
+            <div className="bg-night-light/50 p-3 rounded-lg border border-parchment/5">
+              <p className="text-[10px] uppercase text-ash/60 mb-1">Réflexion Personnelle</p>
+              <p className="text-sm text-parchment/90">{letter.existential_reading.personal_reflection_focus}</p>
+            </div>
+          </div>
+        </AccordionSection>
+      )}
+
+      {letter.letter_relationships && (
+        <AccordionSection title="Le Voyage de la Lettre">
+          <div className="space-y-3">
+            <div className="flex justify-between items-center text-sm text-parchment/90">
+              <div className="text-left">
+                <p className="text-[9px] uppercase text-ash/60 mb-1">Précédente</p>
+                <p>{letter.letter_relationships.previous_letter || "—"}</p>
+              </div>
+              <div className="text-center text-ash/40">→</div>
+              <div className="text-right">
+                <p className="text-[9px] uppercase text-ash/60 mb-1">Suivante</p>
+                <p>{letter.letter_relationships.next_letter || "—"}</p>
+              </div>
+            </div>
+            <div className="border-t border-parchment/5 pt-3">
+              <p className="text-[10px] uppercase text-ash/60 mb-1">Logique de Transition</p>
+              <p className="text-xs text-parchment/80 italic">{letter.letter_relationships.transition_logic}</p>
+            </div>
+          </div>
+        </AccordionSection>
+      )}
+
       <AccordionSection title="Pratiques & Corps">
         <div className="space-y-3">
           <div>
