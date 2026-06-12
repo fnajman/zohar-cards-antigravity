@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStore } from "@/store/useStore";
-import { useCurrentDraw, useAddKeywords } from "@/hooks/useApi";
-import { useScrollHint } from "@/hooks/useScrollHint";
+import { useCurrentDraw } from "@/hooks/useApi";
 
 const fakeAI = `La rencontre de ces deux lettres ouvre un espace de reflexion profond.
 
@@ -14,40 +13,48 @@ Ensemble, elles dessinent un paysage interieur ou le potentiel rencontre la form
 
 L'espace entre ces deux forces est un lieu de contemplation. Il vous appartient d'y lire ce que votre regard y depose.`;
 
-import { useMemo } from "react";
+interface Message {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+}
+
 export function InterpretationScreen() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { data: currentDraw } = useCurrentDraw();
-  const { mutate: selectKeywords } = useAddKeywords();
   const { user, markJourneyStep } = useStore();
-  const [selected, setSelected] = useState<string[]>(currentDraw?.selected_keywords || []);
-  const scrollRef = useScrollHint();
-
-  const resonanceWords = useMemo(() => {
-    if (!currentDraw) return [];
-    const c1 = currentDraw.card_1?.semantic_field || { keywords: [], imbalances: [] };
-    const c2 = currentDraw.card_2?.semantic_field || { keywords: [], imbalances: [] };
-    
-    const allWords = [
-      ...(c1.keywords || []),
-      ...(c1.imbalances || []),
-      ...(c2.keywords || []),
-      ...(c2.imbalances || [])
-    ];
-    
-    // Remove duplicates and shuffle
-    return Array.from(new Set(allWords)).sort(() => Math.random() - 0.5);
-  }, [currentDraw]);
+  
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputText, setInputText] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     markJourneyStep("interpretation");
   }, [markJourneyStep]);
 
-  if (!currentDraw) { navigate("/home"); return null; }
+  useEffect(() => {
+    // Initialize the first AI message only once
+    if (messages.length === 0 && currentDraw) {
+      setMessages([
+        {
+          id: "msg-0",
+          role: "assistant",
+          content: i18n.language === 'en' ? '[EN] The encounter of these two letters opens a space for deep reflection...\n\n(Placeholder)' : fakeAI
+        }
+      ]);
+    }
+  }, [currentDraw, messages.length, i18n.language]);
 
-  const toggle = (w: string) => setSelected((p) => p.includes(w) ? p.filter((x) => x !== w) : [...p, w]);
-  const save = () => { selectKeywords({ drawId: currentDraw.id, keywords: selected }); navigate("/support-letter"); };
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  if (!currentDraw) { navigate("/home"); return null; }
 
   if (user.credits < 3) {
     return (
@@ -67,40 +74,112 @@ export function InterpretationScreen() {
     );
   }
 
+  const handleSend = () => {
+    if (!inputText.trim()) return;
+    
+    const newUserMsg: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: inputText.trim()
+    };
+    
+    setMessages(prev => [...prev, newUserMsg]);
+    setInputText("");
+    
+    // Fake AI response delay for prototype
+    setTimeout(() => {
+      setMessages(prev => [...prev, {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "Je comprends. L'impulsion de cette combinaison vous invite à regarder au-delà de l'évidence. Comment cela résonne-t-il avec ce que vous traversez actuellement ?"
+      }]);
+    }, 1000);
+  };
+
   return (
-    <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">
-      <header className="sticky top-0 z-10 bg-night/95 backdrop-blur-sm px-6 pt-12 pb-3">
-        <button onClick={() => navigate("/reading")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          
-        </button>
+    <div className="h-full flex flex-col bg-night relative">
+      <header className="flex-none bg-night/95 backdrop-blur-sm px-6 pt-12 pb-4 border-b border-parchment/5 z-10 flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate("/reading")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center justify-center w-8 h-8 rounded-full bg-parchment/5">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <div>
+            <h2 className="text-sm font-medium text-parchment leading-tight">{currentDraw.combination.title}</h2>
+            <p className="text-[10px] uppercase tracking-wider text-ash/60">{t('interpretation.subtitle', 'Interprétation')}</p>
+          </div>
+        </div>
       </header>
 
-      <main className="flex-1 px-6 pb-8">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
-          <h2 className="text-xl font-medium text-parchment mb-1">{currentDraw.combination.title}</h2>
-          <p className="text-xs text-ash mb-6">{t('interpretation.subtitle')}</p>
-
-          <div className="bg-night-light rounded-2xl p-5 border border-parchment/5 mb-8">
-            <p className="text-sm text-parchment/90 leading-[1.8] whitespace-pre-line">{i18n.language === 'en' ? '[EN] The encounter of these two letters opens a space for deep reflection.\n\nThe first letter acts as an impulse... (Placeholder)' : fakeAI}</p>
-          </div>
-
-          <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60 mb-3">{t('interpretation.resonance')}</p>
-          <div className="flex flex-wrap gap-2 mb-6">
-            {resonanceWords.map((w) => (
-              <button key={w} onClick={() => toggle(w)}
-                className={`px-3 py-1.5 rounded-full text-xs transition-all duration-200 ${selected.includes(w) ? "bg-parchment text-ink" : "bg-parchment/5 border border-parchment/10 text-parchment/70 hover:border-parchment/25"}`}>
-                {w}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <button onClick={save} className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors">{t('interpretation.support_btn')}</button>
-            <button onClick={() => navigate("/home")} className="w-full py-3 text-ash text-sm hover:text-parchment transition-colors">{t('common.close_draw')}</button>
-          </div>
-        </motion.div>
+      <main className="flex-1 overflow-y-auto px-6 py-6 scroll-smooth">
+        <div className="flex flex-col gap-6">
+          {messages.map((msg) => (
+            <motion.div 
+              key={msg.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div 
+                className={`max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed whitespace-pre-wrap shadow-sm ${
+                  msg.role === 'user' 
+                    ? 'bg-parchment/10 text-parchment rounded-br-sm' 
+                    : 'bg-night-light border border-parchment/5 text-parchment/90 rounded-bl-sm'
+                }`}
+              >
+                {msg.content}
+              </div>
+            </motion.div>
+          ))}
+          <div ref={messagesEndRef} className="h-4" />
+        </div>
       </main>
+
+      {/* FIXED BOTTOM BAR */}
+      <div className="flex-none bg-night border-t border-parchment/5 px-4 pt-3 pb-8">
+        {/* Action Buttons above input */}
+        <div className="flex justify-center gap-3 mb-3">
+          <button 
+            onClick={() => navigate("/support-letter")} 
+            className="flex-1 max-w-[160px] py-2 bg-parchment/5 border border-parchment/10 text-parchment rounded-full text-[11px] uppercase tracking-wider font-medium hover:bg-parchment/10 hover:border-parchment/20 transition-all flex items-center justify-center gap-2"
+          >
+            {t('interpretation.support_btn', 'Lettre de soutien')}
+          </button>
+          <button 
+            onClick={() => navigate("/home")} 
+            className="flex-1 max-w-[160px] py-2 bg-transparent border border-transparent text-ash rounded-full text-[11px] uppercase tracking-wider hover:text-parchment transition-all flex items-center justify-center gap-2"
+          >
+            {t('common.close_draw', 'Clore le tirage')}
+          </button>
+        </div>
+
+        {/* Input Area */}
+        <div className="relative flex items-end gap-2 bg-night-light border border-parchment/10 rounded-2xl p-2 focus-within:border-parchment/25 transition-colors">
+          <textarea
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Écrivez votre message..."
+            className="flex-1 max-h-[120px] min-h-[40px] bg-transparent text-sm text-parchment placeholder:text-ash/40 resize-none py-2 px-2 focus:outline-none"
+            rows={1}
+            style={{ height: "auto" }}
+          />
+          <button 
+            onClick={handleSend}
+            disabled={!inputText.trim()}
+            className="w-10 h-10 rounded-xl bg-parchment/10 text-parchment flex items-center justify-center disabled:opacity-30 disabled:bg-transparent transition-all shrink-0 mb-0.5"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
