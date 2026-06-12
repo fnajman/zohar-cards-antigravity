@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useStore } from "@/store/useStore";
+import { useStore, type Message } from "@/store/useStore";
 import { useCurrentDraw } from "@/hooks/useApi";
 import { getAiResponse, getAiResponseStream, ChatMessage } from "@/services/aiService";
 
@@ -14,12 +14,7 @@ Ensemble, elles dessinent un paysage interieur ou le potentiel rencontre la form
 
 L'espace entre ces deux forces est un lieu de contemplation. Il vous appartient d'y lire ce que votre regard y depose.`;
 
-interface Message {
-  id: string;
-  role: "system" | "user" | "assistant";
-  content: string;
-  action?: "support-letter";
-}
+
 
 export function InterpretationScreen() {
   const navigate = useNavigate();
@@ -27,7 +22,10 @@ export function InterpretationScreen() {
   const { data: currentDraw } = useCurrentDraw();
   const { user, markJourneyStep, currentQuestion } = useStore();
   
-  const [messages, setMessages] = useState<Message[]>([]);
+  const chatMessages = useStore(s => s.chatMessages);
+  const setChatMessages = useStore(s => s.setChatMessages);
+  const messages = chatMessages;
+  const setMessages = setChatMessages;
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
