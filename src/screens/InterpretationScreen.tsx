@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useStore, type Message } from "@/store/useStore";
 import { useCurrentDraw } from "@/hooks/useApi";
 import { getAiResponse, getAiResponseStream, ChatMessage } from "@/services/aiService";
+import ReactMarkdown from 'react-markdown';
 
 const fakeAI = `La rencontre de ces deux lettres ouvre un espace de reflexion profond.
 
@@ -211,7 +212,11 @@ export function InterpretationScreen() {
                     : 'bg-night-light border border-parchment/5 text-parchment/90 rounded-bl-sm'
                 }`}
               >
-                {msg.content}
+                {msg.role === 'system' ? (
+                  msg.content
+                ) : (
+                  <ReactMarkdown className="markdown-prose">{msg.content}</ReactMarkdown>
+                )}
                 {msg.action === 'support-letter' && (
                   <div className="mt-3">
                     <button 
