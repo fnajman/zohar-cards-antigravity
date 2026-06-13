@@ -22,11 +22,13 @@ interface AppState {
   hasSeenTutorial: boolean;
   drawStyle: DrawStyle;
   hebrewFont: HebrewFontStyle;
+  appLanguage: string;
   journeyProgress: JourneyStep[];
   currentQuestion: string;
   chatMessages: Message[];
   setDrawStyle: (style: DrawStyle) => void;
   setHebrewFont: (font: HebrewFontStyle) => void;
+  setAppLanguage: (lang: string) => void;
   markJourneyStep: (step: JourneyStep) => void;
   setCurrentQuestion: (q: string) => void;
   setChatMessages: (updater: Message[] | ((prev: Message[]) => Message[])) => void;
@@ -48,12 +50,14 @@ export const useStore = create<AppState>()(
       hasSeenTutorial: false,
       drawStyle: "chaos",
       hebrewFont: "Lalou",
+      appLanguage: navigator.language.startsWith('fr') ? 'fr' : 'en',
       journeyProgress: [],
       currentQuestion: "",
       chatMessages: [],
 
       setDrawStyle: (style) => set({ drawStyle: style }),
       setHebrewFont: (font) => set({ hebrewFont: font }),
+      setAppLanguage: (lang) => set({ appLanguage: lang }),
       markJourneyStep: (step) => set((state) => ({ 
         journeyProgress: state.journeyProgress.includes(step) ? state.journeyProgress : [...state.journeyProgress, step] 
       })),

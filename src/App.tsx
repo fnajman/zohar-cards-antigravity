@@ -5,6 +5,7 @@ import { SplashScreen } from "@/screens/SplashScreen";
 import { JourneyProgress } from "@/components/JourneyProgress";
 import { useStore } from "@/store/useStore";
 import { getMe } from "@/services/authApi";
+import i18n from "@/i18n/config";
 
 const HomeScreen = React.lazy(() => import("@/screens/HomeScreen").then(m => ({ default: m.HomeScreen })));
 const DrawScreen = React.lazy(() => import("@/screens/DrawScreen").then(m => ({ default: m.DrawScreen })));
@@ -38,6 +39,13 @@ export default function App() {
   const authToken = useStore(state => state.authToken);
   const loginSession = useStore(state => state.loginSession);
   const logout = useStore(state => state.logout);
+  const appLanguage = useStore(state => state.appLanguage);
+
+  React.useEffect(() => {
+    if (appLanguage && i18n.language !== appLanguage) {
+      i18n.changeLanguage(appLanguage);
+    }
+  }, [appLanguage]);
 
   React.useEffect(() => {
     if (authToken) {

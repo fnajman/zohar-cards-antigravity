@@ -12,6 +12,7 @@ import { useScrollHint } from "@/hooks/useScrollHint";
 // --- LANGUAGE SELECTOR ---
 function LanguageSelector({ close }: { close: () => void }) {
   const { t, i18n } = useTranslation();
+  const setAppLanguage = useStore(state => state.setAppLanguage);
   
   const options = [
     { id: "fr", label: t('settings.french') },
@@ -28,7 +29,7 @@ function LanguageSelector({ close }: { close: () => void }) {
       </header>
       <div className="flex-1 px-6 py-6 overflow-y-auto space-y-3">
         {options.map(opt => (
-          <button key={opt.id} onClick={() => { i18n.changeLanguage(opt.id); close(); }} className={`w-full p-4 rounded-xl border flex items-center justify-between transition-colors ${i18n.language === opt.id ? "bg-parchment/10 border-parchment/30" : "bg-night-light border-parchment/5 hover:border-parchment/20"}`}>
+          <button key={opt.id} onClick={() => { setAppLanguage(opt.id); i18n.changeLanguage(opt.id); close(); }} className={`w-full p-4 rounded-xl border flex items-center justify-between transition-colors ${i18n.language === opt.id ? "bg-parchment/10 border-parchment/30" : "bg-night-light border-parchment/5 hover:border-parchment/20"}`}>
             <span className={`text-sm ${i18n.language === opt.id ? "text-parchment font-medium" : "text-ash"}`}>{opt.label}</span>
             {i18n.language === opt.id && <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8L6 11L13 4" stroke="#F5F1E8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
           </button>
