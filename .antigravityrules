@@ -23,3 +23,6 @@ Afin de garder une trace incrémentale et propre de l'évolution du projet, tu D
 
 ## 4. Documentation et Outils Externes (Context7)
 - **Utilise l'outil `context7` (MCP Server)** pour vérifier la syntaxe exacte, la documentation à jour et les bonnes pratiques de TOUTES les bibliothèques externes et langages que tu utilises avant de les implémenter, afin d'éviter les APIs dépréciées.
+
+## 5. Gestion des Prompts et Localisation
+- Si tu modifies le prompt système de l'Intelligence Artificielle, tu DOIS obligatoirement répercuter cette modification dans TOUTES les langues gérées (fichiers `src/config/prompts/*.ts`). Les différents fichiers de prompts (ex: `fr.ts`, `en.ts`) doivent toujours rester parfaitement synchronisés en termes de logique et d'instructions.
