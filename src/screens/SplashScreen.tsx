@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
+import { useStore } from "@/store/useStore";
 import i18n from "@/i18n/config";
 
 export function SplashScreen() {
@@ -17,7 +18,8 @@ export function SplashScreen() {
       queryClient.prefetchQuery({ queryKey: ['drawHistory', lang], queryFn: () => api.getDrawHistory(lang) }),
       queryClient.prefetchQuery({ queryKey: ['currentDraw', lang], queryFn: () => api.getCurrentDraw(lang) }),
     ]).then(() => {
-      const t = setTimeout(() => navigate("/auth"), 5200);
+      const hasSeen = useStore.getState().hasSeenTutorial;
+      const t = setTimeout(() => navigate(hasSeen ? "/auth" : "/tutorial"), 5200);
       return () => clearTimeout(t);
     });
   }, [navigate, queryClient]);

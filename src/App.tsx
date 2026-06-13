@@ -21,6 +21,7 @@ const MeditationScreen = React.lazy(() => import("@/screens/MeditationScreen").t
 const TehimaScreen = React.lazy(() => import("@/screens/TehimaScreen").then(m => ({ default: m.TehimaScreen })));
 const CalligraphyScreen = React.lazy(() => import("@/screens/CalligraphyScreen").then(m => ({ default: m.CalligraphyScreen })));
 const AboutScreen = React.lazy(() => import("@/screens/AboutScreen").then(m => ({ default: m.AboutScreen })));
+const TutorialScreen = React.lazy(() => import("@/screens/TutorialScreen").then(m => ({ default: m.TutorialScreen })));
 
 
 const LoadingFallback = () => <div className="h-[100dvh] w-full bg-night" />;
@@ -64,6 +65,7 @@ export default function App() {
               <Route path="/letter-of-day" element={<LetterOfDayScreen />} />
               <Route path="/settings" element={<SettingsScreen />} />
               <Route path="/auth" element={<AuthScreen />} />
+              <Route path="/tutorial" element={<TutorialScreen />} />
               <Route path="/about" element={<AboutScreen />} />
               <Route path="/experience" element={<ExperienceMenuScreen />} />
               <Route path="/experience/meditation" element={<MeditationScreen />} />

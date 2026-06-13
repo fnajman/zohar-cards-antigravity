@@ -18,6 +18,33 @@
   "auth": {
     "guest_mode": "Mode invité"
   },
+  "tutorial": {
+    "skip": "Passer",
+    "next": "Suivant",
+    "finish": "Terminer",
+    "step_1_title": "L'Appel du Hasard",
+    "step_1_desc": "Deux voies s'offrent à vous : un tirage profond ou la contemplation de la lettre du jour.",
+    "step_2_title": "La Rencontre",
+    "step_2_desc": "Sélectionnez les lettres qui vous appellent, ou laissez l'invisible choisir pour vous.",
+    "step_3_title": "La Forme du Destin",
+    "step_3_desc": "Disposez votre espace selon votre ressenti : en éventail, en grille, ou au cœur du chaos.",
+    "step_4_title": "L'Essence Dévoilée",
+    "step_4_desc": "Plongez dans les couches profondes de chaque lettre pour en saisir le murmure spirituel.",
+    "step_5_title": "L'Écho des Symboles",
+    "step_5_desc": "Découvrez l'alchimie secrète qui lie vos deux lettres, et le message qu'elles tissent ensemble.",
+    "step_6_title": "Le Questionnement",
+    "step_6_desc": "Formulez ce qui habite votre esprit et confiez-le à la sagesse de la Kabbale.",
+    "step_7_title": "Le Dialogue",
+    "step_7_desc": "Échangez avec notre expert virtuel pour éclairer vos doutes et affiner votre compréhension.",
+    "step_8_title": "Le Soutien",
+    "step_8_desc": "Recevez un message intime et bienveillant pour accompagner votre cheminement personnel.",
+    "step_9_title": "L'Expérience",
+    "step_9_desc": "Ne vous contentez pas de lire : ressentez et incarnez la vibration de votre lettre.",
+    "step_10_title": "Le Mouvement",
+    "step_10_desc": "Mettez votre corps en mouvement et tracez les lettres dans l'espace grâce au Téhima.",
+    "step_11_title": "Le Souffle",
+    "step_11_desc": "Respirez et méditez au rythme du symbole pour ancrer sa lumière dans votre intériorité."
+  },
   "draw": {
     "choose_for_me": "Choisir pour moi",
     "grid_desc": "Choisissez deux cartes",

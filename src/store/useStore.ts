@@ -18,6 +18,7 @@ export type JourneyStep = "card1" | "card2" | "reading" | "question" | "interpre
 interface AppState {
   user: UserProfile | null;
   authToken: string | null;
+  hasSeenTutorial: boolean;
   drawStyle: DrawStyle;
   hebrewFont: HebrewFontStyle;
   journeyProgress: JourneyStep[];
@@ -33,6 +34,7 @@ interface AppState {
   loginSession: (token: string, user: UserProfile) => void;
   logout: () => void;
   updateUser: (data: Partial<UserProfile>) => void;
+  setHasSeenTutorial: () => void;
 }
 
 export const useStore = create<AppState>()(
@@ -40,6 +42,7 @@ export const useStore = create<AppState>()(
     (set) => ({
       user: null,
       authToken: null,
+      hasSeenTutorial: false,
       drawStyle: "chaos",
       hebrewFont: "Lalou",
       journeyProgress: [],
@@ -64,14 +67,16 @@ export const useStore = create<AppState>()(
       updateUser: (data) => set((state) => ({
         user: state.user ? { ...state.user, ...data } : null
       })),
+      setHasSeenTutorial: () => set({ hasSeenTutorial: true }),
     }),
     {
       name: 'zohar-storage',
-      // We persist settings and authToken, but user profile will be fetched on mount
+      // We persist settings, authToken, and tutorial status
       partialize: (state) => ({
         drawStyle: state.drawStyle,
         hebrewFont: state.hebrewFont,
         authToken: state.authToken,
+        hasSeenTutorial: state.hasSeenTutorial,
       }),
     }
   )

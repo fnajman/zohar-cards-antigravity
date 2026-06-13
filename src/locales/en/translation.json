@@ -18,6 +18,33 @@
   "auth": {
     "guest_mode": "Guest Mode"
   },
+  "tutorial": {
+    "skip": "Skip",
+    "next": "Next",
+    "finish": "Finish",
+    "step_1_title": "The Call of Chance",
+    "step_1_desc": "Two paths lie before you: a deep reading or the contemplation of the letter of the day.",
+    "step_2_title": "The Encounter",
+    "step_2_desc": "Select the letters that call to you, or let the unseen choose for you.",
+    "step_3_title": "The Shape of Fate",
+    "step_3_desc": "Arrange your space according to your feeling: in a fan, a grid, or the heart of chaos.",
+    "step_4_title": "The Essence Revealed",
+    "step_4_desc": "Dive into the deep layers of each letter to grasp its spiritual whisper.",
+    "step_5_title": "The Echo of Symbols",
+    "step_5_desc": "Discover the secret alchemy linking your two letters, and the message they weave together.",
+    "step_6_title": "The Questioning",
+    "step_6_desc": "Articulate what dwells in your mind and entrust it to the wisdom of Kabbalah.",
+    "step_7_title": "The Dialogue",
+    "step_7_desc": "Converse with our virtual expert to illuminate your doubts and refine your understanding.",
+    "step_8_title": "The Support",
+    "step_8_desc": "Receive an intimate and benevolent message to accompany your personal journey.",
+    "step_9_title": "The Experience",
+    "step_9_desc": "Do not simply read: feel and embody the vibration of your letter.",
+    "step_10_title": "The Movement",
+    "step_10_desc": "Put your body in motion and trace the letters in space through Tehima.",
+    "step_11_title": "The Breath",
+    "step_11_desc": "Breathe and meditate to the rhythm of the symbol to anchor its light within you."
+  },
   "draw": {
     "choose_for_me": "Choose for me",
     "grid_desc": "Choose two cards",
