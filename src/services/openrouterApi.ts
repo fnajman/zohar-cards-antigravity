@@ -3,14 +3,24 @@ const OPENROUTER_API_URL = "https://openrouter.ai/api/v1";
 const CURATED_MODELS = [
   "openai/gpt-5.5",
   "openai/gpt-5.5-pro",
+  "openai/gpt-4o",
   "openai/gpt-4o-mini",
   "anthropic/claude-opus-4.8",
   "anthropic/claude-opus-4.6",
+  "anthropic/claude-3.5-sonnet",
   "anthropic/claude-3-haiku",
   "google/gemini-3.1-pro",
+  "google/gemini-pro-1.5",
+  "google/gemini-flash-1.5",
   "moonshotai/kimi-latest",
   "meta-llama/llama-4-scout",
-  "mistralai/mistral-small-2603"
+  "meta-llama/llama-3.1-70b-instruct",
+  "meta-llama/llama-3.1-8b-instruct",
+  "mistralai/mistral-large-2407",
+  "mistralai/mistral-small-2603",
+  "mistralai/mistral-nemo",
+  "microsoft/phi-3-mini-128k-instruct",
+  "qwen/qwen-2-72b-instruct"
 ];
 
 export interface ORModel {
@@ -39,11 +49,20 @@ export const openrouterApi = {
       
       if (json && Array.isArray(json.data)) {
         // Filter models to only include our curated list
-        const models: ORModel[] = json.data.filter((m: any) => CURATED_MODELS.includes(m.id));
+        let models: ORModel[] = json.data.filter((m: any) => CURATED_MODELS.includes(m.id));
         
-        // Sort them to match the order in CURATED_MODELS
+        // Filter out models costing more than $30/1M tokens (prompt or completion)
+        models = models.filter(m => {
+          const promptPrice = parseFloat(m.pricing.prompt) * 1000000;
+          const completionPrice = parseFloat(m.pricing.completion) * 1000000;
+          return promptPrice <= 30 && completionPrice <= 30;
+        });
+
+        // Sort by average price ascending
         models.sort((a, b) => {
-          return CURATED_MODELS.indexOf(a.id) - CURATED_MODELS.indexOf(b.id);
+          const priceA = (parseFloat(a.pricing.prompt) + parseFloat(a.pricing.completion));
+          const priceB = (parseFloat(b.pricing.prompt) + parseFloat(b.pricing.completion));
+          return priceA - priceB;
         });
         
         return models;

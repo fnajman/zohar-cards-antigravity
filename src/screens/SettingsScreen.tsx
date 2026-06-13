@@ -282,13 +282,15 @@ export function SettingsScreen() {
                 </div>
               </div>
 
-              <button onClick={() => setSection("ai-model")} className="w-full flex items-center justify-between p-4 bg-night-light border border-parchment/5 rounded-xl hover:border-parchment/15 transition-colors">
-                <span className="text-sm text-parchment/80">{t('settings.model_title', 'Modèle IA')}</span>
-                <span className="text-xs text-ash truncate max-w-[150px] flex items-center gap-1">
-                  {models.find(m => m.id === aiModel)?.name || aiModel.split('/').pop()}
-                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </span>
-              </button>
+              {user?.role === "admin" && (
+                <button onClick={() => setSection("ai-model")} className="w-full flex items-center justify-between p-4 bg-night-light border border-parchment/5 rounded-xl hover:border-parchment/15 transition-colors">
+                  <span className="text-sm text-parchment/80">{t('settings.model_title', 'Modèle IA')}</span>
+                  <span className="text-xs text-ash truncate max-w-[150px] flex items-center gap-1">
+                    {models.find(m => m.id === aiModel)?.name || aiModel.split('/').pop()}
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </span>
+                </button>
+              )}
             </section>
           )}
 
