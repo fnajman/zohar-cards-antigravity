@@ -267,8 +267,6 @@ Letter 2 (The Structure/Response) : ${card2.identity?.name} (${card2.symbol})
 === THE COMBINATION ===
 Theme : ${combi?.title || ''}
 Essence of the Duo : ${combi?.pair_essence?.core_theme || ''}
-Dynamic : ${combi?.pair_essence?.dynamic || ''}
-Axis of Evolution : ${combi?.evolution_axis || ''}
 Detailed Interpretation : ${combi?.content_long || ''}
 
 === THE USER'S INTENTION ===

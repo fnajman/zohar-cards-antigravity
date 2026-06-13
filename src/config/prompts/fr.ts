@@ -267,8 +267,6 @@ Carte 2 (La structure/réponse) : ${card2.identity?.name} (${card2.symbol})
 === LA COMBINAISON ===
 Thème : ${combi?.title || ''}
 Essence du duo : ${combi?.pair_essence?.core_theme || ''}
-Dynamique : ${combi?.pair_essence?.dynamic || ''}
-Axe d'évolution : ${combi?.evolution_axis || ''}
 Interprétation détaillée : ${combi?.content_long || ''}
 
 === L'INTENTION DE L'UTILISATEUR ===
