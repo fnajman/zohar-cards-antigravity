@@ -97,7 +97,13 @@ export function InterpretationScreen() {
     scrollToBottom();
   }, [messages]);
 
-  if (!currentDraw) { navigate("/home"); return null; }
+  useEffect(() => {
+    if (!currentDraw) {
+      navigate("/home");
+    }
+  }, [currentDraw, navigate]);
+
+  if (!currentDraw) { return null; }
 
   const isUnlimited = user?.role === "admin" || user?.role === "contrib";
 
