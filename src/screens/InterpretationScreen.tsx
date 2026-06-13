@@ -247,19 +247,19 @@ export function InterpretationScreen() {
 
       {/* FIXED BOTTOM BAR */}
       <div className="flex-none bg-night border-t border-parchment/5 px-4 pt-3 pb-8">
-        {/* Action Buttons above input */}
-        <div className="flex justify-center gap-3 mb-3">
+        {/* Action Links above input */}
+        <div className="flex justify-between items-center px-2 mb-2 text-[11px] uppercase tracking-wider font-medium text-ash/70">
           <button 
             onClick={() => navigate("/support-letter")} 
-            className="flex-[2] py-2.5 bg-parchment text-ink rounded-full text-[12px] uppercase tracking-wider font-semibold hover:bg-bone transition-all flex items-center justify-center gap-2 shadow-sm"
+            className="hover:text-parchment transition-colors underline underline-offset-4 decoration-parchment/20 hover:decoration-parchment"
           >
             {t('interpretation.support_btn', 'Lettre de soutien')}
           </button>
           <button 
             onClick={() => navigate("/home")} 
-            className="flex-[1] py-2.5 bg-transparent border border-parchment/10 text-ash rounded-full text-[11px] uppercase tracking-wider hover:text-parchment hover:border-parchment/30 transition-all flex items-center justify-center gap-2"
+            className="hover:text-parchment transition-colors"
           >
-            {t('common.close_draw', 'Clore')}
+            {t('common.close_draw', 'Clore le tirage')}
           </button>
         </div>
 
