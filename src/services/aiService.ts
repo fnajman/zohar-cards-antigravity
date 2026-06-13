@@ -47,7 +47,7 @@ export async function getAiResponse(
     const response = await openai.chat.completions.create({
       model: aiModel || DEFAULT_MODEL,
       messages: messages as any,
-      max_tokens: 2500,
+      max_tokens: 3000,
     });
 
     return response.choices[0].message.content || "L'IA n'a pas pu formuler de réponse.";
@@ -79,7 +79,7 @@ export async function getAiResponseStream(
       model: aiModel || DEFAULT_MODEL,
       messages: messages as any,
       stream: true,
-      max_tokens: 2000,
+      max_tokens: 3000,
     });
     return stream;
   } catch (error) {
