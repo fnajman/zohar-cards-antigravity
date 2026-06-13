@@ -11,8 +11,12 @@
     "subtitle": "A space for symbolic contemplation",
     "draw_btn": "Draw two letters",
     "letter_btn": "Letter of the day",
-    "login": "Sign in",
-    "settings": "Settings"
+    "login": "Login",
+    "settings": "Settings",
+    "tutorial_btn": "Tutorial"
+  },
+  "auth": {
+    "guest_mode": "Guest Mode"
   },
   "draw": {
     "choose_for_me": "Choose for me",

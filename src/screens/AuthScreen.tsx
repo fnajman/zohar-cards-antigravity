@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useStore } from "@/store/useStore";
 import { login, signup, getMe } from "@/services/authApi";
 
 export function AuthScreen() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [mode, setMode] = useState<"login" | "signup" | "magic">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -88,7 +90,7 @@ export function AuthScreen() {
             {mode === "magic" && <button onClick={() => setMode("login")} className="text-xs text-ash hover:text-parchment transition-colors">Connexion classique</button>}
           </div>
           <div className="mt-8 text-center">
-            <button onClick={() => navigate("/home")} className="text-xs text-ash/40 hover:text-ash transition-colors">Continuer sans compte</button>
+            <button onClick={() => navigate("/home")} className="text-xs text-ash/40 hover:text-ash transition-colors">{t('auth.guest_mode')}</button>
           </div>
         </motion.div>
       </main>

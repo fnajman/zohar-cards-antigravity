@@ -59,6 +59,9 @@ export function HomeScreen() {
           <button onClick={() => navigate("/letter-of-day")} className="w-full py-4 border border-parchment/20 text-parchment rounded-full text-sm tracking-wide hover:border-parchment/40 transition-colors duration-300">
             {t('home.letter_btn')}
           </button>
+          <button onClick={() => navigate("/tutorial")} className="w-full py-4 text-ash rounded-full text-sm tracking-wide hover:text-parchment transition-colors duration-300">
+            {t('home.tutorial_btn')}
+          </button>
         </motion.div>
       </main>
 

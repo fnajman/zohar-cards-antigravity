@@ -12,7 +12,11 @@
     "draw_btn": "Tirer deux lettres",
     "letter_btn": "Lettre du jour",
     "login": "S'identifier",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "tutorial_btn": "Tutoriel"
+  },
+  "auth": {
+    "guest_mode": "Mode invité"
   },
   "draw": {
     "choose_for_me": "Choisir pour moi",

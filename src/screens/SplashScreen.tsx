@@ -17,7 +17,7 @@ export function SplashScreen() {
       queryClient.prefetchQuery({ queryKey: ['drawHistory', lang], queryFn: () => api.getDrawHistory(lang) }),
       queryClient.prefetchQuery({ queryKey: ['currentDraw', lang], queryFn: () => api.getCurrentDraw(lang) }),
     ]).then(() => {
-      const t = setTimeout(() => navigate("/home"), 3200);
+      const t = setTimeout(() => navigate("/auth"), 5200);
       return () => clearTimeout(t);
     });
   }, [navigate, queryClient]);
