@@ -99,7 +99,9 @@ export function InterpretationScreen() {
 
   if (!currentDraw) { navigate("/home"); return null; }
 
-  if (user && user.credits < 3) {
+  const isUnlimited = user?.role === "admin" || user?.role === "contrib";
+
+  if (user && user.credits < 3 && !isUnlimited) {
     return (
       <div className="h-full flex flex-col items-center justify-center bg-night px-6 gap-6">
         <p className="text-sm text-ash text-center max-w-[280px] leading-relaxed">

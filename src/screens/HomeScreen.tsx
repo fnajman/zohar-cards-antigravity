@@ -38,7 +38,7 @@ export function HomeScreen() {
               }
             }}
           >
-            {user ? t('common.credits_left', { count: user.credits ?? 0 }) : "Mode invité"}
+            {user ? ((user.role === 'admin' || user.role === 'contrib') ? t('common.unlimited_credits', 'Crédits illimités') : t('common.credits_left', { count: user.credits ?? 0 })) : "Mode invité"}
           </span>
         </div>
         <button onClick={() => navigate("/settings")} className="w-8 h-8 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">
