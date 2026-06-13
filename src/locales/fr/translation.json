@@ -19,6 +19,7 @@
     "guest_mode": "Mode invité"
   },
   "tutorial": {
+    "title": "Tutoriel",
     "skip": "Passer",
     "next": "Suivant",
     "finish": "Terminer",
