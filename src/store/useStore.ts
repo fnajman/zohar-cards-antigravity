@@ -46,7 +46,7 @@ export const useStore = create<AppState>()(
     (set) => ({
       user: null,
       authToken: null,
-      aiModel: "openai/gpt-4o-mini",
+      aiModel: "anthropic/claude-3.5-haiku",
       hasSeenTutorial: false,
       drawStyle: "chaos",
       hebrewFont: "Lalou",

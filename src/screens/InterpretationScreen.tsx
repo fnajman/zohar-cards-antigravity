@@ -67,8 +67,7 @@ export function InterpretationScreen() {
             { 
               id: "msg-0-action", 
               role: "system", 
-              content: t('interpretation.followup_text', "Vous pouvez continuer à dialoguer avec moi, ou découvrir votre Lettre de soutien et ses exercices d'intégration quand vous serez prêt(e)."),
-              action: "support-letter"
+              content: t('interpretation.followup_text', "Vous pouvez continuer à dialoguer avec moi, ou découvrir votre Lettre de soutien en cliquant sur le lien en bas à gauche, ou clôturer le tirage avec le lien en bas à droite.")
             }
           ]);
         } catch (error) {
@@ -78,8 +77,7 @@ export function InterpretationScreen() {
             { 
               id: "msg-0-action", 
               role: "system", 
-              content: t('interpretation.followup_text', "Vous pouvez continuer à dialoguer avec moi, ou découvrir votre Lettre de soutien et ses exercices d'intégration quand vous serez prêt(e)."),
-              action: "support-letter"
+              content: t('interpretation.followup_text', "Vous pouvez continuer à dialoguer avec moi, ou découvrir votre Lettre de soutien en cliquant sur le lien en bas à gauche, ou clôturer le tirage avec le lien en bas à droite.")
             }
           ]);
         } finally {
@@ -217,16 +215,6 @@ export function InterpretationScreen() {
                 ) : (
                   <div className="markdown-prose">
                     <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  </div>
-                )}
-                {msg.action === 'support-letter' && (
-                  <div className="mt-3">
-                    <button 
-                      onClick={() => navigate("/support-letter")}
-                      className="text-[11px] uppercase tracking-widest text-parchment/80 hover:text-parchment font-medium underline underline-offset-4 decoration-parchment/30 hover:decoration-parchment transition-all"
-                    >
-                      {t('interpretation.support_btn_inline', 'Découvrir la lettre de soutien')}
-                    </button>
                   </div>
                 )}
               </div>

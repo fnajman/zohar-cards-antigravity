@@ -9,7 +9,7 @@ const CURATED_MODELS = [
   "anthropic/claude-opus-4.8",
   "anthropic/claude-opus-4.6",
   "anthropic/claude-3.5-sonnet",
-  "anthropic/claude-haiku-4.5",
+  "anthropic/claude-3.5-haiku",
   "anthropic/claude-3-haiku",
   "google/gemini-3.5-flash",
   "google/gemini-3.1-pro",
