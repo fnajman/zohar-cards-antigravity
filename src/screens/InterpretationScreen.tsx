@@ -29,6 +29,7 @@ export function InterpretationScreen() {
   const setMessages = setChatMessages;
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [linksShouldBlink, setLinksShouldBlink] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export function InterpretationScreen() {
               content: t('interpretation.followup_text', "Vous pouvez continuer à dialoguer avec moi, ou découvrir votre Lettre de soutien en cliquant sur le lien en bas à gauche, ou clôturer le tirage avec le lien en bas à droite.")
             }
           ]);
+          setLinksShouldBlink(true);
         } catch (error) {
           console.error(error);
           setMessages([
@@ -239,13 +241,13 @@ export function InterpretationScreen() {
         <div className="flex justify-between items-center px-2 mb-2 text-[11px] uppercase tracking-wider font-medium text-ash/70">
           <button 
             onClick={() => navigate("/support-letter")} 
-            className="hover:text-parchment transition-colors underline underline-offset-4 decoration-parchment/20 hover:decoration-parchment"
+            className={`hover:text-parchment transition-colors underline underline-offset-4 decoration-parchment/20 hover:decoration-parchment ${linksShouldBlink ? 'animate-[link-blink_1s_ease-in-out_3]' : ''}`}
           >
             {t('interpretation.support_btn', 'Lettre de soutien')}
           </button>
           <button 
             onClick={() => navigate("/home")} 
-            className="hover:text-parchment transition-colors"
+            className={`hover:text-parchment transition-colors ${linksShouldBlink ? 'animate-[link-blink_1s_ease-in-out_3]' : ''}`}
           >
             {t('common.close_draw', 'Clore le tirage')}
           </button>

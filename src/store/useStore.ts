@@ -46,7 +46,7 @@ export const useStore = create<AppState>()(
     (set) => ({
       user: null,
       authToken: null,
-      aiModel: "anthropic/claude-3.5-haiku",
+      aiModel: "anthropic/claude-haiku-4.5",
       hasSeenTutorial: false,
       drawStyle: "chaos",
       hebrewFont: "Lalou",

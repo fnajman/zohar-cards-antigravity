@@ -75,3 +75,8 @@
     margin-bottom: 0.25rem;
   }
 }
+
+@keyframes link-blink {
+  0%, 100% { opacity: 1; text-shadow: none; color: var(--color-ash); }
+  50% { opacity: 0.7; color: var(--color-parchment); text-shadow: 0 0 10px rgba(245, 241, 232, 0.8); }
+}
