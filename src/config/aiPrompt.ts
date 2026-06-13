@@ -243,17 +243,35 @@ Voici le contexte de la consultation en cours :
 
 === LE TIRAGE ===
 Carte 1 (L'impulsion) : ${card1.identity.name} (${card1.symbol})
+- Valeur numérique : ${card1.identity.numerical_value}
 - Essence : ${card1.symbolic_essence.core_idea}
+- Enseignement (Frank Lalou) : ${card1.symbolic_essence.frank_lalou_teaching}
+- Résonance psychologique : ${card1.symbolic_essence.psychological_resonance}
+- Action spirituelle : ${card1.symbolic_essence.spiritual_action}
 - Mots-clés : ${card1.semantic_field.keywords.join(', ')}
+- Verbes : ${card1.semantic_field.verbs.join(', ')}
+- Aspect Lumière : ${card1.semantic_field.light_aspect}
+- Aspect Ombre : ${card1.semantic_field.shadow_aspect}
+- Méditation : ${card1.integration.meditation}
 
 Carte 2 (La structure/réponse) : ${card2.identity.name} (${card2.symbol})
+- Valeur numérique : ${card2.identity.numerical_value}
 - Essence : ${card2.symbolic_essence.core_idea}
+- Enseignement (Frank Lalou) : ${card2.symbolic_essence.frank_lalou_teaching}
+- Résonance psychologique : ${card2.symbolic_essence.psychological_resonance}
+- Action spirituelle : ${card2.symbolic_essence.spiritual_action}
 - Mots-clés : ${card2.semantic_field.keywords.join(', ')}
+- Verbes : ${card2.semantic_field.verbs.join(', ')}
+- Aspect Lumière : ${card2.semantic_field.light_aspect}
+- Aspect Ombre : ${card2.semantic_field.shadow_aspect}
+- Méditation : ${card2.integration.meditation}
 
 === LA COMBINAISON ===
 Thème : ${combi.title}
 Essence du duo : ${combi.pair_essence.core_theme}
-Interprétation de base : ${combi.content_long}
+Dynamique : ${combi.pair_essence.dynamic}
+Axe d'évolution : ${combi.evolution_axis}
+Interprétation détaillée : ${combi.content_long}
 
 === L'INTENTION DE L'UTILISATEUR ===
 Question posée ou pensée : "${userQuestion || "L'utilisateur n'a pas formulé de question précise."}"
