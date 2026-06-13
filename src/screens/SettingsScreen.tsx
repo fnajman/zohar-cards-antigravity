@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStore, type DrawStyle } from "@/store/useStore";
 import { useDrawHistory } from "@/hooks/useApi";
+import { useQuery } from "@tanstack/react-query";
+import { openrouterApi } from "@/services/openrouterApi";
 import { HEBREW_FONT_STYLES, type HebrewFontStyle } from "../components/HebrewGlyph";
 import { useScrollHint } from "@/hooks/useScrollHint";
 
@@ -47,9 +49,21 @@ const DRAW_STYLES: { id: DrawStyle; label: string }[] = [
 export function SettingsScreen() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user, drawStyle, setDrawStyle, hebrewFont, setHebrewFont } = useStore();
+  const { user, drawStyle, setDrawStyle, hebrewFont, setHebrewFont, aiModel, setAiModel } = useStore();
   const { data: drawHistory = [], isLoading } = useDrawHistory();
-  const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language">("main");
+  const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language" | "ai-model">("main");
+
+  const { data: spending } = useQuery({
+    queryKey: ["openrouter-spending"],
+    queryFn: openrouterApi.getSpending,
+    enabled: user?.role === "admin" || user?.role === "contrib",
+  });
+
+  const { data: models = [] } = useQuery({
+    queryKey: ["openrouter-models"],
+    queryFn: openrouterApi.getAvailableModels,
+    enabled: user?.role === "admin" || user?.role === "contrib",
+  });
 
   const back = (to: string | (() => void)) => (
     <button onClick={typeof to === "string" ? () => navigate(to) : to} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
@@ -123,6 +137,45 @@ export function SettingsScreen() {
                   <path d="M3 8.5L6.5 12L13 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               )}
+            </button>
+          ))}
+        </div>
+      </main>
+    </motion.div>
+  );
+
+  if (section === "ai-model") return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-night flex flex-col">
+      <header className="px-6 pt-12 pb-6 flex items-center justify-between border-b border-parchment/10">
+        <div>
+          <h2 className="text-xl font-medium tracking-tight text-parchment mb-1">{t('settings.model_title', 'Modèle IA')}</h2>
+          <p className="text-xs text-ash">{t('settings.model_subtitle', 'Choisissez le moteur')}</p>
+        </div>
+        <button onClick={() => setSection("main")} className="w-8 h-8 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="#8E8E93" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        </button>
+      </header>
+      <main ref={scrollRef as any} className="flex-1 px-6 py-6 overflow-y-auto">
+        <div className="space-y-2">
+          {models.map((m) => (
+            <button key={m.id} onClick={() => setAiModel(m.id)}
+              className={`w-full py-3.5 px-4 rounded-xl text-left text-sm transition-all duration-300 flex flex-col ${
+                aiModel === m.id
+                  ? "bg-parchment/10 border border-parchment/20 text-parchment"
+                  : "bg-night-light border border-parchment/5 text-parchment/70 hover:border-parchment/15"
+              }`}
+            >
+              <div className="flex items-center justify-between w-full mb-1">
+                <span className="font-medium">{m.name}</span>
+                {aiModel === m.id && (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8.5L6.5 12L13 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                )}
+              </div>
+              <span className="text-[10px] text-ash/60 font-mono">
+                ${(parseFloat(m.pricing.prompt) * 1000000).toFixed(2)}/1M in | ${(parseFloat(m.pricing.completion) * 1000000).toFixed(2)}/1M out
+              </span>
             </button>
           ))}
         </div>
@@ -215,6 +268,30 @@ export function SettingsScreen() {
                 <span className="text-xs text-ash capitalize flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </button>
           </section>
+
+          {(user?.role === "admin" || user?.role === "contrib") && (
+            <section className="px-6 py-6 border-b border-parchment/5">
+              <h2 className="text-[11px] tracking-[0.2em] uppercase text-ash/60 mb-4">{t('settings.admin_title', 'Administration')}</h2>
+              
+              <div className="bg-night-light border border-parchment/10 rounded-2xl p-4 flex justify-between items-center mb-4">
+                <div>
+                  <p className="text-sm text-parchment font-medium mb-1">OpenRouter API</p>
+                  <p className="text-xs text-ash">
+                    {t('settings.spent', 'Dépenses')}: <span className="text-parchment">${spending?.usage.toFixed(4) || "0.0000"}</span> / ${spending?.limit || "0"}
+                  </p>
+                </div>
+              </div>
+
+              <button onClick={() => setSection("ai-model")} className="w-full flex items-center justify-between p-4 bg-night-light border border-parchment/5 rounded-xl hover:border-parchment/15 transition-colors">
+                <span className="text-sm text-parchment/80">{t('settings.model_title', 'Modèle IA')}</span>
+                <span className="text-xs text-ash truncate max-w-[150px] flex items-center gap-1">
+                  {models.find(m => m.id === aiModel)?.name || aiModel.split('/').pop()}
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </span>
+              </button>
+            </section>
+          )}
+
           <section className="px-6 py-6">
             <h2 className="text-[11px] tracking-[0.2em] uppercase text-ash/60 mb-4">{t('settings.actions')}</h2>
             <div className="space-y-2">

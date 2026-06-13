@@ -18,6 +18,7 @@ export type JourneyStep = "card1" | "card2" | "reading" | "question" | "interpre
 interface AppState {
   user: UserProfile | null;
   authToken: string | null;
+  aiModel: string;
   hasSeenTutorial: boolean;
   drawStyle: DrawStyle;
   hebrewFont: HebrewFontStyle;
@@ -34,6 +35,7 @@ interface AppState {
   loginSession: (token: string, user: UserProfile) => void;
   logout: () => void;
   updateUser: (data: Partial<UserProfile>) => void;
+  setAiModel: (model: string) => void;
   setHasSeenTutorial: () => void;
 }
 
@@ -42,6 +44,7 @@ export const useStore = create<AppState>()(
     (set) => ({
       user: null,
       authToken: null,
+      aiModel: "openai/gpt-4o-mini",
       hasSeenTutorial: false,
       drawStyle: "chaos",
       hebrewFont: "Lalou",
@@ -67,15 +70,17 @@ export const useStore = create<AppState>()(
       updateUser: (data) => set((state) => ({
         user: state.user ? { ...state.user, ...data } : null
       })),
+      setAiModel: (aiModel) => set({ aiModel }),
       setHasSeenTutorial: () => set({ hasSeenTutorial: true }),
     }),
     {
       name: 'zohar-storage',
-      // We persist settings, authToken, and tutorial status
+      // We persist settings, authToken, aiModel, and tutorial status
       partialize: (state) => ({
         drawStyle: state.drawStyle,
         hebrewFont: state.hebrewFont,
         authToken: state.authToken,
+        aiModel: state.aiModel,
         hasSeenTutorial: state.hasSeenTutorial,
       }),
     }

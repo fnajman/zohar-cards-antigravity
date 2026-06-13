@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { generateSystemPrompt } from "@/config/aiPrompt";
 import { Draw } from "@/data/types";
+import { useStore } from "@/store/useStore";
 
 // Note: Using OpenAI SDK on the client side requires dangerouslyAllowBrowser: true.
 // In a production app, these calls should be routed through your backend to protect the API key.
@@ -42,8 +43,9 @@ export async function getAiResponse(
   ];
 
   try {
+    const aiModel = useStore.getState().aiModel;
     const response = await openai.chat.completions.create({
-      model: DEFAULT_MODEL,
+      model: aiModel || DEFAULT_MODEL,
       messages: messages as any,
     });
 
@@ -71,8 +73,9 @@ export async function getAiResponseStream(
   ];
 
   try {
+    const aiModel = useStore.getState().aiModel;
     const stream = await openai.chat.completions.create({
-      model: DEFAULT_MODEL,
+      model: aiModel || DEFAULT_MODEL,
       messages: messages as any,
       stream: true,
     });
