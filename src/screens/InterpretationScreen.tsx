@@ -215,7 +215,9 @@ export function InterpretationScreen() {
                 {msg.role === 'system' ? (
                   msg.content
                 ) : (
-                  <ReactMarkdown className="markdown-prose">{msg.content}</ReactMarkdown>
+                  <div className="markdown-prose">
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  </div>
                 )}
                 {msg.action === 'support-letter' && (
                   <div className="mt-3">
