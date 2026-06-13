@@ -21,6 +21,10 @@ i18n
     resources,
     fallbackLng: 'fr',
     supportedLngs: ['fr', 'en'],
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage'],
+    },
     interpolation: {
       escapeValue: false, // react already safes from xss
     },
