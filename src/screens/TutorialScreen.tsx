@@ -70,7 +70,7 @@ export function TutorialScreen() {
             <p className="text-sm text-ash max-w-[280px] leading-relaxed mb-6">
               {t(`tutorial.step_${step + 1}_desc`)}
             </p>
-            <span className="text-[11px] text-ash/50 tracking-widest font-medium">
+            <span className="text-[11px] text-ash/50 tracking-widest font-medium mb-8">
               {step + 1} / {TOTAL_STEPS}
             </span>
           </motion.div>
