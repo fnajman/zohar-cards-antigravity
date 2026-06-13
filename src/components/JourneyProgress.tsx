@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useStore, JourneyStep } from "@/store/useStore";
 
-const HIDDEN_ROUTES = ["/", "/home", "/settings", "/letter-of-day", "/auth"];
+const HIDDEN_ROUTES = ["/", "/home", "/settings", "/letter-of-day", "/auth", "/tutorial"];
 
 const STEPS: JourneyStep[] = [
   "card1",

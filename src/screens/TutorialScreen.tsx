@@ -55,7 +55,7 @@ export function TutorialScreen() {
             transition={{ duration: 0.4 }}
             className="w-full flex flex-col items-center text-center"
           >
-            <div className="w-full max-w-[210px] aspect-[3/4] mb-8 relative flex items-center justify-center border border-parchment/15 rounded-2xl p-4 bg-night-light/30">
+            <div className="w-full max-w-[210px] max-h-[40vh] aspect-[3/4] mb-8 relative flex items-center justify-center border border-parchment/15 rounded-2xl p-4 bg-night-light/30">
               <img 
                 src={`/tuto/${step + 1}.png`} 
                 alt={t(`tutorial.step_${step + 1}_title`)} 
@@ -78,11 +78,13 @@ export function TutorialScreen() {
       </main>
 
       <footer className="px-6 pb-12 flex flex-col items-center gap-6">
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-            <div 
+            <button 
               key={i} 
-              className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${i === step ? 'bg-parchment' : 'bg-parchment/20'}`} 
+              onClick={() => setStep(i)}
+              className={`w-2 h-2 rounded-full transition-colors duration-300 cursor-pointer ${i === step ? 'bg-parchment' : 'bg-parchment/20 hover:bg-parchment/50'}`} 
+              aria-label={`Aller à l'étape ${i + 1}`}
             />
           ))}
         </div>
