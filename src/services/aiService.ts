@@ -79,7 +79,7 @@ export async function getAiResponseStream(
       model: aiModel || DEFAULT_MODEL,
       messages: messages as any,
       stream: true,
-      max_tokens: 2500,
+      max_tokens: 2000,
     });
     return stream;
   } catch (error) {
