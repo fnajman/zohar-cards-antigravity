@@ -34,7 +34,8 @@ export async function getAiResponse(
   }
 
   // 1. Generate the contextual system prompt
-  const systemPrompt = generateSystemPrompt({ draw, userQuestion, selectedKeywords, language });
+  const personalInfo = useStore.getState().personalInfo;
+  const systemPrompt = generateSystemPrompt({ draw, userQuestion, selectedKeywords, language, personalInfo });
 
   // 2. Prepare the full message array
   const messages: ChatMessage[] = [
@@ -67,7 +68,8 @@ export async function getAiResponseStream(
     throw new Error("Clé API OpenRouter manquante. Veuillez l'ajouter dans le fichier .env.local.");
   }
 
-  const systemPrompt = generateSystemPrompt({ draw, userQuestion, selectedKeywords, language });
+  const personalInfo = useStore.getState().personalInfo;
+  const systemPrompt = generateSystemPrompt({ draw, userQuestion, selectedKeywords, language, personalInfo });
   const messages: ChatMessage[] = [
     { role: "system", content: systemPrompt },
     ...chatHistory

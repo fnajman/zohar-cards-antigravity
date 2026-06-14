@@ -163,5 +163,24 @@
   "letter": {
     "position": "Position",
     "value": "Valeur"
+  },
+  "settings": {
+    "personal": {
+      "title": "Personnel",
+      "subtitle": "Facultatif",
+      "gender": "Genre",
+      "gender_none": "Non défini",
+      "gender_male": "Homme",
+      "gender_female": "Femme",
+      "birthDate": "Date de naissance",
+      "childrenCount": "Nombre d'enfants",
+      "profession": "Profession",
+      "profession_ph": "Ex: Designer...",
+      "maritalStatus": "Statut marital",
+      "maritalStatus_ph": "Ex: Célibataire...",
+      "freeText": "Dites-nous en plus librement",
+      "freeText_ph": "Détails libres...",
+      "save": "Enregistrer"
+    }
   }
 }

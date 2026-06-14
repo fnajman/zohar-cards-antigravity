@@ -1,5 +1,14 @@
 const XANO_AUTH_URL = "https://api.najman.app/api:Iz7gaLUa";
 
+export interface PersonalInfo {
+  gender?: string;
+  birthDate?: string;
+  childrenCount?: number | string;
+  profession?: string;
+  maritalStatus?: string;
+  freeText?: string;
+}
+
 export interface UserProfileParams {
   appLanguage: string;
   drawStyle: string;
@@ -11,7 +20,7 @@ export interface UserProfileRecord {
   id: number;
   user_id: number;
   param: UserProfileParams | null;
-  perso: any;
+  perso: PersonalInfo | null;
   bonuscode: string[] | null;
 }
 
@@ -36,14 +45,14 @@ export async function fetchProfile(authToken: string): Promise<UserProfileRecord
   return null;
 }
 
-export async function createProfile(authToken: string, userId: number, param: UserProfileParams, bonuscode?: string[]): Promise<UserProfileRecord | null> {
+export async function createProfile(authToken: string, userId: number, param: UserProfileParams, bonuscode?: string[], perso?: PersonalInfo): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${authToken}`
     },
-    body: JSON.stringify({ user_id: userId, param, bonuscode: bonuscode || [] })
+    body: JSON.stringify({ user_id: userId, param, bonuscode: bonuscode || [], perso: perso || {} })
   });
 
   if (!res.ok) {
@@ -54,14 +63,14 @@ export async function createProfile(authToken: string, userId: number, param: Us
   return await res.json();
 }
 
-export async function updateProfile(authToken: string, profileId: number, userId: number, param: UserProfileParams, bonuscode?: string[]): Promise<UserProfileRecord | null> {
+export async function updateProfile(authToken: string, profileId: number, userId: number, param: UserProfileParams, bonuscode?: string[], perso?: PersonalInfo): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile/${profileId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${authToken}`
     },
-    body: JSON.stringify({ user_id: userId, param, bonuscode })
+    body: JSON.stringify({ user_id: userId, param, bonuscode, perso })
   });
 
   if (!res.ok) {

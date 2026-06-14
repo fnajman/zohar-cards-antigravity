@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStore, type DrawStyle } from "@/store/useStore";
 import { useDrawHistory } from "@/hooks/useApi";
+import { type PersonalInfo } from "@/services/profileApi";
 import { useQuery } from "@tanstack/react-query";
 import { openrouterApi } from "@/services/openrouterApi";
 import { HEBREW_FONT_STYLES, type HebrewFontStyle } from "../components/HebrewGlyph";
@@ -39,6 +40,112 @@ function LanguageSelector({ close }: { close: () => void }) {
   );
 }
 
+// --- PERSONAL INFO FORM ---
+function PersonalInfoForm({ close }: { close: () => void }) {
+  const { t } = useTranslation();
+  const { personalInfo, setPersonalInfo } = useStore();
+  const [formData, setFormData] = useState<PersonalInfo>(personalInfo || {});
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPersonalInfo(formData);
+    close();
+  };
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-night flex flex-col">
+      <header className="px-6 pt-12 pb-6 flex items-center justify-between border-b border-parchment/10">
+        <div>
+          <h2 className="text-xl font-medium tracking-tight text-parchment mb-1">{t('settings.personal.title', 'Personnel')}</h2>
+          <p className="text-xs text-ash">{t('settings.personal.subtitle', 'Facultatif')}</p>
+        </div>
+        <button onClick={close} className="w-8 h-8 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="#8E8E93" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        </button>
+      </header>
+      <main className="flex-1 px-6 py-6 overflow-y-auto pb-20">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          
+          <div className="space-y-1.5">
+            <label className="text-[10px] text-parchment/70 uppercase tracking-wider">{t('settings.personal.gender', 'Genre')}</label>
+            <select 
+              value={formData.gender || ""} 
+              onChange={e => setFormData({ ...formData, gender: e.target.value })}
+              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-sm text-parchment focus:outline-none focus:border-parchment/30"
+            >
+              <option value="">{t('settings.personal.gender_none', 'Non défini')}</option>
+              <option value="male">{t('settings.personal.gender_male', 'Homme')}</option>
+              <option value="female">{t('settings.personal.gender_female', 'Femme')}</option>
+            </select>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] text-parchment/70 uppercase tracking-wider">{t('settings.personal.birthDate', 'Date de naissance')}</label>
+            <input 
+              type="date" 
+              value={formData.birthDate || ""} 
+              onChange={e => setFormData({ ...formData, birthDate: e.target.value })}
+              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-sm text-parchment focus:outline-none focus:border-parchment/30"
+              style={{ colorScheme: 'dark' }}
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] text-parchment/70 uppercase tracking-wider">{t('settings.personal.childrenCount', 'Nombre d\'enfants')}</label>
+            <input 
+              type="number" 
+              min="0" max="9"
+              value={formData.childrenCount ?? ""} 
+              onChange={e => setFormData({ ...formData, childrenCount: e.target.value ? parseInt(e.target.value) : undefined })}
+              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-sm text-parchment focus:outline-none focus:border-parchment/30"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] text-parchment/70 uppercase tracking-wider">{t('settings.personal.profession', 'Profession')}</label>
+            <input 
+              type="text" 
+              value={formData.profession || ""} 
+              onChange={e => setFormData({ ...formData, profession: e.target.value })}
+              placeholder={t('settings.personal.profession_ph', 'Ex: Designer...')}
+              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-sm text-parchment placeholder-ash focus:outline-none focus:border-parchment/30"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] text-parchment/70 uppercase tracking-wider">{t('settings.personal.maritalStatus', 'Statut marital')}</label>
+            <input 
+              type="text" 
+              value={formData.maritalStatus || ""} 
+              onChange={e => setFormData({ ...formData, maritalStatus: e.target.value })}
+              placeholder={t('settings.personal.maritalStatus_ph', 'Ex: Célibataire...')}
+              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-sm text-parchment placeholder-ash focus:outline-none focus:border-parchment/30"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] text-parchment/70 uppercase tracking-wider">{t('settings.personal.freeText', 'Dites-nous en plus librement')}</label>
+            <textarea 
+              value={formData.freeText || ""} 
+              onChange={e => setFormData({ ...formData, freeText: e.target.value })}
+              rows={4}
+              placeholder={t('settings.personal.freeText_ph', 'Détails libres...')}
+              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-sm text-parchment placeholder-ash focus:outline-none focus:border-parchment/30 resize-none"
+            />
+          </div>
+
+          <button 
+            type="submit"
+            className="w-full py-4 mt-6 bg-parchment/10 text-parchment rounded-xl font-medium hover:bg-parchment/20 transition-colors border border-parchment/20"
+          >
+            {t('settings.personal.save', 'Enregistrer')}
+          </button>
+        </form>
+      </main>
+    </motion.div>
+  );
+}
+
 const DRAW_STYLES: { id: DrawStyle; label: string }[] = [
   { id: "grid", label: "Ordonne (Grille)" },
   { id: "chaos", label: "Chaos" },
@@ -52,7 +159,7 @@ export function SettingsScreen() {
   const { t } = useTranslation();
   const { user, drawStyle, setDrawStyle, hebrewFont, setHebrewFont, aiModel, setAiModel } = useStore();
   const { data: drawHistory = [], isLoading } = useDrawHistory();
-  const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language" | "ai-model" | "gift-code">("main");
+  const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language" | "ai-model" | "gift-code" | "personal">("main");
   const [giftCode, setGiftCode] = useState("");
   const [giftCodeMessage, setGiftCodeMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
@@ -77,6 +184,7 @@ export function SettingsScreen() {
 
   const scrollRef = useScrollHint();
 
+  if (section === "personal") return <PersonalInfoForm close={() => setSection("main")} />;
   if (section === "language") return <LanguageSelector close={() => setSection("main")} />;
 
   if (section === "draw-style") return (
@@ -313,9 +421,16 @@ export function SettingsScreen() {
                 <span className="text-sm text-parchment/80">{t('settings.font_style')}</span>
                 <span className="text-xs text-ash capitalize flex items-center gap-1">{HEBREW_FONT_STYLES.find((s) => s.id === hebrewFont)?.label}<svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </button>
-            <button onClick={() => setSection("language")} className="w-full flex items-center justify-between p-6">
+            <button onClick={() => setSection("language")} className="w-full flex items-center justify-between p-6 border-b border-parchment/5">
                 <span className="text-sm text-parchment/80">{t('settings.language')}</span>
                 <span className="text-xs text-ash capitalize flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+            </button>
+            <button onClick={() => setSection("personal")} className="w-full flex items-center justify-between p-6">
+                <div className="flex flex-col items-start">
+                  <span className="text-sm text-parchment/80">{t('settings.personal.title', 'Personnel')}</span>
+                  <span className="text-[10px] text-ash/60">{t('settings.personal.subtitle', 'Facultatif')}</span>
+                </div>
+                <span className="text-xs text-ash flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </button>
           </section>
 

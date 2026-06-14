@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { fakeUser } from "@/data/fake-data";
 import type { UserProfile } from "@/data/types";
 import type { HebrewFontStyle } from "@/components/HebrewGlyph";
-import { fetchProfile, createProfile, updateProfile } from "@/services/profileApi";
+import { fetchProfile, createProfile, updateProfile, type PersonalInfo } from "@/services/profileApi";
 
 // Assuming we duplicate or import the Message type
 export type Message = {
@@ -25,12 +25,14 @@ interface AppState {
   drawStyle: DrawStyle;
   hebrewFont: HebrewFontStyle;
   appLanguage: string;
+  personalInfo?: PersonalInfo;
   journeyProgress: JourneyStep[];
   currentQuestion: string;
   chatMessages: Message[];
   setDrawStyle: (style: DrawStyle) => void;
   setHebrewFont: (font: HebrewFontStyle) => void;
   setAppLanguage: (lang: string) => void;
+  setPersonalInfo: (info: PersonalInfo) => void;
   markJourneyStep: (step: JourneyStep) => void;
   setCurrentQuestion: (q: string) => void;
   setChatMessages: (updater: Message[] | ((prev: Message[]) => Message[])) => void;
@@ -66,21 +68,28 @@ export const useStore = create<AppState>()(
         set({ drawStyle: style });
         const s = get();
         if (s.authToken && s.profileId && s.user) {
-          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel });
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel }, s.usedGiftCodes, s.personalInfo);
         }
       },
       setHebrewFont: (font) => {
         set({ hebrewFont: font });
         const s = get();
         if (s.authToken && s.profileId && s.user) {
-          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel });
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel }, s.usedGiftCodes, s.personalInfo);
         }
       },
       setAppLanguage: (lang) => {
         set({ appLanguage: lang });
         const s = get();
         if (s.authToken && s.profileId && s.user) {
-          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel });
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel }, s.usedGiftCodes, s.personalInfo);
+        }
+      },
+      setPersonalInfo: (info) => {
+        set({ personalInfo: info });
+        const s = get();
+        if (s.authToken && s.profileId && s.user) {
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel }, s.usedGiftCodes, s.personalInfo);
         }
       },
       markJourneyStep: (step) => set((state) => ({ 
@@ -104,7 +113,7 @@ export const useStore = create<AppState>()(
         set({ aiModel });
         const s = get();
         if (s.authToken && s.profileId && s.user) {
-          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel });
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel }, s.usedGiftCodes, s.personalInfo);
         }
       },
       setHasSeenTutorial: () => set({ hasSeenTutorial: true }),
@@ -136,7 +145,7 @@ export const useStore = create<AppState>()(
             drawStyle: s.drawStyle, 
             hebrewFont: s.hebrewFont, 
             aiModel: s.aiModel 
-          }, s.usedGiftCodes).catch(console.error);
+          }, s.usedGiftCodes, s.personalInfo).catch(console.error);
         }
         
         return { success: true, messageKey: 'settings.gift_code_success' };
@@ -151,7 +160,7 @@ export const useStore = create<AppState>()(
               drawStyle: s.drawStyle,
               hebrewFont: s.hebrewFont,
               aiModel: s.aiModel
-            }, s.usedGiftCodes);
+            }, s.usedGiftCodes, s.personalInfo);
           } else {
             if (profile.param) {
               const p = profile.param as any;
@@ -164,6 +173,9 @@ export const useStore = create<AppState>()(
             }
             if (profile.bonuscode) {
               set({ usedGiftCodes: profile.bonuscode });
+            }
+            if (profile.perso) {
+              set({ personalInfo: profile.perso });
             }
           }
           if (profile) {
@@ -184,6 +196,7 @@ export const useStore = create<AppState>()(
         aiModel: state.aiModel,
         hasSeenTutorial: state.hasSeenTutorial,
         usedGiftCodes: state.usedGiftCodes,
+        personalInfo: state.personalInfo,
       }),
     }
   )

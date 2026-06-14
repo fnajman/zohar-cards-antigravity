@@ -7,7 +7,7 @@ interface PromptContext {
   language: string;
 }
 
-export function generateSystemPrompt({ draw, userQuestion, selectedKeywords, language }: PromptContext): string {
+export function generateSystemPrompt({ draw, userQuestion, selectedKeywords, language, personalInfo }: PromptContext): string {
   const card1 = draw.card_1;
   const card2 = draw.card_2;
   const combi = draw.combination;
@@ -241,6 +241,15 @@ The AI's function is to open a symbolic space where the user can better hear the
 
 Here is the context of the current consultation:
 
+${personalInfo ? `=== USER'S PERSONAL PROFILE ===
+(Subtly integrate this information into your responses to personalize your interpretation. Do not make a list, use this context naturally).
+- Gender: ${personalInfo.gender === 'male' ? 'Male' : personalInfo.gender === 'female' ? 'Female' : 'Not specified'}
+- Date of birth: ${personalInfo.birthDate || 'Not specified'}
+- Children: ${personalInfo.childrenCount ?? 'Not specified'}
+- Profession: ${personalInfo.profession || 'Not specified'}
+- Marital status: ${personalInfo.maritalStatus || 'Not specified'}
+- Additional information: ${personalInfo.freeText || 'None'}
+` : ''}
 === THE READING ===
 Letter 1 (The Impulse) : ${card1.identity?.name} (${card1.symbol})
 - Numerical Value : ${card1.identity?.gematria_value}

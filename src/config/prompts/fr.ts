@@ -7,7 +7,7 @@ interface PromptContext {
   language: string;
 }
 
-export function generateSystemPrompt({ draw, userQuestion, selectedKeywords, language }: PromptContext): string {
+export function generateSystemPrompt({ draw, userQuestion, selectedKeywords, language, personalInfo }: PromptContext): string {
   const card1 = draw.card_1;
   const card2 = draw.card_2;
   const combi = draw.combination;
@@ -241,6 +241,15 @@ La fonction de l’IA est d’ouvrir un espace symbolique où l’utilisateur pe
 
 Voici le contexte de la consultation en cours :
 
+${personalInfo ? `=== PROFIL PERSONNEL DE L'UTILISATEUR ===
+(Intègre ces informations subtilement dans tes réponses pour personnaliser ton interprétation. Ne dresse pas de liste, utilise ce contexte de manière naturelle).
+- Genre : ${personalInfo.gender === 'male' ? 'Homme' : personalInfo.gender === 'female' ? 'Femme' : 'Non défini'}
+- Date de naissance : ${personalInfo.birthDate || 'Non renseignée'}
+- Enfants : ${personalInfo.childrenCount ?? 'Non renseigné'}
+- Profession : ${personalInfo.profession || 'Non renseignée'}
+- Statut marital : ${personalInfo.maritalStatus || 'Non renseigné'}
+- Informations supplémentaires : ${personalInfo.freeText || 'Aucune'}
+` : ''}
 === LE TIRAGE ===
 Carte 1 (L'impulsion) : ${card1.identity?.name} (${card1.symbol})
 - Valeur numérique : ${card1.identity?.gematria_value}
