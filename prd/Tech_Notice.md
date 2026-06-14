@@ -157,8 +157,8 @@ Ces endpoints suivent la **Règle Universelle de Langue** (voir `04_backend_spec
 *   **Endpoint** : `POST /draw`
 *   **Trigger** : Utilisateur complète le geste (shake/tap).
 *   **Backend Logic** :
-    1.  Génère 2 nombres aléatoires (1-22) distincts.
-    2.  Crée une entrée `Draw`.
+    1.  Génère 2 nombres aléatoires (1-22) distincts localement (Frontend).
+    2.  Crée une entrée `Draw` dans Xano si l'utilisateur est authentifié avec `user_id`, `profile_id`, `combination_id` et un `llm_history` contenant les mots-clés et le nom du modèle.
     3.  Récupère les infos statiques de la `Combination` associée.
 *   **Response** :
     ```json
@@ -258,6 +258,10 @@ sequenceDiagram
     %% RÉSONANCE (KEYWORDS)
     User->>App: Sélectionne des mots (Tap)
     App->>API: PATCH /draw/{id}/keywords { words: [...] }
+    API-->>App: 200 OK (Saved)
+    
+    %% MISE A JOUR HISTORIQUE
+    App->>API: PATCH /draw/{id} { llm_history: [...] }
     API-->>App: 200 OK (Saved)
 ```
 
