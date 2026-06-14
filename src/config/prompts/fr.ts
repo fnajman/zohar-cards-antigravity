@@ -1,10 +1,12 @@
 import { Draw } from "@/data/types";
+import { type PersonalInfo } from "@/services/profileApi";
 
 interface PromptContext {
   draw: Draw;
   userQuestion: string;
   selectedKeywords: string[];
   language: string;
+  personalInfo?: PersonalInfo;
 }
 
 export function generateSystemPrompt({ draw, userQuestion, selectedKeywords, language, personalInfo }: PromptContext): string {
