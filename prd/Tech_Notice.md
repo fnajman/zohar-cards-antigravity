@@ -128,7 +128,7 @@ sequenceDiagram
 ```
 
 *   `POST /auth/signup` : Création de compte (Password).
-*   `GET /auth/me` : Récupération du profil (`Authorization: Bearer`).
+*   `GET /auth/me` : Récupération du profil complet (`Authorization: Bearer`). Renvoie l'objet `user` contenant un objet imbriqué `profile`. Ce endpoint centralise la récupération des données utilisateur en une seule requête (plus de requête séparée sur `/profile`).
 
 ### 3.2 Contenu (Smart Delivery)
 Ces endpoints suivent la **Règle Universelle de Langue** (voir `04_backend_spec.md`).
