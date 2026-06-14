@@ -52,7 +52,9 @@ interface AppState {
 
 export const useStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set, get) => {
+      let isSyncing = false;
+      return {
       user: null,
       authToken: null,
       profileId: null,
@@ -106,7 +108,7 @@ export const useStore = create<AppState>()(
       })),
       loginSession: (token, user) => set({ authToken: token, user }),
       setProfileId: (id) => set({ profileId: id }),
-      logout: () => set({ authToken: null, user: null, profileId: null }),
+      logout: () => set({ authToken: null, user: null, profileId: null, usedGiftCodes: [], personalInfo: undefined }),
       updateUser: (data) => set((state) => ({
         user: state.user ? { ...state.user, ...data } : null
       })),
@@ -153,6 +155,8 @@ export const useStore = create<AppState>()(
         return { success: true, messageKey: 'settings.gift_code_success' };
       },
       syncProfileOnLogin: async (token, user) => {
+        if (isSyncing) return;
+        isSyncing = true;
         try {
           let profile = await fetchProfile(token);
           if (!profile) {
@@ -162,7 +166,7 @@ export const useStore = create<AppState>()(
               drawStyle: s.drawStyle,
               hebrewFont: s.hebrewFont,
               aiModel: s.aiModel
-            }, s.usedGiftCodes, s.personalInfo, 2);
+            }, [], s.personalInfo, 2);
             
             if (profile) {
               set(state => ({ user: state.user ? { ...state.user, credits: 2 } : null }));
@@ -204,6 +208,8 @@ export const useStore = create<AppState>()(
           }
         } catch (err) {
           console.error("Profile sync failed", err);
+        } finally {
+          isSyncing = false;
         }
       },
       deductCredits: async (amount: number) => {
@@ -224,7 +230,7 @@ export const useStore = create<AppState>()(
           }, state.usedGiftCodes, state.personalInfo, newCredits).catch(console.error);
         }
       },
-    }),
+    };},
     {
       name: 'zohar-storage',
       // We persist settings, authToken, aiModel, and tutorial status
