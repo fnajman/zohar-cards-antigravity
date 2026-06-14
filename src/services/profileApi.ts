@@ -25,7 +25,7 @@ export interface UserProfileRecord {
   credit?: number;
 }
 
-export async function fetchProfile(authToken: string): Promise<UserProfileRecord | null> {
+export async function fetchProfile(authToken: string, userId: number): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile`, {
     method: "GET",
     headers: {
@@ -41,7 +41,8 @@ export async function fetchProfile(authToken: string): Promise<UserProfileRecord
 
   const data = await res.json();
   if (Array.isArray(data) && data.length > 0) {
-    return data[0];
+    const p = data.find((d: any) => d.user_id === userId);
+    return p || null;
   }
   return null;
 }

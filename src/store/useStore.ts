@@ -158,7 +158,7 @@ export const useStore = create<AppState>()(
         if (isSyncing) return;
         isSyncing = true;
         try {
-          let profile = await fetchProfile(token);
+          let profile = await fetchProfile(token, user.id);
           if (!profile) {
             const s = get();
             profile = await createProfile(token, user.id, {
