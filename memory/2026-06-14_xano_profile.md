@@ -16,3 +16,6 @@
 - `src/screens/AuthScreen.tsx` (Appel post-login)
 - `src/App.tsx` (Appel post-hydratation)
 - `src/version.ts` et `package.json` (Bump v0.21)
+
+## Correctif (v0.22)
+- Ajout du paramètre `user_id` dans le payload de la requête `PATCH /profile/{profile_id}` et modification de `updateProfile` dans `profileApi.ts` et `useStore.ts`. L'API Xano renvoyait une erreur `400 Bad Request (Missing param: user_id)` lors de la mise à jour des paramètres car elle exige ce champ pour l'opération de modification.

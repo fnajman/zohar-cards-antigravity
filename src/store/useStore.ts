@@ -65,22 +65,22 @@ export const useStore = create<AppState>()(
       setDrawStyle: (style) => {
         set({ drawStyle: style });
         const s = get();
-        if (s.authToken && s.profileId) {
-          updateProfile(s.authToken, s.profileId, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
+        if (s.authToken && s.profileId && s.user) {
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
         }
       },
       setHebrewFont: (font) => {
         set({ hebrewFont: font });
         const s = get();
-        if (s.authToken && s.profileId) {
-          updateProfile(s.authToken, s.profileId, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
+        if (s.authToken && s.profileId && s.user) {
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
         }
       },
       setAppLanguage: (lang) => {
         set({ appLanguage: lang });
         const s = get();
-        if (s.authToken && s.profileId) {
-          updateProfile(s.authToken, s.profileId, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
+        if (s.authToken && s.profileId && s.user) {
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
         }
       },
       markJourneyStep: (step) => set((state) => ({ 

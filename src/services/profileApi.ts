@@ -52,15 +52,14 @@ export async function createProfile(authToken: string, userId: number, param: Us
   return await res.json();
 }
 
-export async function updateProfile(authToken: string, profileId: number, param: UserProfileParams): Promise<UserProfileRecord | null> {
-  // Let's try PATCH first, then PUT if it fails or if PATCH is standard. The API spec said both are available.
+export async function updateProfile(authToken: string, profileId: number, userId: number, param: UserProfileParams): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile/${profileId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${authToken}`
     },
-    body: JSON.stringify({ param })
+    body: JSON.stringify({ user_id: userId, param })
   });
 
   if (!res.ok) {
