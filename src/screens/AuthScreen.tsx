@@ -38,6 +38,7 @@ export function AuthScreen() {
       
       const user = await getMe(token);
       loginSession(token, user);
+      useStore.getState().syncProfileOnLogin(token, user);
       navigate("/home");
     } catch (err: any) {
       setError(err.message || "Une erreur est survenue");

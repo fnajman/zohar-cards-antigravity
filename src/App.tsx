@@ -50,7 +50,10 @@ export default function App() {
   React.useEffect(() => {
     if (authToken) {
       getMe(authToken)
-        .then(user => loginSession(authToken, user))
+        .then(user => {
+          loginSession(authToken, user);
+          useStore.getState().syncProfileOnLogin(authToken, user);
+        })
         .catch(() => logout());
     }
   }, [authToken, loginSession, logout]);

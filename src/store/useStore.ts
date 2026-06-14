@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { fakeUser } from "@/data/fake-data";
 import type { UserProfile } from "@/data/types";
 import type { HebrewFontStyle } from "@/components/HebrewGlyph";
+import { fetchProfile, createProfile, updateProfile } from "@/services/profileApi";
 
 // Assuming we duplicate or import the Message type
 export type Message = {
@@ -18,6 +19,7 @@ export type JourneyStep = "card1" | "card2" | "reading" | "question" | "interpre
 interface AppState {
   user: UserProfile | null;
   authToken: string | null;
+  profileId: number | null;
   aiModel: string;
   hasSeenTutorial: boolean;
   drawStyle: DrawStyle;
@@ -35,12 +37,14 @@ interface AppState {
   resetJourney: () => void;
   setUserCredits: (credits: number) => void;
   loginSession: (token: string, user: UserProfile) => void;
+  setProfileId: (id: number | null) => void;
   logout: () => void;
   updateUser: (data: Partial<UserProfile>) => void;
   setAiModel: (model: string) => void;
   setHasSeenTutorial: () => void;
   usedGiftCodes: string[];
   applyGiftCode: (code: string) => { success: boolean; messageKey: string };
+  syncProfileOnLogin: (token: string, user: UserProfile) => Promise<void>;
 }
 
 export const useStore = create<AppState>()(
@@ -48,6 +52,7 @@ export const useStore = create<AppState>()(
     (set, get) => ({
       user: null,
       authToken: null,
+      profileId: null,
       aiModel: "anthropic/claude-haiku-4.5",
       hasSeenTutorial: false,
       drawStyle: "chaos",
@@ -57,9 +62,27 @@ export const useStore = create<AppState>()(
       currentQuestion: "",
       chatMessages: [],
 
-      setDrawStyle: (style) => set({ drawStyle: style }),
-      setHebrewFont: (font) => set({ hebrewFont: font }),
-      setAppLanguage: (lang) => set({ appLanguage: lang }),
+      setDrawStyle: (style) => {
+        set({ drawStyle: style });
+        const s = get();
+        if (s.authToken && s.profileId) {
+          updateProfile(s.authToken, s.profileId, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
+        }
+      },
+      setHebrewFont: (font) => {
+        set({ hebrewFont: font });
+        const s = get();
+        if (s.authToken && s.profileId) {
+          updateProfile(s.authToken, s.profileId, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
+        }
+      },
+      setAppLanguage: (lang) => {
+        set({ appLanguage: lang });
+        const s = get();
+        if (s.authToken && s.profileId) {
+          updateProfile(s.authToken, s.profileId, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
+        }
+      },
       markJourneyStep: (step) => set((state) => ({ 
         journeyProgress: state.journeyProgress.includes(step) ? state.journeyProgress : [...state.journeyProgress, step] 
       })),
@@ -72,7 +95,8 @@ export const useStore = create<AppState>()(
         user: state.user ? { ...state.user, credits } : null 
       })),
       loginSession: (token, user) => set({ authToken: token, user }),
-      logout: () => set({ authToken: null, user: null }),
+      setProfileId: (id) => set({ profileId: id }),
+      logout: () => set({ authToken: null, user: null, profileId: null }),
       updateUser: (data) => set((state) => ({
         user: state.user ? { ...state.user, ...data } : null
       })),
@@ -100,6 +124,31 @@ export const useStore = create<AppState>()(
         });
         
         return { success: true, messageKey: 'settings.gift_code_success' };
+      },
+      syncProfileOnLogin: async (token, user) => {
+        try {
+          let profile = await fetchProfile(token);
+          if (!profile) {
+            const s = get();
+            profile = await createProfile(token, user.id, {
+              appLanguage: s.appLanguage,
+              drawStyle: s.drawStyle,
+              hebrewFont: s.hebrewFont
+            });
+          } else if (profile.param) {
+            const p = profile.param as any;
+            set({
+              appLanguage: p.appLanguage || get().appLanguage,
+              drawStyle: p.drawStyle || get().drawStyle,
+              hebrewFont: p.hebrewFont || get().hebrewFont
+            });
+          }
+          if (profile) {
+            set({ profileId: profile.id });
+          }
+        } catch (err) {
+          console.error("Profile sync failed", err);
+        }
       },
     }),
     {
