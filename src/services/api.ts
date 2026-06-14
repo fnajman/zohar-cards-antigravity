@@ -1,5 +1,7 @@
 import { letters as fakeLetters, getCombination } from "@/data/fake-data";
 import type { Draw, Letter, Combination, DBLetter, DBCombination, DBDraw } from "@/data/types";
+import { useStore } from "@/store/useStore";
+import { createRemoteDraw } from "@/services/drawApi";
 
 const XANO_URL = "https://api.najman.app/api:hyEJD2He";
 const CACHE_KEY = "zohar_letters_cache";
@@ -153,9 +155,20 @@ export const api = {
       const c2Fr = flattenLetter(dbCard2, 'fr');
       dbCombo = getCombination(c1Fr, c2Fr);
     }
+    let remoteDrawId: number | null = null;
+    const s = useStore.getState();
+    if (s.authToken && s.user?.id && s.profileId && dbCombo?.id) {
+      remoteDrawId = await createRemoteDraw(
+        s.authToken,
+        s.user.id,
+        s.profileId,
+        dbCombo.id,
+        s.aiModel
+      );
+    }
     
     const dbDraw: DBDraw = {
-      id: Date.now(),
+      id: remoteDrawId || Date.now(),
       created_at: new Date().toISOString(),
       card_1: dbCard1,
       card_2: dbCard2,

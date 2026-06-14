@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useStore, type Message } from "@/store/useStore";
 import { useCurrentDraw } from "@/hooks/useApi";
 import { getAiResponse, getAiResponseStream, ChatMessage } from "@/services/aiService";
+import { updateDrawHistory } from "@/services/drawApi";
 import ReactMarkdown from 'react-markdown';
 
 const fakeAI = `La rencontre de ces deux lettres ouvre un espace de reflexion profond.
@@ -38,6 +39,29 @@ export function InterpretationScreen() {
   useEffect(() => {
     markJourneyStep("interpretation");
   }, [markJourneyStep]);
+
+  const syncHistoryToCloud = async (msgs: Message[]) => {
+    const s = useStore.getState();
+    
+    // Si pas connecté ou si l'ID est un grand timestamp (tirage purement local), on ne synchronise pas.
+    // Un timestamp Date.now() est > 1.7 trillion. Les IDs Xano sont de petits entiers.
+    if (!s.authToken || !s.user?.id || !s.profileId || !currentDraw?.id || currentDraw.id > 1000000000000) {
+      return;
+    }
+
+    const history = msgs
+      .filter(m => !m.id.includes("action") && m.role !== "system" || m.content.startsWith("Model used:"))
+      .map(m => ({ role: m.role, content: m.content }));
+    
+    // We add the system model msg if it's missing (it was initialized on POST /draw, but let's just send the whole thing to overwrite).
+    // Let's just send what we have. If the system message isn't in UI state, we prepend it.
+    const fullHistory = [
+      { role: "system", content: `Model used: ${s.aiModel}` },
+      ...history.filter(m => m.role !== "system")
+    ];
+
+    await updateDrawHistory(s.authToken, currentDraw.id, s.user.id, s.profileId, fullHistory);
+  };
 
   useEffect(() => {
     const initChat = async () => {
@@ -79,6 +103,9 @@ export function InterpretationScreen() {
             }
           ]);
           setLinksShouldBlink(true);
+          
+          // Sync with cloud after initial generation
+          syncHistoryToCloud([{ id: "msg-0", role: "assistant", content: fullResponse }]);
         } catch (error) {
           console.error(error);
           setMessages([
@@ -181,6 +208,10 @@ export function InterpretationScreen() {
         }
       }
       setIsTyping(false);
+      
+      // Sync the new messages with cloud
+      syncHistoryToCloud([...newHistory, { id: newMsgId, role: "assistant", content: fullResponse }]);
+      
     } catch (error) {
       console.error(error);
       setMessages(prev => [...prev, {

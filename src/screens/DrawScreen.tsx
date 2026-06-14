@@ -61,17 +61,21 @@ export function DrawScreen() {
     });
   }, [revealed, isPending]);
 
+  const drawInitiated = useRef(false);
+
   useEffect(() => {
     if (selected.length === 1) {
       markJourneyStep("card1");
     }
-    if (selected.length === 2 && !isPending) {
+    if (selected.length === 2 && !drawInitiated.current) {
+      drawInitiated.current = true;
       markJourneyStep("card2");
       performDraw({ selectedIds: [selected[0].id, selected[1].id] }, {
-        onSuccess: () => setTimeout(() => navigate("/reveal"), 2000)
+        onSuccess: () => setTimeout(() => navigate("/reveal"), 2000),
+        onError: () => { drawInitiated.current = false; }
       });
     }
-  }, [selected, isPending, performDraw, navigate, markJourneyStep]);
+  }, [selected, performDraw, navigate, markJourneyStep]);
 
 
   const changeMode = (id: DrawStyle) => {
