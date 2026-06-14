@@ -39,11 +39,13 @@ interface AppState {
   updateUser: (data: Partial<UserProfile>) => void;
   setAiModel: (model: string) => void;
   setHasSeenTutorial: () => void;
+  usedGiftCodes: string[];
+  applyGiftCode: (code: string) => { success: boolean; messageKey: string };
 }
 
 export const useStore = create<AppState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       authToken: null,
       aiModel: "anthropic/claude-haiku-4.5",
@@ -76,6 +78,26 @@ export const useStore = create<AppState>()(
       })),
       setAiModel: (aiModel) => set({ aiModel }),
       setHasSeenTutorial: () => set({ hasSeenTutorial: true }),
+      usedGiftCodes: [],
+      applyGiftCode: (code: string) => {
+        const state = get();
+        const codeUpper = code.trim().toUpperCase();
+        
+        if (codeUpper !== "BONUS03") {
+          return { success: false, messageKey: 'settings.gift_code_invalid' };
+        }
+        if (state.usedGiftCodes.includes(codeUpper)) {
+          return { success: false, messageKey: 'settings.gift_code_used' };
+        }
+        
+        // Apply credits
+        set({ 
+          usedGiftCodes: [...state.usedGiftCodes, codeUpper],
+          user: state.user ? { ...state.user, credits: (state.user.credits || 0) + 3 } : null
+        });
+        
+        return { success: true, messageKey: 'settings.gift_code_success' };
+      },
     }),
     {
       name: 'zohar-storage',
@@ -86,6 +108,7 @@ export const useStore = create<AppState>()(
         authToken: state.authToken,
         aiModel: state.aiModel,
         hasSeenTutorial: state.hasSeenTutorial,
+        usedGiftCodes: state.usedGiftCodes,
       }),
     }
   )

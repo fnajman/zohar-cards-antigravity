@@ -126,7 +126,14 @@
     "font_title": "Style des lettres",
     "font_subtitle": "Choisissez le style graphique des lettres hébraïques.",
     "french": "Français",
-    "english": "Anglais"
+    "english": "Anglais",
+    "gift_code_label": "Code cadeau",
+    "gift_code_btn": "Utiliser un code",
+    "gift_code_placeholder": "Entrez votre code",
+    "gift_code_submit": "Valider",
+    "gift_code_invalid": "Ce code n'existe pas ou a expiré.",
+    "gift_code_used": "Ce code a déjà été utilisé. Il est à usage unique.",
+    "gift_code_success": "Félicitations ! 3 crédits ont été ajoutés à votre compte."
   },
   "support": {
     "title": "Lettre de soutien",

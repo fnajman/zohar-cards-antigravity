@@ -52,7 +52,9 @@ export function SettingsScreen() {
   const { t } = useTranslation();
   const { user, drawStyle, setDrawStyle, hebrewFont, setHebrewFont, aiModel, setAiModel } = useStore();
   const { data: drawHistory = [], isLoading } = useDrawHistory();
-  const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language" | "ai-model">("main");
+  const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language" | "ai-model" | "gift-code">("main");
+  const [giftCode, setGiftCode] = useState("");
+  const [giftCodeMessage, setGiftCodeMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
   const { data: spending } = useQuery({
     queryKey: ["openrouter-spending"],
@@ -234,6 +236,53 @@ export function SettingsScreen() {
     </div>
   );
 
+  const handleGiftCodeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!giftCode.trim()) return;
+    
+    const result = useStore.getState().applyGiftCode(giftCode);
+    setGiftCodeMessage({
+      type: result.success ? 'success' : 'error',
+      text: t(result.messageKey)
+    });
+    if (result.success) {
+      setGiftCode("");
+    }
+  };
+
+  if (section === "gift-code") return (
+    <div className="h-full flex flex-col bg-night overflow-y-auto">
+      <header className="px-6 pt-12 pb-4">{back(() => { setSection("main"); setGiftCodeMessage(null); setGiftCode(""); })}</header>
+      <main ref={scrollRef as any} className="flex-1 px-6 py-6 overflow-y-auto">
+        <h2 className="text-xl font-medium tracking-tight text-parchment mb-6">{t('settings.gift_code_label')}</h2>
+        
+        <form onSubmit={handleGiftCodeSubmit} className="space-y-4">
+          <div>
+            <input 
+              type="text" 
+              value={giftCode}
+              onChange={(e) => setGiftCode(e.target.value)}
+              placeholder={t('settings.gift_code_placeholder')}
+              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-parchment placeholder-ash focus:outline-none focus:border-parchment/30 transition-colors uppercase"
+            />
+          </div>
+          <button 
+            type="submit"
+            className="w-full py-3 bg-parchment/10 text-parchment rounded-xl font-medium hover:bg-parchment/20 transition-colors"
+          >
+            {t('settings.gift_code_submit')}
+          </button>
+          
+          {giftCodeMessage && (
+            <div className={`mt-4 p-4 rounded-xl text-sm ${giftCodeMessage.type === 'success' ? 'bg-green-900/20 text-green-400 border border-green-900/50' : 'bg-red-900/20 text-red-400 border border-red-900/50'}`}>
+              {giftCodeMessage.text}
+            </div>
+          )}
+        </form>
+      </main>
+    </div>
+  );
+
   return (
     <div ref={scrollRef as any} className="h-full flex flex-col bg-night overflow-y-auto">
       <header className="px-6 pt-12 pb-6 flex items-center justify-between border-b border-parchment/10">
@@ -298,6 +347,7 @@ export function SettingsScreen() {
           <section className="px-6 py-6">
             <h2 className="text-[11px] tracking-[0.2em] uppercase text-ash/60 mb-4">{t('settings.actions')}</h2>
             <div className="space-y-2">
+              <Btn label={t('settings.gift_code_btn')} onClick={() => setSection("gift-code")} />
               <Btn label={t('settings.history')} onClick={() => setSection("history")} />
               <Btn label={t('settings.plans')} onClick={() => setSection("plans")} />
               <Btn label={t('about.title')} onClick={() => navigate("/about")} />
