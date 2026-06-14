@@ -43,6 +43,10 @@ export function InterpretationScreen() {
     const initChat = async () => {
       if (messages.length === 0 && currentDraw && !isTyping) {
         setIsTyping(true);
+        if (!useStore.getState().chatSessionPaid) {
+          setChatSessionPaid(true);
+          deductCredits(3).catch(console.error);
+        }
         try {
           const stream = await getAiResponseStream(
             currentDraw,
@@ -75,11 +79,6 @@ export function InterpretationScreen() {
             }
           ]);
           setLinksShouldBlink(true);
-          
-          if (!useStore.getState().chatSessionPaid) {
-            await deductCredits(3);
-            setChatSessionPaid(true);
-          }
         } catch (error) {
           console.error(error);
           setMessages([
@@ -137,6 +136,11 @@ export function InterpretationScreen() {
   const handleSend = async () => {
     if (!inputText.trim() || !currentDraw || isTyping) return;
     
+    if (!useStore.getState().chatSessionPaid) {
+      setChatSessionPaid(true);
+      deductCredits(3).catch(console.error);
+    }
+    
     const newUserMsg: Message = {
       id: Date.now().toString(),
       role: "user",
@@ -177,10 +181,6 @@ export function InterpretationScreen() {
         }
       }
       setIsTyping(false);
-      if (!useStore.getState().chatSessionPaid) {
-        await deductCredits(3);
-        setChatSessionPaid(true);
-      }
     } catch (error) {
       console.error(error);
       setMessages(prev => [...prev, {

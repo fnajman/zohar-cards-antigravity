@@ -69,7 +69,17 @@ export function HomeScreen() {
 
       <footer className="px-6 pb-8 flex justify-center gap-6">
         <button onClick={() => navigate("/about")} className="text-xs text-ash hover:text-parchment transition-colors">{t('about.title')}</button>
-        <button onClick={() => navigate("/auth")} className="text-xs text-ash hover:text-parchment transition-colors">{t('home.login')}</button>
+        <button 
+          onClick={() => {
+            if (user) {
+              useStore.getState().logout();
+            }
+            navigate("/auth");
+          }} 
+          className="text-xs text-ash hover:text-parchment transition-colors"
+        >
+          {user ? t('settings.logout', 'Déconnexion') : t('home.login')}
+        </button>
         <button onClick={() => navigate("/settings")} className="text-xs text-ash hover:text-parchment transition-colors">{t('home.settings')}</button>
         <span className="text-[10px] text-ash/40 ml-2 select-none pointer-events-none">{APP_VERSION}</span>
       </footer>
