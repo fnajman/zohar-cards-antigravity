@@ -29,9 +29,22 @@ export function AboutScreen() {
             </svg>
           </div>
           <h1 className="text-2xl font-medium tracking-tight text-parchment mb-6">{t('about.title')}</h1>
-          <p className="text-sm text-ash/80 leading-relaxed text-justify">
+          <p className="text-sm text-ash/80 leading-relaxed text-justify mb-10">
             {t('about.content')}
           </p>
+
+          <div className="pt-8 border-t border-parchment/10">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border border-parchment/20">
+              <img 
+                src="/images/photo-franck-lalou.jpg" 
+                alt="Frank Lalou" 
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+            <p className="text-sm text-ash/80 leading-relaxed text-center italic">
+              {t('about.frank_lalou')}
+            </p>
+          </div>
         </motion.div>
       </main>
     </div>

@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStore } from "@/store/useStore";
 
-const TOTAL_STEPS = 11;
+const TOTAL_STEPS = 12;
 
 export function TutorialScreen() {
   const navigate = useNavigate();
@@ -57,9 +57,9 @@ export function TutorialScreen() {
           >
             <div className="w-full max-w-[210px] max-h-[40vh] aspect-[3/4] mb-8 relative flex items-center justify-center border border-parchment/15 rounded-2xl p-4 bg-night-light/30">
               <img 
-                src={`/tuto/${step + 1}.png`} 
+                src={step === 0 ? "/images/photo-franck-lalou.jpg" : `/tuto/${step}.png`} 
                 alt={t(`tutorial.step_${step + 1}_title`)} 
-                className="w-full h-full object-contain drop-shadow-2xl rounded-lg"
+                className={`w-full h-full object-contain drop-shadow-2xl rounded-lg ${step === 0 ? 'grayscale' : ''}`}
                 draggable={false}
               />
             </div>
