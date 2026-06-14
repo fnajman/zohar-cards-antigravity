@@ -130,7 +130,7 @@ export function ReadingScreen() {
         </motion.div>
 
         <div className="mt-8 flex flex-col gap-3">
-          <button onClick={() => navigate("/question")} className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors">
+          <button onClick={() => navigate("/question")} className="w-full py-4 px-6 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors flex items-center justify-center text-center whitespace-normal leading-tight">
             {t('reading.ask_question')}
           </button>
           <button onClick={() => navigate("/home")} className="w-full py-3 text-ash text-sm hover:text-parchment transition-colors">

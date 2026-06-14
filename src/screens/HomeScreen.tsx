@@ -54,14 +54,14 @@ export function HomeScreen() {
           <p className="text-sm text-ash max-w-[220px] mx-auto leading-relaxed">{t('home.subtitle')}</p>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="flex flex-col items-center gap-4 w-full max-w-[280px]">
-          <button onClick={() => { useStore.getState().resetJourney(); navigate("/draw"); }} className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium tracking-wide hover:bg-bone transition-colors duration-300">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="flex flex-col items-center gap-4 w-full max-w-[320px] sm:max-w-[360px]">
+          <button onClick={() => { useStore.getState().resetJourney(); navigate("/draw"); }} className="w-full py-4 px-6 bg-parchment text-ink rounded-full text-sm font-medium tracking-wide hover:bg-bone transition-colors duration-300 flex items-center justify-center text-center whitespace-normal leading-tight">
             {t('home.draw_btn')}
           </button>
-          <button onClick={() => navigate("/letter-of-day")} className="w-full py-4 border border-parchment/20 text-parchment rounded-full text-sm tracking-wide hover:border-parchment/40 transition-colors duration-300">
+          <button onClick={() => navigate("/letter-of-day")} className="w-full py-4 px-6 border border-parchment/20 text-parchment rounded-full text-sm tracking-wide hover:border-parchment/40 transition-colors duration-300 flex items-center justify-center text-center whitespace-normal leading-tight">
             {t('home.letter_btn')}
           </button>
-          <button onClick={() => navigate("/tutorial", { state: { fromHome: true } })} className="w-full py-4 text-ash rounded-full text-sm tracking-wide hover:text-parchment transition-colors duration-300">
+          <button onClick={() => navigate("/tutorial", { state: { fromHome: true } })} className="w-full py-4 px-6 text-ash rounded-full text-sm tracking-wide hover:text-parchment transition-colors duration-300 flex items-center justify-center text-center whitespace-normal leading-tight">
             {t('home.tutorial_btn')}
           </button>
         </motion.div>

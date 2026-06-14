@@ -37,15 +37,15 @@ export function LetterOfDayScreen() {
               <HebrewGlyph symbol={letter.symbol} size="xl" letter={letter} />
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.5 }} className="text-center mb-12 max-w-[280px]">
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.5 }} className="text-center mb-12 max-w-[320px] sm:max-w-[360px]">
               <h2 className="text-2xl font-medium text-parchment text-center mt-6">{letter.identity?.name || letter.latin_id}</h2>
               <p className="text-sm text-parchment/60 mt-2">{letter.symbolic_essence.core_idea}</p>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="mt-auto w-full max-w-[280px]">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="mt-auto w-full max-w-[320px] sm:max-w-[360px]">
               <button 
                 onClick={() => setShowDetails(true)} 
-                className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium tracking-wide hover:bg-bone transition-colors duration-300"
+                className="w-full py-4 px-6 bg-parchment text-ink rounded-full text-sm font-medium tracking-wide hover:bg-bone transition-colors duration-300 flex items-center justify-center text-center whitespace-normal leading-tight"
               >
                 {t('reveal.read_btn')}
               </button>

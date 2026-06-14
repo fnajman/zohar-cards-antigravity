@@ -67,7 +67,7 @@ export function TutorialScreen() {
             <h2 className="text-xl font-medium text-parchment mb-3">
               {t(`tutorial.step_${step + 1}_title`)}
             </h2>
-            <p className="text-sm text-ash max-w-[280px] leading-relaxed mb-6">
+            <p className="text-sm text-ash max-w-[320px] sm:max-w-[360px] leading-relaxed mb-6">
               {t(`tutorial.step_${step + 1}_desc`)}
             </p>
             <span className="text-[11px] text-ash/50 tracking-widest font-medium mb-8">
@@ -91,7 +91,7 @@ export function TutorialScreen() {
         
         <button 
           onClick={handleNext} 
-          className="w-full max-w-[280px] py-4 bg-parchment text-ink rounded-full text-sm font-medium tracking-wide hover:bg-bone transition-colors duration-300"
+          className="w-full max-w-[320px] sm:max-w-[360px] py-4 bg-parchment text-ink rounded-full text-sm font-medium tracking-wide hover:bg-bone transition-colors duration-300"
         >
           {step === TOTAL_STEPS - 1 ? t('tutorial.finish') : t('tutorial.next')}
         </button>

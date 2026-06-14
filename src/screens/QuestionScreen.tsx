@@ -69,7 +69,7 @@ export function QuestionScreen() {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-[300px] flex flex-col items-center gap-7 my-auto pb-8">
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
               <h1 className="text-2xl font-medium tracking-tight text-parchment mb-2">{t('question.title')}</h1>
-              <p className="text-sm text-ash leading-relaxed max-w-[280px]">
+              <p className="text-sm text-ash leading-relaxed max-w-[320px] sm:max-w-[360px]">
                 {t('question.subtitle')}
               </p>
             </motion.div>
@@ -94,7 +94,7 @@ export function QuestionScreen() {
               <button 
                 onClick={handleReveal}
                 disabled={question.trim().length === 0}
-                className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors disabled:opacity-50 disabled:bg-parchment/10 disabled:text-ash disabled:hover:bg-parchment/10"
+                className="w-full py-4 px-6 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors disabled:opacity-50 disabled:bg-parchment/10 disabled:text-ash disabled:hover:bg-parchment/10 flex items-center justify-center text-center whitespace-normal leading-tight"
               >
                 {t('question.reveal_btn')}
               </button>

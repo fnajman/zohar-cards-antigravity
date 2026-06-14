@@ -76,7 +76,7 @@ export function AuthScreen() {
                 className="w-full py-3 px-4 bg-night-light border border-parchment/10 rounded-full text-sm text-parchment placeholder:text-ash/40 focus:outline-none focus:border-parchment/25 transition-colors" />
             )}
             {error && <p className="text-red-400 text-xs px-2">{error}</p>}
-            <button type="submit" disabled={loading} className="w-full py-4 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors disabled:opacity-50">
+            <button type="submit" disabled={loading} className="w-full py-4 px-6 bg-parchment text-ink rounded-full text-sm font-medium hover:bg-bone transition-colors disabled:opacity-50 flex items-center justify-center text-center whitespace-normal leading-tight">
               {loading ? "Chargement..." : mode === "login" ? "Se connecter" : mode === "signup" ? "Creer" : "Envoyer le code"}
             </button>
           </form>

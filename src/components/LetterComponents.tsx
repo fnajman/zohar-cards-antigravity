@@ -110,7 +110,7 @@ export function LetterCard({ letter }: { letter: Letter }) {
       <div className="text-center">
         <HebrewGlyph symbol={letter.symbol} size="lg" letter={letter} />
         <h2 className="text-xl font-medium text-parchment mt-3">{letter.identity?.name || letter.latin_id}</h2>
-        <p className="text-[11px] sm:text-xs text-ash mt-2 max-w-[280px] sm:max-w-md mx-auto leading-relaxed">
+        <p className="text-[11px] sm:text-xs text-ash mt-2 max-w-[320px] sm:max-w-[360px] sm:max-w-md mx-auto leading-relaxed">
           {t('letter.position')} {letter.identity?.alphabet_position || "?"} | {t('letter.value')} {letter.identity?.gematria_value || "?"} | {letter.identity?.transliteration || "?"} | {letter.identity?.pronunciation || "?"}
         </p>
       </div>

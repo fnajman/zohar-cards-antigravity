@@ -39,7 +39,7 @@ export function MeditationScreen() {
               className="text-center"
             >
               <h1 className="text-2xl font-medium text-parchment mb-4">{t('experience.meditation')}</h1>
-              <p className="text-sm text-ash/80 max-w-[280px] mx-auto leading-relaxed mb-12">
+              <p className="text-sm text-ash/80 max-w-[320px] sm:max-w-[360px] mx-auto leading-relaxed mb-12">
                 {t('experience.meditation_desc')}
               </p>
               <button
