@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { fakeUser } from "@/data/fake-data";
 import type { UserProfile } from "@/data/types";
 import type { HebrewFontStyle } from "@/components/HebrewGlyph";
-import { fetchProfile, createProfile, updateProfile, type PersonalInfo } from "@/services/profileApi";
+import { createProfile, updateProfile, type PersonalInfo } from "@/services/profileApi";
 
 // Assuming we duplicate or import the Message type
 export type Message = {
@@ -162,7 +162,7 @@ export const useStore = create<AppState>()(
         if (isSyncing) return;
         isSyncing = true;
         try {
-          let profile = await fetchProfile(token, user.id);
+          let profile = user.profile;
           if (!profile) {
             const s = get();
             profile = await createProfile(token, user.id, {

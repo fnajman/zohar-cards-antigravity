@@ -1,3 +1,5 @@
+import type { UserProfileRecord } from "@/services/profileApi";
+
 export interface Letter {
   id: number;
   symbol: string;
@@ -149,4 +151,5 @@ export interface UserProfile {
     interaction_mode?: string;
     card_back?: string;
   } | null;
+  profile?: UserProfileRecord | null;
 }

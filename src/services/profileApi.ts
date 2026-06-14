@@ -25,27 +25,7 @@ export interface UserProfileRecord {
   credit?: number;
 }
 
-export async function fetchProfile(authToken: string, userId: number): Promise<UserProfileRecord | null> {
-  const res = await fetch(`${XANO_AUTH_URL}/profile`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${authToken}`
-    }
-  });
 
-  if (!res.ok) {
-    console.error("Failed to fetch profile", await res.text());
-    return null;
-  }
-
-  const data = await res.json();
-  if (Array.isArray(data) && data.length > 0) {
-    const p = data.find((d: any) => d.user_id === userId);
-    return p || null;
-  }
-  return null;
-}
 
 export async function createProfile(authToken: string, userId: number, param: UserProfileParams, bonuscode?: string[], perso?: PersonalInfo, credit?: number): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile`, {
