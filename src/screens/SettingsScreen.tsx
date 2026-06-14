@@ -462,11 +462,20 @@ export function SettingsScreen() {
           <section className="px-6 py-6">
             <h2 className="text-[11px] tracking-[0.2em] uppercase text-ash/60 mb-4">{t('settings.actions')}</h2>
             <div className="space-y-2">
-              <Btn label={t('settings.gift_code_btn')} onClick={() => setSection("gift-code")} />
-              <Btn label={t('settings.history')} onClick={() => setSection("history")} />
-              <Btn label={t('settings.plans')} onClick={() => setSection("plans")} />
+              {user && <Btn label={t('settings.gift_code_btn')} onClick={() => setSection("gift-code")} />}
+              {user && <Btn label={t('settings.history')} onClick={() => setSection("history")} />}
+              {user && <Btn label={t('settings.plans')} onClick={() => setSection("plans")} />}
               <Btn label={t('about.title')} onClick={() => navigate("/about")} />
-              <Btn label={t('settings.logout')} onClick={() => navigate("/auth")} muted />
+              <Btn 
+                label={user ? t('settings.logout', 'Déconnexion') : t('auth.login_btn', 'Se connecter')} 
+                onClick={() => {
+                  if (user) {
+                    useStore.getState().logout();
+                  }
+                  navigate("/auth");
+                }} 
+                muted 
+              />
             </div>
           </section>
         </motion.div>

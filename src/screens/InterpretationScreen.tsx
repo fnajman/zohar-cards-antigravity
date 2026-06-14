@@ -26,6 +26,8 @@ export function InterpretationScreen() {
   const chatMessages = useStore(s => s.chatMessages);
   const setChatMessages = useStore(s => s.setChatMessages);
   const deductCredits = useStore(s => s.deductCredits);
+  const chatSessionPaid = useStore(s => s.chatSessionPaid);
+  const setChatSessionPaid = useStore(s => s.setChatSessionPaid);
   const messages = chatMessages;
   const setMessages = setChatMessages;
   const [inputText, setInputText] = useState("");
@@ -74,7 +76,10 @@ export function InterpretationScreen() {
           ]);
           setLinksShouldBlink(true);
           
-          await deductCredits(3);
+          if (!useStore.getState().chatSessionPaid) {
+            await deductCredits(3);
+            setChatSessionPaid(true);
+          }
         } catch (error) {
           console.error(error);
           setMessages([
@@ -111,7 +116,7 @@ export function InterpretationScreen() {
 
   const isUnlimited = user?.role === "admin" || user?.role === "contrib";
 
-  if (user && user.credits < 3 && !isUnlimited) {
+  if (user && user.credits < 3 && !isUnlimited && !chatSessionPaid) {
     return (
       <div className="h-full flex flex-col items-center justify-center bg-night px-6 gap-6">
         <p className="text-sm text-ash text-center max-w-[320px] sm:max-w-[360px] leading-relaxed">
@@ -172,7 +177,10 @@ export function InterpretationScreen() {
         }
       }
       setIsTyping(false);
-      await deductCredits(3);
+      if (!useStore.getState().chatSessionPaid) {
+        await deductCredits(3);
+        setChatSessionPaid(true);
+      }
     } catch (error) {
       console.error(error);
       setMessages(prev => [...prev, {

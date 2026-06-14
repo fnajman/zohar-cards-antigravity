@@ -65,14 +65,14 @@ export async function createProfile(authToken: string, userId: number, param: Us
   return await res.json();
 }
 
-export async function updateProfile(authToken: string, profileId: number, userId: number, param: UserProfileParams, bonuscode?: string[], perso?: PersonalInfo, credit?: number): Promise<UserProfileRecord | null> {
+export async function updateProfile(authToken: string, profileId: number, userId: number, param: UserProfileParams, bonuscode: string[], perso?: PersonalInfo, credit?: number): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile/${profileId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${authToken}`
     },
-    body: JSON.stringify({ user_id: userId, param, bonuscode, perso, credit })
+    body: JSON.stringify({ user_id: userId, param, bonuscode, perso: perso || {}, credit })
   });
 
   if (!res.ok) {

@@ -29,6 +29,7 @@ interface AppState {
   journeyProgress: JourneyStep[];
   currentQuestion: string;
   chatMessages: Message[];
+  chatSessionPaid: boolean;
   setDrawStyle: (style: DrawStyle) => void;
   setHebrewFont: (font: HebrewFontStyle) => void;
   setAppLanguage: (lang: string) => void;
@@ -36,6 +37,7 @@ interface AppState {
   markJourneyStep: (step: JourneyStep) => void;
   setCurrentQuestion: (q: string) => void;
   setChatMessages: (updater: Message[] | ((prev: Message[]) => Message[])) => void;
+  setChatSessionPaid: (paid: boolean) => void;
   resetJourney: () => void;
   setUserCredits: (credits: number) => void;
   loginSession: (token: string, user: UserProfile) => void;
@@ -66,6 +68,7 @@ export const useStore = create<AppState>()(
       journeyProgress: [],
       currentQuestion: "",
       chatMessages: [],
+      chatSessionPaid: false,
 
       setDrawStyle: (style) => {
         set({ drawStyle: style });
@@ -102,7 +105,8 @@ export const useStore = create<AppState>()(
       setChatMessages: (updater) => set((state) => ({
         chatMessages: typeof updater === 'function' ? updater(state.chatMessages) : updater
       })),
-      resetJourney: () => set({ journeyProgress: [], currentQuestion: "", chatMessages: [] }),
+      setChatSessionPaid: (paid) => set({ chatSessionPaid: paid }),
+      resetJourney: () => set({ journeyProgress: [], currentQuestion: "", chatMessages: [], chatSessionPaid: false }),
       setUserCredits: (credits) => set((state) => ({ 
         user: state.user ? { ...state.user, credits } : null 
       })),
