@@ -133,7 +133,24 @@
     "gift_code_submit": "Submit",
     "gift_code_invalid": "This code does not exist or has expired.",
     "gift_code_used": "This code has already been used. It is single-use only.",
-    "gift_code_success": "Congratulations! 3 credits have been added to your account."
+    "gift_code_success": "Congratulations! 3 credits have been added to your account.",
+    "personal": {
+      "title": "Personal",
+      "subtitle": "Optional",
+      "gender": "Gender",
+      "gender_none": "Not specified",
+      "gender_male": "Male",
+      "gender_female": "Female",
+      "birthDate": "Date of birth",
+      "childrenCount": "Number of children",
+      "profession": "Profession",
+      "profession_ph": "E.g.: Designer...",
+      "maritalStatus": "Marital status",
+      "maritalStatus_ph": "E.g.: Single...",
+      "freeText": "Tell us more freely",
+      "freeText_ph": "Any other details...",
+      "save": "Save"
+    }
   },
   "support": {
     "title": "Letter of support",
@@ -162,25 +179,5 @@
   },
   "letter": {
     "position": "Position",
-    "value": "Value"
-  },
-  "settings": {
-    "personal": {
-      "title": "Personal",
-      "subtitle": "Optional",
-      "gender": "Gender",
-      "gender_none": "Not specified",
-      "gender_male": "Male",
-      "gender_female": "Female",
-      "birthDate": "Date of birth",
-      "childrenCount": "Number of children",
-      "profession": "Profession",
-      "profession_ph": "E.g.: Designer...",
-      "maritalStatus": "Marital status",
-      "maritalStatus_ph": "E.g.: Single...",
-      "freeText": "Tell us more freely",
-      "freeText_ph": "Any other details...",
-      "save": "Save"
-    }
   }
 }

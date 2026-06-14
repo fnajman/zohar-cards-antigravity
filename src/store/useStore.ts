@@ -171,11 +171,21 @@ export const useStore = create<AppState>()(
                 aiModel: p.aiModel || get().aiModel
               });
             }
-            if (profile.bonuscode) {
+            if (profile.bonuscode && profile.bonuscode.length > 0) {
               set({ usedGiftCodes: profile.bonuscode });
             }
-            if (profile.perso) {
+            
+            // Sync perso
+            if (profile.perso && Object.keys(profile.perso).length > 0) {
               set({ personalInfo: profile.perso });
+            } else if (get().personalInfo && Object.keys(get().personalInfo!).length > 0) {
+              // Cloud has no perso, but local does. Push local to cloud.
+              updateProfile(token, profile.id, user.id, {
+                appLanguage: get().appLanguage,
+                drawStyle: get().drawStyle,
+                hebrewFont: get().hebrewFont,
+                aiModel: get().aiModel
+              }, get().usedGiftCodes, get().personalInfo).catch(console.error);
             }
           }
           if (profile) {

@@ -133,7 +133,24 @@
     "gift_code_submit": "Valider",
     "gift_code_invalid": "Ce code n'existe pas ou a expiré.",
     "gift_code_used": "Ce code a déjà été utilisé. Il est à usage unique.",
-    "gift_code_success": "Félicitations ! 3 crédits ont été ajoutés à votre compte."
+    "gift_code_success": "Félicitations ! 3 crédits ont été ajoutés à votre compte.",
+    "personal": {
+      "title": "Personnel",
+      "subtitle": "Facultatif",
+      "gender": "Genre",
+      "gender_none": "Non défini",
+      "gender_male": "Homme",
+      "gender_female": "Femme",
+      "birthDate": "Date de naissance",
+      "childrenCount": "Nombre d'enfants",
+      "profession": "Profession",
+      "profession_ph": "Ex: Designer...",
+      "maritalStatus": "Statut marital",
+      "maritalStatus_ph": "Ex: Célibataire...",
+      "freeText": "Dites-nous en plus librement",
+      "freeText_ph": "Détails libres...",
+      "save": "Enregistrer"
+    }
   },
   "support": {
     "title": "Lettre de soutien",
@@ -162,25 +179,5 @@
   },
   "letter": {
     "position": "Position",
-    "value": "Valeur"
-  },
-  "settings": {
-    "personal": {
-      "title": "Personnel",
-      "subtitle": "Facultatif",
-      "gender": "Genre",
-      "gender_none": "Non défini",
-      "gender_male": "Homme",
-      "gender_female": "Femme",
-      "birthDate": "Date de naissance",
-      "childrenCount": "Nombre d'enfants",
-      "profession": "Profession",
-      "profession_ph": "Ex: Designer...",
-      "maritalStatus": "Statut marital",
-      "maritalStatus_ph": "Ex: Célibataire...",
-      "freeText": "Dites-nous en plus librement",
-      "freeText_ph": "Détails libres...",
-      "save": "Enregistrer"
-    }
   }
 }
