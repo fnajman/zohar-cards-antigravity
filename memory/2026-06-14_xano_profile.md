@@ -19,3 +19,7 @@
 
 ## Correctif (v0.22)
 - Ajout du paramètre `user_id` dans le payload de la requête `PATCH /profile/{profile_id}` et modification de `updateProfile` dans `profileApi.ts` et `useStore.ts`. L'API Xano renvoyait une erreur `400 Bad Request (Missing param: user_id)` lors de la mise à jour des paramètres car elle exige ce champ pour l'opération de modification.
+
+## Synchronisation Avancée (v0.23)
+- **Bonuscode** : Ajout du support de la liste des codes cadeaux utilisés dans le champ `bonuscode` (tableau). À chaque succès d'un code, la liste est poussée sur le backend. Au login, le tableau backend `bonuscode` écrase la liste locale `usedGiftCodes`.
+- **Modèle IA** : Ajout du champ `aiModel` dans l'objet `param`. Si renseigné côté backend (par exemple manuellement pour un profil standard, ou via l'UI Admin), il écrase le modèle local. Sinon, le modèle par défaut est conservé. Chaque changement de modèle par un Admin met à jour le profil Xano.

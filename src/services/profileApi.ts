@@ -4,6 +4,7 @@ export interface UserProfileParams {
   appLanguage: string;
   drawStyle: string;
   hebrewFont: string;
+  aiModel?: string;
 }
 
 export interface UserProfileRecord {
@@ -11,6 +12,7 @@ export interface UserProfileRecord {
   user_id: number;
   param: UserProfileParams | null;
   perso: any;
+  bonuscode: string[] | null;
 }
 
 export async function fetchProfile(authToken: string): Promise<UserProfileRecord | null> {
@@ -34,14 +36,14 @@ export async function fetchProfile(authToken: string): Promise<UserProfileRecord
   return null;
 }
 
-export async function createProfile(authToken: string, userId: number, param: UserProfileParams): Promise<UserProfileRecord | null> {
+export async function createProfile(authToken: string, userId: number, param: UserProfileParams, bonuscode?: string[]): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${authToken}`
     },
-    body: JSON.stringify({ user_id: userId, param })
+    body: JSON.stringify({ user_id: userId, param, bonuscode: bonuscode || [] })
   });
 
   if (!res.ok) {
@@ -52,14 +54,14 @@ export async function createProfile(authToken: string, userId: number, param: Us
   return await res.json();
 }
 
-export async function updateProfile(authToken: string, profileId: number, userId: number, param: UserProfileParams): Promise<UserProfileRecord | null> {
+export async function updateProfile(authToken: string, profileId: number, userId: number, param: UserProfileParams, bonuscode?: string[]): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile/${profileId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${authToken}`
     },
-    body: JSON.stringify({ user_id: userId, param })
+    body: JSON.stringify({ user_id: userId, param, bonuscode })
   });
 
   if (!res.ok) {

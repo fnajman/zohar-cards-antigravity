@@ -66,21 +66,21 @@ export const useStore = create<AppState>()(
         set({ drawStyle: style });
         const s = get();
         if (s.authToken && s.profileId && s.user) {
-          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel });
         }
       },
       setHebrewFont: (font) => {
         set({ hebrewFont: font });
         const s = get();
         if (s.authToken && s.profileId && s.user) {
-          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel });
         }
       },
       setAppLanguage: (lang) => {
         set({ appLanguage: lang });
         const s = get();
         if (s.authToken && s.profileId && s.user) {
-          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont });
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel });
         }
       },
       markJourneyStep: (step) => set((state) => ({ 
@@ -100,7 +100,13 @@ export const useStore = create<AppState>()(
       updateUser: (data) => set((state) => ({
         user: state.user ? { ...state.user, ...data } : null
       })),
-      setAiModel: (aiModel) => set({ aiModel }),
+      setAiModel: (aiModel) => {
+        set({ aiModel });
+        const s = get();
+        if (s.authToken && s.profileId && s.user) {
+          updateProfile(s.authToken, s.profileId, s.user.id, { appLanguage: s.appLanguage, drawStyle: s.drawStyle, hebrewFont: s.hebrewFont, aiModel: s.aiModel });
+        }
+      },
       setHasSeenTutorial: () => set({ hasSeenTutorial: true }),
       usedGiftCodes: [],
       applyGiftCode: (code: string) => {
@@ -123,6 +129,16 @@ export const useStore = create<AppState>()(
           user: state.user ? { ...state.user, credits: (state.user.credits || 0) + 3 } : null
         });
         
+        const s = get();
+        if (s.authToken && s.profileId && s.user) {
+          updateProfile(s.authToken, s.profileId, s.user.id, { 
+            appLanguage: s.appLanguage, 
+            drawStyle: s.drawStyle, 
+            hebrewFont: s.hebrewFont, 
+            aiModel: s.aiModel 
+          }, s.usedGiftCodes).catch(console.error);
+        }
+        
         return { success: true, messageKey: 'settings.gift_code_success' };
       },
       syncProfileOnLogin: async (token, user) => {
@@ -133,15 +149,22 @@ export const useStore = create<AppState>()(
             profile = await createProfile(token, user.id, {
               appLanguage: s.appLanguage,
               drawStyle: s.drawStyle,
-              hebrewFont: s.hebrewFont
-            });
-          } else if (profile.param) {
-            const p = profile.param as any;
-            set({
-              appLanguage: p.appLanguage || get().appLanguage,
-              drawStyle: p.drawStyle || get().drawStyle,
-              hebrewFont: p.hebrewFont || get().hebrewFont
-            });
+              hebrewFont: s.hebrewFont,
+              aiModel: s.aiModel
+            }, s.usedGiftCodes);
+          } else {
+            if (profile.param) {
+              const p = profile.param as any;
+              set({
+                appLanguage: p.appLanguage || get().appLanguage,
+                drawStyle: p.drawStyle || get().drawStyle,
+                hebrewFont: p.hebrewFont || get().hebrewFont,
+                aiModel: p.aiModel || get().aiModel
+              });
+            }
+            if (profile.bonuscode) {
+              set({ usedGiftCodes: profile.bonuscode });
+            }
           }
           if (profile) {
             set({ profileId: profile.id });
