@@ -409,7 +409,7 @@ export function SettingsScreen() {
             </div>
             <div className="flex gap-4">
               <div className="flex-1 bg-night-light rounded-xl p-4 border border-parchment/5"><p className="text-[10px] uppercase text-ash mb-1">Abonnement</p><p className="text-sm text-parchment capitalize">{user ? user.sub_tier : "Gratuit"}</p></div>
-              <div className="flex-1 bg-night-light rounded-xl p-4 border border-parchment/5"><p className="text-[10px] uppercase text-ash mb-1">Credits</p><p className="text-sm text-parchment">{user ? ((user.role === 'admin' || user.role === 'contrib') ? '∞' : user.credits) : 0}</p></div>
+              <div className="flex-1 bg-night-light rounded-xl p-4 border border-parchment/5"><p className="text-[10px] uppercase text-ash mb-1">Credits</p><p className="text-sm text-parchment">{user ? user.credits : 0}</p></div>
             </div>
           </section>
           <section className="border-b border-parchment/5">

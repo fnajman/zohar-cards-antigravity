@@ -47,6 +47,7 @@ interface AppState {
   usedGiftCodes: string[];
   applyGiftCode: (code: string) => { success: boolean; messageKey: string };
   syncProfileOnLogin: (token: string, user: UserProfile) => Promise<void>;
+  deductCredits: (amount: number) => Promise<void>;
 }
 
 export const useStore = create<AppState>()(
@@ -132,10 +133,11 @@ export const useStore = create<AppState>()(
           return { success: false, messageKey: 'settings.gift_code_used' };
         }
         
+        const newCredits = (state.user?.credits || 0) + 3;
         // Apply credits
         set({ 
           usedGiftCodes: isPrivileged ? state.usedGiftCodes : [...state.usedGiftCodes, codeUpper],
-          user: state.user ? { ...state.user, credits: (state.user.credits || 0) + 3 } : null
+          user: state.user ? { ...state.user, credits: newCredits } : null
         });
         
         const s = get();
@@ -145,7 +147,7 @@ export const useStore = create<AppState>()(
             drawStyle: s.drawStyle, 
             hebrewFont: s.hebrewFont, 
             aiModel: s.aiModel 
-          }, s.usedGiftCodes, s.personalInfo).catch(console.error);
+          }, s.usedGiftCodes, s.personalInfo, newCredits).catch(console.error);
         }
         
         return { success: true, messageKey: 'settings.gift_code_success' };
@@ -160,7 +162,11 @@ export const useStore = create<AppState>()(
               drawStyle: s.drawStyle,
               hebrewFont: s.hebrewFont,
               aiModel: s.aiModel
-            }, s.usedGiftCodes, s.personalInfo);
+            }, s.usedGiftCodes, s.personalInfo, 2);
+            
+            if (profile) {
+              set(state => ({ user: state.user ? { ...state.user, credits: 2 } : null }));
+            }
           } else {
             if (profile.param) {
               const p = profile.param as any;
@@ -187,12 +193,35 @@ export const useStore = create<AppState>()(
                 aiModel: get().aiModel
               }, get().usedGiftCodes, get().personalInfo).catch(console.error);
             }
+            
+            // Sync credits from profile
+            if (profile!.credit !== undefined && profile!.credit !== null) {
+              set(state => ({ user: state.user ? { ...state.user, credits: profile!.credit! } : null }));
+            }
           }
           if (profile) {
             set({ profileId: profile.id });
           }
         } catch (err) {
           console.error("Profile sync failed", err);
+        }
+      },
+      deductCredits: async (amount: number) => {
+        const state = get();
+        if (!state.user) return;
+        const isPrivileged = state.user.role === 'admin' || state.user.role === 'contrib';
+        if (isPrivileged) return;
+        
+        const newCredits = Math.max(0, state.user.credits - amount);
+        set({ user: { ...state.user, credits: newCredits } });
+        
+        if (state.authToken && state.profileId) {
+          await updateProfile(state.authToken, state.profileId, state.user.id, {
+            appLanguage: state.appLanguage,
+            drawStyle: state.drawStyle,
+            hebrewFont: state.hebrewFont,
+            aiModel: state.aiModel
+          }, state.usedGiftCodes, state.personalInfo, newCredits).catch(console.error);
         }
       },
     }),

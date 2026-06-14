@@ -22,6 +22,7 @@ export interface UserProfileRecord {
   param: UserProfileParams | null;
   perso: PersonalInfo | null;
   bonuscode: string[] | null;
+  credit?: number;
 }
 
 export async function fetchProfile(authToken: string): Promise<UserProfileRecord | null> {
@@ -45,14 +46,14 @@ export async function fetchProfile(authToken: string): Promise<UserProfileRecord
   return null;
 }
 
-export async function createProfile(authToken: string, userId: number, param: UserProfileParams, bonuscode?: string[], perso?: PersonalInfo): Promise<UserProfileRecord | null> {
+export async function createProfile(authToken: string, userId: number, param: UserProfileParams, bonuscode?: string[], perso?: PersonalInfo, credit?: number): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${authToken}`
     },
-    body: JSON.stringify({ user_id: userId, param, bonuscode: bonuscode || [], perso: perso || {} })
+    body: JSON.stringify({ user_id: userId, param, bonuscode: bonuscode || [], perso: perso || {}, credit })
   });
 
   if (!res.ok) {
@@ -63,14 +64,14 @@ export async function createProfile(authToken: string, userId: number, param: Us
   return await res.json();
 }
 
-export async function updateProfile(authToken: string, profileId: number, userId: number, param: UserProfileParams, bonuscode?: string[], perso?: PersonalInfo): Promise<UserProfileRecord | null> {
+export async function updateProfile(authToken: string, profileId: number, userId: number, param: UserProfileParams, bonuscode?: string[], perso?: PersonalInfo, credit?: number): Promise<UserProfileRecord | null> {
   const res = await fetch(`${XANO_AUTH_URL}/profile/${profileId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${authToken}`
     },
-    body: JSON.stringify({ user_id: userId, param, bonuscode, perso })
+    body: JSON.stringify({ user_id: userId, param, bonuscode, perso, credit })
   });
 
   if (!res.ok) {

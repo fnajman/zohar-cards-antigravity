@@ -25,6 +25,7 @@ export function InterpretationScreen() {
   
   const chatMessages = useStore(s => s.chatMessages);
   const setChatMessages = useStore(s => s.setChatMessages);
+  const deductCredits = useStore(s => s.deductCredits);
   const messages = chatMessages;
   const setMessages = setChatMessages;
   const [inputText, setInputText] = useState("");
@@ -72,6 +73,8 @@ export function InterpretationScreen() {
             }
           ]);
           setLinksShouldBlink(true);
+          
+          await deductCredits(3);
         } catch (error) {
           console.error(error);
           setMessages([
@@ -168,6 +171,8 @@ export function InterpretationScreen() {
           await new Promise(r => setTimeout(r, 25));
         }
       }
+      setIsTyping(false);
+      await deductCredits(3);
     } catch (error) {
       console.error(error);
       setMessages(prev => [...prev, {
