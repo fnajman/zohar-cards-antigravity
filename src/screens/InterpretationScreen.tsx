@@ -53,10 +53,12 @@ export function InterpretationScreen() {
       .filter(m => !m.id.includes("action") && m.role !== "system" || m.content.startsWith("Model used:"))
       .map(m => ({ role: m.role, content: m.content }));
     
-    // We add the system model msg if it's missing (it was initialized on POST /draw, but let's just send the whole thing to overwrite).
-    // Let's just send what we have. If the system message isn't in UI state, we prepend it.
+    const keywords = currentDraw.selected_keywords?.length 
+      ? currentDraw.selected_keywords.join(", ") 
+      : "Aucun";
+
     const fullHistory = [
-      { role: "system", content: `Model used: ${s.aiModel}` },
+      { role: "system", content: `Model used: ${s.aiModel}\nMots sélectionnés: ${keywords}` },
       ...history.filter(m => m.role !== "system")
     ];
 
