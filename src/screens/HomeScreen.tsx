@@ -23,6 +23,8 @@ export function HomeScreen() {
           <span 
             className="text-[11px] text-ash select-none cursor-pointer"
             onClick={(e) => {
+              if (user?.role !== 'admin') return;
+              
               if (e.detail === 1) {
                 // Wait to see if it's a double click
                 (window as any)._creditTimeout = setTimeout(() => {

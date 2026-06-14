@@ -86,13 +86,16 @@ export const useStore = create<AppState>()(
         if (codeUpper !== "BONUS03") {
           return { success: false, messageKey: 'settings.gift_code_invalid' };
         }
-        if (state.usedGiftCodes.includes(codeUpper)) {
+        
+        const isPrivileged = state.user?.role === 'admin' || state.user?.role === 'contrib';
+        
+        if (!isPrivileged && state.usedGiftCodes.includes(codeUpper)) {
           return { success: false, messageKey: 'settings.gift_code_used' };
         }
         
         // Apply credits
         set({ 
-          usedGiftCodes: [...state.usedGiftCodes, codeUpper],
+          usedGiftCodes: isPrivileged ? state.usedGiftCodes : [...state.usedGiftCodes, codeUpper],
           user: state.user ? { ...state.user, credits: (state.user.credits || 0) + 3 } : null
         });
         
