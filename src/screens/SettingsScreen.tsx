@@ -72,7 +72,7 @@ function PersonalInfoForm({ close }: { close: () => void }) {
             <select 
               value={formData.gender || ""} 
               onChange={e => setFormData({ ...formData, gender: e.target.value })}
-              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment focus:outline-none focus:border-parchment/30"
+              className="block w-full appearance-none m-0 bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment focus:outline-none focus:border-parchment/30"
             >
               <option value="">{t('settings.personal.gender_none', 'Non défini')}</option>
               <option value="male">{t('settings.personal.gender_male', 'Homme')}</option>
@@ -86,7 +86,7 @@ function PersonalInfoForm({ close }: { close: () => void }) {
               type="date" 
               value={formData.birthDate || ""} 
               onChange={e => setFormData({ ...formData, birthDate: e.target.value })}
-              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment focus:outline-none focus:border-parchment/30"
+              className="block w-full appearance-none m-0 bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment focus:outline-none focus:border-parchment/30"
               style={{ colorScheme: 'dark' }}
             />
           </div>
@@ -98,7 +98,7 @@ function PersonalInfoForm({ close }: { close: () => void }) {
               min="0" max="9"
               value={formData.childrenCount ?? ""} 
               onChange={e => setFormData({ ...formData, childrenCount: e.target.value ? parseInt(e.target.value) : undefined })}
-              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment focus:outline-none focus:border-parchment/30"
+              className="block w-full appearance-none m-0 bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment focus:outline-none focus:border-parchment/30"
             />
           </div>
 
@@ -109,7 +109,7 @@ function PersonalInfoForm({ close }: { close: () => void }) {
               value={formData.profession || ""} 
               onChange={e => setFormData({ ...formData, profession: e.target.value })}
               placeholder={t('settings.personal.profession_ph', 'Ex: Designer...')}
-              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment placeholder-ash focus:outline-none focus:border-parchment/30"
+              className="block w-full appearance-none m-0 bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment placeholder-ash focus:outline-none focus:border-parchment/30"
             />
           </div>
 
@@ -120,7 +120,7 @@ function PersonalInfoForm({ close }: { close: () => void }) {
               value={formData.maritalStatus || ""} 
               onChange={e => setFormData({ ...formData, maritalStatus: e.target.value })}
               placeholder={t('settings.personal.maritalStatus_ph', 'Ex: Célibataire...')}
-              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment placeholder-ash focus:outline-none focus:border-parchment/30"
+              className="block w-full appearance-none m-0 bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment placeholder-ash focus:outline-none focus:border-parchment/30"
             />
           </div>
 
@@ -131,7 +131,7 @@ function PersonalInfoForm({ close }: { close: () => void }) {
               onChange={e => setFormData({ ...formData, freeText: e.target.value })}
               rows={4}
               placeholder={t('settings.personal.freeText_ph', 'Détails libres...')}
-              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment placeholder-ash focus:outline-none focus:border-parchment/30 resize-none"
+              className="block w-full appearance-none m-0 bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-base text-parchment placeholder-ash focus:outline-none focus:border-parchment/30 resize-none"
             />
           </div>
 
@@ -373,7 +373,7 @@ export function SettingsScreen() {
               value={giftCode}
               onChange={(e) => setGiftCode(e.target.value)}
               placeholder={t('settings.gift_code_placeholder')}
-              className="w-full bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-parchment placeholder-ash focus:outline-none focus:border-parchment/30 transition-colors uppercase"
+              className="block w-full appearance-none m-0 bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-parchment placeholder-ash focus:outline-none focus:border-parchment/30 transition-colors uppercase"
             />
           </div>
           <button 
