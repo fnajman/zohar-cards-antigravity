@@ -199,5 +199,11 @@
     "a6": "Allez dans Paramètres > Style de caractère pour choisir entre plusieurs polices (Calligraphie classique, Moderne, Manuscrit, etc.) selon l'esthétique qui vous inspire le plus.",
     "q7": "À quoi servent les crédits ?",
     "a7": "Les crédits sont utilisés pour interroger l'IA (le guide virtuel) lors d'un tirage. Chaque question détaillée consomme un crédit. Vous pouvez recharger vos crédits depuis le menu Paramètres."
+  },
+  "update": {
+    "title": "Nouvelle version disponible",
+    "desc": "Une nouvelle version de l'application est en ligne. Voulez-vous la recharger maintenant ?",
+    "later": "Plus tard",
+    "reload": "Recharger"
   }
 }

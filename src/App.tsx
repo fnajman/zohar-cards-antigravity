@@ -7,7 +7,7 @@ import { InstallPrompt } from "@/components/InstallPrompt";
 import { useStore } from "@/store/useStore";
 import { getMe } from "@/services/authApi";
 import i18n from "@/i18n/config";
-import { useRegisterSW } from 'virtual:pwa-register/react';
+import { UpdatePopup } from "@/components/UpdatePopup";
 
 const HomeScreen = React.lazy(() => import("@/screens/HomeScreen").then(m => ({ default: m.HomeScreen })));
 const DrawScreen = React.lazy(() => import("@/screens/DrawScreen").then(m => ({ default: m.DrawScreen })));
@@ -43,23 +43,6 @@ export default function App() {
   const logout = useStore(state => state.logout);
   const appLanguage = useStore(state => state.appLanguage);
 
-  // Auto-reload the PWA when a new version is available
-  useRegisterSW({
-    onNeedRefresh() {
-      if (typeof window !== 'undefined') {
-        window.location.reload();
-      }
-    },
-    onRegistered(r: ServiceWorkerRegistration | undefined) {
-      // Periodic check for updates every 1 minute if user stays on app without closing
-      if (r) {
-        setInterval(() => {
-          r.update();
-        }, 60 * 1000);
-      }
-    }
-  });
-
   React.useEffect(() => {
     if (appLanguage && i18n.language !== appLanguage) {
       i18n.changeLanguage(appLanguage);
@@ -81,6 +64,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <div className="h-[100dvh] w-full max-w-[430px] mx-auto relative bg-night">
+          <UpdatePopup />
           <JourneyProgress />
           <InstallPrompt />
           <Suspense fallback={<LoadingFallback />}>

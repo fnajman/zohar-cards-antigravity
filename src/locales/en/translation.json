@@ -199,5 +199,11 @@
     "a6": "Go to Settings > Font Style to choose from several fonts (Classic Calligraphy, Modern, Handwritten, etc.) according to the aesthetic that inspires you most.",
     "q7": "What are credits used for?",
     "a7": "Credits are used to ask the AI (the virtual guide) questions during a draw. Each detailed question consumes one credit. You can recharge your credits from the Settings menu."
+  },
+  "update": {
+    "title": "New version available",
+    "desc": "A new version of the app is available online. Do you want to reload it now?",
+    "later": "Later",
+    "reload": "Reload"
   }
 }
