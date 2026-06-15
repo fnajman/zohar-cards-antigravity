@@ -403,8 +403,8 @@ export function SettingsScreen() {
       </header>
       <main className="flex-1 pb-8">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-          <section className="px-6 py-6 border-b border-parchment/5">
-            <h2 className="text-[11px] tracking-[0.2em] uppercase text-ash/60 mb-6">{t('settings.account')}</h2>
+          <section className="px-6 py-4 border-b border-parchment/5">
+            <h2 className="text-[11px] tracking-[0.2em] uppercase text-ash/60 mb-4">{t('settings.account')}</h2>
             <div className="bg-night-light border border-parchment/10 rounded-2xl p-4 flex items-center gap-4 mb-6">
               <div className="w-12 h-12 rounded-full bg-parchment/10 flex items-center justify-center"><span className="text-lg text-parchment font-medium">{user ? user.name?.[0]?.toUpperCase() : '?'}</span></div>
               <div><p className="text-sm font-medium text-parchment">{user ? user.name : "Invité"}</p><p className="text-[11px] text-ash">{user ? user.email : "Non connecté"}</p></div>
@@ -415,26 +415,26 @@ export function SettingsScreen() {
             </div>
           </section>
           <section className="border-b border-parchment/5">
-            <button onClick={() => setSection("draw-style")} className="w-full flex items-center justify-between p-6">
+            <button onClick={() => setSection("draw-style")} className="w-full flex items-center justify-between p-4">
                 <span className="text-sm text-parchment/80">{t('settings.draw_style')}</span>
                 <span className="text-xs text-ash capitalize flex items-center gap-1">{DRAW_STYLES.find((s) => s.id === drawStyle)?.label}<svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </button>
-            <button onClick={() => setSection("hebrew-font")} className="w-full flex items-center justify-between p-6">
+            <button onClick={() => setSection("hebrew-font")} className="w-full flex items-center justify-between p-4">
                 <span className="text-sm text-parchment/80">{t('settings.font_style')}</span>
                 <span className="text-xs text-ash capitalize flex items-center gap-1">{HEBREW_FONT_STYLES.find((s) => s.id === hebrewFont)?.label}<svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </button>
-            <button onClick={() => setSection("language")} className="w-full flex items-center justify-between p-6 border-b border-parchment/5">
+            <button onClick={() => setSection("language")} className="w-full flex items-center justify-between p-4 border-b border-parchment/5">
                 <span className="text-sm text-parchment/80">{t('settings.language')}</span>
                 <span className="text-xs text-ash capitalize flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </button>
-            <button onClick={() => setSection("personal")} className="w-full flex items-center justify-between p-6 border-b border-parchment/5">
+            <button onClick={() => setSection("personal")} className="w-full flex items-center justify-between p-4 border-b border-parchment/5">
                 <div className="flex flex-col items-start">
                   <span className="text-sm text-parchment/80">{t('settings.personal.title', 'Personnel')}</span>
                   <span className="text-[10px] text-ash/60">{t('settings.personal.subtitle', 'Facultatif')}</span>
                 </div>
                 <span className="text-xs text-ash flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </button>
-            <button onClick={() => setSection("faq")} className="w-full flex items-center justify-between p-6">
+            <button onClick={() => setSection("faq")} className="w-full flex items-center justify-between p-4">
                 <div className="flex flex-col items-start">
                   <span className="text-sm text-parchment/80">{t('faq.title', 'Aide & FAQ')}</span>
                   <span className="text-[10px] text-ash/60">Questions fréquentes</span>
@@ -444,7 +444,7 @@ export function SettingsScreen() {
           </section>
 
           {(user?.role === "admin" || user?.role === "contrib") && (
-            <section className="px-6 py-6 border-b border-parchment/5">
+            <section className="px-6 py-4 border-b border-parchment/5">
               <h2 className="text-[11px] tracking-[0.2em] uppercase text-ash/60 mb-4">{t('settings.admin_title', 'Administration')}</h2>
               
               <div className="bg-night-light border border-parchment/10 rounded-2xl p-4 flex justify-between items-center mb-4">
@@ -468,7 +468,7 @@ export function SettingsScreen() {
             </section>
           )}
 
-          <section className="px-6 py-6">
+          <section className="px-6 py-4">
             <h2 className="text-[11px] tracking-[0.2em] uppercase text-ash/60 mb-4">{t('settings.actions')}</h2>
             <div className="space-y-2">
               {user && <Btn label={t('settings.gift_code_btn')} onClick={() => setSection("gift-code")} />}
