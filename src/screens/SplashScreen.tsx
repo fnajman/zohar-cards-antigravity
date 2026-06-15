@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
 import { useStore } from "@/store/useStore";
 import i18n from "@/i18n/config";
+import { APP_VERSION } from "@/version";
 
 export function SplashScreen() {
   const navigate = useNavigate();
@@ -49,9 +50,10 @@ export function SplashScreen() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1.2 }}
-        className="mt-6 text-[11px] tracking-[0.3em] uppercase text-ash font-medium"
+        className="mt-6 text-[11px] tracking-[0.3em] uppercase text-ash font-medium flex flex-col items-center gap-1"
       >
-        Zohar Cards
+        <span>Zohar Cards</span>
+        <span className="text-[8px] tracking-widest opacity-40">{APP_VERSION}</span>
       </motion.p>
       <motion.div
         initial={{ opacity: 0 }}
