@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { openrouterApi } from "@/services/openrouterApi";
 import { HEBREW_FONT_STYLES, type HebrewFontStyle } from "../components/HebrewGlyph";
 import { useScrollHint } from "@/hooks/useScrollHint";
+import { FaqSection } from "@/components/FaqSection";
 
 // --- LANGUAGE SELECTOR ---
 function LanguageSelector({ close }: { close: () => void }) {
@@ -159,7 +160,7 @@ export function SettingsScreen() {
   const { t } = useTranslation();
   const { user, drawStyle, setDrawStyle, hebrewFont, setHebrewFont, aiModel, setAiModel } = useStore();
   const { data: drawHistory = [], isLoading } = useDrawHistory();
-  const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language" | "ai-model" | "gift-code" | "personal">("main");
+  const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language" | "ai-model" | "gift-code" | "personal" | "faq">("main");
   const [giftCode, setGiftCode] = useState("");
   const [giftCodeMessage, setGiftCodeMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
@@ -186,6 +187,7 @@ export function SettingsScreen() {
 
   if (section === "personal") return <PersonalInfoForm close={() => setSection("main")} />;
   if (section === "language") return <LanguageSelector close={() => setSection("main")} />;
+  if (section === "faq") return <FaqSection close={() => setSection("main")} />;
 
   if (section === "draw-style") return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-night flex flex-col">
@@ -425,10 +427,17 @@ export function SettingsScreen() {
                 <span className="text-sm text-parchment/80">{t('settings.language')}</span>
                 <span className="text-xs text-ash capitalize flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </button>
-            <button onClick={() => setSection("personal")} className="w-full flex items-center justify-between p-6">
+            <button onClick={() => setSection("personal")} className="w-full flex items-center justify-between p-6 border-b border-parchment/5">
                 <div className="flex flex-col items-start">
                   <span className="text-sm text-parchment/80">{t('settings.personal.title', 'Personnel')}</span>
                   <span className="text-[10px] text-ash/60">{t('settings.personal.subtitle', 'Facultatif')}</span>
+                </div>
+                <span className="text-xs text-ash flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+            </button>
+            <button onClick={() => setSection("faq")} className="w-full flex items-center justify-between p-6">
+                <div className="flex flex-col items-start">
+                  <span className="text-sm text-parchment/80">{t('faq.title', 'Aide & FAQ')}</span>
+                  <span className="text-[10px] text-ash/60">Questions fréquentes</span>
                 </div>
                 <span className="text-xs text-ash flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
             </button>

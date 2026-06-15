@@ -182,5 +182,22 @@
   },
   "letter": {
     "position": "Position"
+  },
+  "faq": {
+    "title": "Aide & FAQ",
+    "q1": "Qu'est-ce que Zohar Cards ?",
+    "a1": "Zohar Cards est une expérience divinatoire et méditative basée sur l'alphabet hébreu, son symbolisme kabbalistique (Zohar) et sa résonance avec notre parcours de vie. Ce n'est pas un jeu de tarot classique, mais un outil d'introspection.",
+    "q2": "Qu'est-ce que ce n'est PAS ?",
+    "a2": "Ce n'est pas un outil de prédiction de l'avenir ou de divination de fortune. Zohar Cards vous offre des clés de compréhension et des pistes de réflexion pour éclairer vos situations présentes.",
+    "q3": "Comment choisir mon style de tirage ?",
+    "a3": "Allez dans Paramètres > Style de Tirage. Vous avez plusieurs options selon votre préférence sensorielle : la 'Grille' (rationnel), le 'Chaos' (secouer le téléphone pour les plus tactiles), 'L'éventail' (classique) ou le 'Slider'.",
+    "q4": "Comment installer l'application sur mon mobile ?",
+    "a4": "Sur iOS (iPhone/iPad) : Ouvrez Safari, touchez l'icône Partage au centre de la barre du bas, puis choisissez 'Sur l'écran d'accueil'. Sur Android : Dans Chrome, touchez les trois points en haut à droite, puis 'Ajouter à l'écran d'accueil'.",
+    "q5": "Comment changer la langue de l'application ?",
+    "a5": "Allez dans Paramètres > Langue et choisissez votre langue préférée. L'interface ainsi que les interprétations IA seront générées dans cette langue.",
+    "q6": "Comment changer la police des lettres hébraïques ?",
+    "a6": "Allez dans Paramètres > Style de caractère pour choisir entre plusieurs polices (Calligraphie classique, Moderne, Manuscrit, etc.) selon l'esthétique qui vous inspire le plus.",
+    "q7": "À quoi servent les crédits ?",
+    "a7": "Les crédits sont utilisés pour interroger l'IA (le guide virtuel) lors d'un tirage. Chaque question détaillée consomme un crédit. Vous pouvez recharger vos crédits depuis le menu Paramètres."
   }
 }

@@ -182,5 +182,22 @@
   },
   "letter": {
     "position": "Position"
+  },
+  "faq": {
+    "title": "Help & FAQ",
+    "q1": "What is Zohar Cards?",
+    "a1": "Zohar Cards is a divinatory and meditative experience based on the Hebrew alphabet, its Kabbalistic symbolism (Zohar), and its resonance with our life path. It is not a classic tarot deck, but a tool for introspection.",
+    "q2": "What is it NOT?",
+    "a2": "It is not a fortune-telling or future prediction tool. Zohar Cards offers keys to understanding and avenues for reflection to illuminate your present situations.",
+    "q3": "How do I choose my draw style?",
+    "a3": "Go to Settings > Draw Style. You have several options depending on your sensory preference: 'Grid' (rational), 'Chaos' (shake the phone for the tactile), 'Fan' (classic), or 'Slider'.",
+    "q4": "How do I install the app on my mobile?",
+    "a4": "On iOS (iPhone/iPad): Open Safari, tap the Share icon at the bottom center, then choose 'Add to Home Screen'. On Android: In Chrome, tap the three dots at the top right, then 'Add to Home screen'.",
+    "q5": "How do I change the app language?",
+    "a5": "Go to Settings > Language and choose your preferred language. The interface and AI interpretations will be generated in this language.",
+    "q6": "How do I change the Hebrew font?",
+    "a6": "Go to Settings > Font Style to choose from several fonts (Classic Calligraphy, Modern, Handwritten, etc.) according to the aesthetic that inspires you most.",
+    "q7": "What are credits used for?",
+    "a7": "Credits are used to ask the AI (the virtual guide) questions during a draw. Each detailed question consumes one credit. You can recharge your credits from the Settings menu."
   }
 }
