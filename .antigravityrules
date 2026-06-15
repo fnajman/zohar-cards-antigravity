@@ -26,3 +26,10 @@ Afin de garder une trace incrémentale et propre de l'évolution du projet, tu D
 
 ## 5. Gestion des Prompts et Localisation
 - Si tu modifies le prompt système de l'Intelligence Artificielle, tu DOIS obligatoirement répercuter cette modification dans TOUTES les langues gérées (fichiers `src/config/prompts/*.ts`). Les différents fichiers de prompts (ex: `fr.ts`, `en.ts`) doivent toujours rester parfaitement synchronisés en termes de logique et d'instructions.
+
+## 6. Critères de Validation Native (App Store Guideline 4.2)
+Puisque l'application est conçue pour être wrappée (via Capacitor) et publiée sur les stores (iOS/Android), tu DOIS respecter à la lettre les critères de "Minimum Functionality" d'Apple pour éviter un rejet (Design "App-like") :
+- **Pas de sélection de texte web** : Tout le texte statique de l'interface (`h1`, `p`, `span`, etc.) doit avoir la classe Tailwind `select-none` (ou CSS `user-select: none;`) pour empêcher l'utilisateur de surligner le texte comme sur une page web classique.
+- **Désactiver le Callout natif iOS** : Assure-toi que les images et boutons ont la propriété CSS `-webkit-touch-callout: none;` pour éviter le menu contextuel natif de Safari lors d'un appui long.
+- **Performances et Transitions** : Toutes les navigations et ouvertures de modales doivent avoir des transitions `framer-motion` (60fps) fluides. Aucune page ne doit "clignoter" ou recharger brutalement.
+- **Sensorialité matérielle** : Pense toujours à utiliser/proposer des interactions matérielles si justifié (vibrations haptiques `navigator.vibrate`, accéléromètre `DeviceMotionEvent` pour le secouage), afin de prouver que ce n'est pas "juste un site web".
