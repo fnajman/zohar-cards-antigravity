@@ -69,8 +69,7 @@ export function InterpretationScreen() {
     const initChat = async () => {
       if (messages.length === 0 && currentDraw && !isTyping) {
         setIsTyping(true);
-        if (!useStore.getState().chatSessionPaid) {
-          setChatSessionPaid(true);
+        if (currentQuestion && currentQuestion.trim().length > 0) {
           deductCredits(3).catch(console.error);
         }
         try {
@@ -144,31 +143,22 @@ export function InterpretationScreen() {
 
   const isUnlimited = user?.role === "admin" || user?.role === "contrib";
 
-  if (user && user.credits < 3 && !isUnlimited && !chatSessionPaid) {
-    return (
-      <div className="h-full flex flex-col items-center justify-center bg-night px-6 gap-6">
-        <p className="text-sm text-ash text-center max-w-[320px] sm:max-w-[360px] leading-relaxed">
-          {t('interpretation.no_credits', 'Il vous faut au moins 3 crédits pour obtenir une interprétation personnelle profonde.')}
-        </p>
-        <div className="w-full max-w-[240px] flex flex-col gap-3">
-          <button onClick={() => navigate("/settings")} className="w-full py-4 px-6 border border-parchment/20 text-parchment rounded-full text-sm hover:border-parchment/40 transition-colors flex items-center justify-center text-center whitespace-normal leading-tight">
-            {t('interpretation.buy_credits', 'Acheter des crédits')}
-          </button>
-          <button onClick={() => navigate("/home")} className="w-full py-3 text-ash text-sm hover:text-parchment transition-colors">
-            {t('interpretation.home_btn', 'Retour à l\'accueil')}
-          </button>
-        </div>
-      </div>
-    );
-  }
+
 
   const handleSend = async () => {
     if (!inputText.trim() || !currentDraw || isTyping) return;
     
-    if (!useStore.getState().chatSessionPaid) {
-      setChatSessionPaid(true);
-      deductCredits(3).catch(console.error);
+    if (!user) {
+      alert(t('question.guest_alert', "Vous devez créer un compte pour bénéficier de toutes les fonctionnalités."));
+      return;
     }
+    const isPrivileged = user.role === 'admin' || user.role === 'contrib';
+    if (!isPrivileged && (user.credits ?? 0) < 3) {
+      alert(t('question.credit_alert', "Vous devez avoir au moins 3 crédits pour poser une question."));
+      return;
+    }
+    
+    deductCredits(3).catch(console.error);
     
     const newUserMsg: Message = {
       id: Date.now().toString(),
