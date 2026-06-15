@@ -50,7 +50,8 @@ export default function App() {
   }, [appLanguage]);
 
   React.useEffect(() => {
-    if (authToken) {
+    // Si on a un token mais pas de user (ex: rechargement de page), on va chercher le profil
+    if (authToken && !useStore.getState().user) {
       getMe(authToken)
         .then(user => {
           loginSession(authToken, user);
