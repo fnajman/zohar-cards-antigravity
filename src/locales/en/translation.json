@@ -198,7 +198,13 @@
     "q6": "How do I change the Hebrew font?",
     "a6": "Go to Settings > Font Style to choose from several fonts (Classic Calligraphy, Modern, Handwritten, etc.) according to the aesthetic that inspires you most.",
     "q7": "What are credits used for?",
-    "a7": "Credits are used to ask the AI (the virtual guide) questions during a draw. Each detailed question consumes one credit. You can recharge your credits from the Settings menu."
+    "a7": "Credits are used to ask the AI (the virtual guide) questions during a draw. Each detailed question consumes one credit. You can recharge your credits from the Settings menu.",
+    "q8": "Who is Frank Lalou?",
+    "a8": "Frank Lalou is a recognized French essayist, writer, and calligrapher, specializing in Hebrew calligraphy. The letters used in this application are derived from his work and his artistic vision of the Hebrew alphabet.",
+    "q9": "What is Tehima?",
+    "a9": "Tehima (which means 'harmony' in Hebrew) is a meditative movement practice created by Tina Bosi and choreographed around the 22 letters of the Hebrew alphabet. You can learn more at https://www.tehima.com/ .",
+    "q10": "Is my personal information secure?",
+    "a10": "Yes, absolutely. The application uses GDPR-compliant servers and all connections are secure. Your personal information and draw history remain strictly confidential."
   },
   "update": {
     "title": "New version available",

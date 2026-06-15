@@ -198,7 +198,13 @@
     "q6": "Comment changer la police des lettres hébraïques ?",
     "a6": "Allez dans Paramètres > Style de caractère pour choisir entre plusieurs polices (Calligraphie classique, Moderne, Manuscrit, etc.) selon l'esthétique qui vous inspire le plus.",
     "q7": "À quoi servent les crédits ?",
-    "a7": "Les crédits sont utilisés pour interroger l'IA (le guide virtuel) lors d'un tirage. Chaque question détaillée consomme un crédit. Vous pouvez recharger vos crédits depuis le menu Paramètres."
+    "a7": "Les crédits sont utilisés pour interroger l'IA (le guide virtuel) lors d'un tirage. Chaque question détaillée consomme un crédit. Vous pouvez recharger vos crédits depuis le menu Paramètres.",
+    "q8": "Qui est Frank Lalou ?",
+    "a8": "Frank Lalou est un essayiste, écrivain et calligraphe français reconnu, spécialiste de la calligraphie hébraïque. Les lettres utilisées dans cette application sont issues de son travail et de sa vision artistique de l'alphabet hébreu.",
+    "q9": "Qu'est-ce que le Téhima ?",
+    "a9": "Le Téhima (qui signifie 'harmonie' en hébreu) est une gestuelle méditative, créée par Tina Bosi et chorégraphiée autour des 22 lettres de l'alphabet hébreu. Vous pouvez en apprendre plus sur https://www.tehima.com/ .",
+    "q10": "Mes informations personnelles sont-elles sécurisées ?",
+    "a10": "Oui, totalement. L'application utilise des serveurs conformes au RGPD (Règlement Général sur la Protection des Données) et toutes les connexions sont sécurisées. Vos informations personnelles et l'historique de vos tirages restent strictement confidentiels."
   },
   "update": {
     "title": "Nouvelle version disponible",
