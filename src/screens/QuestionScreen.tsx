@@ -35,6 +35,16 @@ export function QuestionScreen() {
   const toggle = (w: string) => setSelected((p) => p.includes(w) ? p.filter((x) => x !== w) : [...p, w]);
 
   const saveAndNavigate = () => {
+    if (!user) {
+      alert(t('question.guest_alert', "Vous devez créer un compte pour bénéficier de toutes les fonctionnalités."));
+      return;
+    }
+    const isPrivileged = user.role === 'admin' || user.role === 'contrib';
+    if (!isPrivileged && (user.credits ?? 0) < 3) {
+      alert(t('question.credit_alert', "Vous devez avoir au moins 3 crédits pour obtenir une interprétation."));
+      return;
+    }
+
     markJourneyStep("question");
     setCurrentQuestion(question.trim());
     if (selected.length > 0) {
@@ -47,17 +57,6 @@ export function QuestionScreen() {
   };
 
   const handleReveal = () => {
-    if (question.trim().length > 0) {
-      if (!user) {
-        alert(t('question.guest_alert', "Vous devez créer un compte pour bénéficier de toutes les fonctionnalités."));
-        return;
-      }
-      const isPrivileged = user.role === 'admin' || user.role === 'contrib';
-      if (!isPrivileged && (user.credits ?? 0) < 3) {
-        alert(t('question.credit_alert', "Vous devez avoir au moins 3 crédits pour poser une question."));
-        return;
-      }
-    }
     saveAndNavigate();
   };
 

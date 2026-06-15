@@ -4,9 +4,9 @@
 Implémentation stricte des règles de rôles et de crédits pour l'utilisation du chat LLM :
 
 1. **Invité (Guest)** :
-   - Peut tirer les cartes et lire l'analyse de combinaison.
-   - Ne peut pas poser de question (ni dans QuestionScreen, ni dans InterpretationScreen).
-   - Un message d'alerte l'invite à créer un compte s'il tente d'envoyer une question.
+   - Peut tirer les cartes et lire l'analyse **pré-calculée (combinaison)** sur l'écran "Reading".
+   - Ne peut pas aller sur l'écran d'interprétation IA (QuestionScreen bloquera).
+   - Un message d'alerte l'invite à créer un compte s'il tente d'aller plus loin.
 
 2. **Administrateur (admin)** :
    - Accès illimité sans vérification ni déduction de crédits.
@@ -17,6 +17,6 @@ Implémentation stricte des règles de rôles et de crédits pour l'utilisation 
    - *Ne peut pas* modifier le modèle IA manuellement dans les paramètres (menu masqué).
 
 4. **Utilisateur standard (user)** :
-   - Doit avoir un minimum de **3 crédits** pour poser une question (initiale ou suivi).
-   - Déduction de **3 crédits par question posée**.
-   - L'écran d'interprétation n'est plus bloqué (l'analyse initiale de base est lisible), mais l'envoi de questions requiert 3 crédits à chaque fois.
+   - Doit avoir un minimum de **3 crédits** pour déclencher n'importe quelle requête IA (incluant la génération initiale sans question).
+   - Déduction de **3 crédits par requête** (qu'il s'agisse du premier tirage IA, d'une question, ou d'une réponse de chat).
+   - Le bouton "Révéler" et "Passer" bloquent si les crédits sont insuffisants (< 3).

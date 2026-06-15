@@ -69,9 +69,7 @@ export function InterpretationScreen() {
     const initChat = async () => {
       if (messages.length === 0 && currentDraw && !isTyping) {
         setIsTyping(true);
-        if (currentQuestion && currentQuestion.trim().length > 0) {
-          deductCredits(3).catch(console.error);
-        }
+        deductCredits(3).catch(console.error);
         try {
           const stream = await getAiResponseStream(
             currentDraw,
