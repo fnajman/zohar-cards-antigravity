@@ -23,6 +23,21 @@ export function TutorialScreen() {
     }
   };
 
+  const handlePrev = () => {
+    if (step > 0) {
+      setStep(s => s - 1);
+    }
+  };
+
+  const handleDragEnd = (event: any, info: any) => {
+    const swipeThreshold = 50;
+    if (info.offset.x < -swipeThreshold) {
+      handleNext();
+    } else if (info.offset.x > swipeThreshold) {
+      handlePrev();
+    }
+  };
+
   const handleFinish = () => {
     setHasSeenTutorial();
     navigate(fromHome ? "/home" : "/auth");
@@ -53,7 +68,11 @@ export function TutorialScreen() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.4 }}
-            className="w-full flex flex-col items-center text-center"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={handleDragEnd}
+            className="w-full flex flex-col items-center text-center touch-pan-y"
           >
             <div className="w-full max-w-[210px] max-h-[40vh] aspect-[3/4] mb-8 relative flex items-center justify-center border border-parchment/15 rounded-2xl p-4 bg-night-light/30">
               <img 
