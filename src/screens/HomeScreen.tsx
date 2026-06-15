@@ -10,8 +10,8 @@ export function HomeScreen() {
   const { t } = useTranslation();
 
   return (
-    <div className="h-full flex flex-col bg-night">
-      <header className="flex items-center justify-between px-6 pt-12 pb-4">
+    <div className="h-full flex flex-col bg-night overflow-y-auto no-scrollbar">
+      <header className="flex items-center justify-between px-6 pt-12 pb-4 shrink-0">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate("/settings")} className="w-8 h-8 rounded-full bg-parchment/10 flex items-center justify-center hover:bg-parchment/20 transition-colors shrink-0">
             {user ? (
@@ -48,7 +48,7 @@ export function HomeScreen() {
         </button>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-6 gap-12">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-8 gap-8 md:gap-12">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }} className="text-center">
           <h1 className="text-3xl font-medium tracking-tight text-parchment mb-3">{t('home.title')}</h1>
           <p className="text-sm text-ash max-w-[220px] mx-auto leading-relaxed">{t('home.subtitle')}</p>
@@ -67,7 +67,7 @@ export function HomeScreen() {
         </motion.div>
       </main>
 
-      <footer className="px-6 pb-8 flex justify-center gap-4">
+      <footer className="px-6 pb-8 flex justify-center gap-4 shrink-0">
         <button onClick={() => navigate("/about")} className="text-xs text-ash hover:text-parchment transition-colors">{t('about.title')}</button>
         <button 
           onClick={() => {

@@ -48,7 +48,7 @@ export function AuthScreen() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-night">
+    <div className="h-full flex flex-col bg-night overflow-y-auto no-scrollbar">
       <header className="px-6 pt-12 pb-4">
         <button onClick={() => navigate("/home")} className="text-sm text-ash hover:text-parchment transition-colors flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -56,7 +56,7 @@ export function AuthScreen() {
         </button>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-6">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-8">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-[300px]">
           <div className="text-center mb-8">
             <h2 className="text-xl font-medium text-parchment mb-2">

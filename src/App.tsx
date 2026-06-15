@@ -64,7 +64,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="h-[100dvh] w-full max-w-[430px] mx-auto relative bg-night">
+        <div className="h-full w-full max-w-[430px] mx-auto relative bg-night">
           <UpdatePopup />
           <JourneyProgress />
           <InstallPrompt />
