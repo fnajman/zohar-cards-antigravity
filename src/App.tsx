@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen } from "@/screens/SplashScreen";
 import { JourneyProgress } from "@/components/JourneyProgress";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import { useStore } from "@/store/useStore";
 import { getMe } from "@/services/authApi";
 import i18n from "@/i18n/config";
@@ -63,6 +64,7 @@ export default function App() {
       <BrowserRouter>
         <div className="h-[100dvh] w-full max-w-[430px] mx-auto relative bg-night">
           <JourneyProgress />
+          <InstallPrompt />
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
               <Route path="/" element={<SplashScreen />} />
