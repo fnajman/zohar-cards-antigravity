@@ -211,5 +211,50 @@
     "desc": "A new version of the app is available online. Do you want to reload it now?",
     "later": "Later",
     "reload": "Reload"
+  },
+  "subscription": {
+    "title": "Subscriptions",
+    "header": "Unfold your potential",
+    "subheader": "Enjoy all Zohar Cards features and deepen your draws with our expert AI.",
+    "recommended": "Recommended",
+    "current_plan": "Current",
+    "not_available_yet": "Payment integration for the {{planId}} plan will be implemented soon.",
+    "free": {
+      "name": "Free",
+      "price": "0€",
+      "period": "",
+      "desc": "To discover the Zohar universe",
+      "cta": "Current plan"
+    },
+    "light": {
+      "name": "Light",
+      "price": "4.99€",
+      "period": "/month",
+      "desc": "No commitment",
+      "cta": "Choose Light"
+    },
+    "unlimited": {
+      "name": "Unlimited",
+      "price": "9.99€",
+      "period": "/month",
+      "desc": "No commitment",
+      "cta": "Choose Unlimited"
+    },
+    "onetime": {
+      "name": "One-time",
+      "price": "14.99€",
+      "period": " once",
+      "desc": "Prepaid credits",
+      "cta": "Buy a Pass"
+    },
+    "features": {
+      "draw": "Draw 2 cards",
+      "letter": "Letter of the day",
+      "practices": "Meditation, Tehima, Breathing",
+      "ai_none": "AI Expert Dialogue",
+      "ai_25": "AI Expert Dialogue (25 times/month)",
+      "ai_unlimited": "AI Expert Dialogue (Unlimited)",
+      "ai_50": "AI Expert Dialogue (50 times)"
+    }
   }
 }

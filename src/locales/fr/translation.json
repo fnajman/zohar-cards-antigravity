@@ -208,8 +208,53 @@
   },
   "update": {
     "title": "Nouvelle version disponible",
-    "desc": "Une nouvelle version de l'application est en ligne. Voulez-vous la recharger maintenant ?",
+    "desc": "Une nouvelle version de l'application est disponible en ligne. Voulez-vous la recharger maintenant ?",
     "later": "Plus tard",
     "reload": "Recharger"
+  },
+  "subscription": {
+    "title": "Abonnements",
+    "header": "Déployez votre potentiel",
+    "subheader": "Profitez de toutes les fonctionnalités de Zohar Cards et approfondissez vos tirages avec notre IA experte.",
+    "recommended": "Recommandé",
+    "current_plan": "Actuel",
+    "not_available_yet": "L'intégration du paiement pour l'offre {{planId}} sera implémentée prochainement.",
+    "free": {
+      "name": "Gratuit",
+      "price": "0€",
+      "period": "",
+      "desc": "Pour découvrir l'univers de Zohar",
+      "cta": "Offre actuelle"
+    },
+    "light": {
+      "name": "Light",
+      "price": "4,99€",
+      "period": "/mois",
+      "desc": "Sans engagement",
+      "cta": "Choisir Light"
+    },
+    "unlimited": {
+      "name": "Illimité",
+      "price": "9,99€",
+      "period": "/mois",
+      "desc": "Sans engagement",
+      "cta": "Choisir Illimité"
+    },
+    "onetime": {
+      "name": "Ponctuel",
+      "price": "14,99€",
+      "period": " une fois",
+      "desc": "Crédits prépayés",
+      "cta": "Acheter un Pass"
+    },
+    "features": {
+      "draw": "Tirage de 2 cartes",
+      "letter": "Lettre du jour",
+      "practices": "Méditation, Téhima, Respiration",
+      "ai_none": "Dialogue Expert IA",
+      "ai_25": "Dialogue Expert IA (25 fois/mois)",
+      "ai_unlimited": "Dialogue Expert IA (Illimité)",
+      "ai_50": "Dialogue Expert IA (50 fois)"
+    }
   }
 }
