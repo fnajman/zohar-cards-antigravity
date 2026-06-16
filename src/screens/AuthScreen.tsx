@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useStore } from "@/store/useStore";
 import { login, signup, getMe } from "@/services/authApi";
 
 export function AuthScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
-  const [mode, setMode] = useState<"login" | "signup" | "magic">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "magic">(location.state?.mode || "login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

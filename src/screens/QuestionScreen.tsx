@@ -36,7 +36,10 @@ export function QuestionScreen() {
 
   const saveAndNavigate = () => {
     if (!user) {
-      alert(t('question.guest_alert', "Vous devez créer un compte pour bénéficier de toutes les fonctionnalités."));
+      const wantToSignup = window.confirm(t('question.guest_alert', "Vous devez créer un compte pour bénéficier de toutes les fonctionnalités.\n\nVoulez-vous créer un compte maintenant ?"));
+      if (wantToSignup) {
+        navigate("/auth", { state: { mode: "signup" } });
+      }
       return;
     }
     const isPrivileged = user.role === 'admin' || user.role === 'contrib';
