@@ -410,7 +410,13 @@ export function SettingsScreen() {
               <div><p className="text-sm font-medium text-parchment">{user ? user.name : "Invité"}</p><p className="text-[11px] text-ash">{user ? user.email : "Non connecté"}</p></div>
             </div>
             <div className="flex gap-4">
-              <div className="flex-1 bg-night-light rounded-xl p-4 border border-parchment/5"><p className="text-[10px] uppercase text-ash mb-1">Abonnement</p><p className="text-sm text-parchment capitalize">{user ? user.sub_tier : "Gratuit"}</p></div>
+              <button onClick={() => navigate("/subscription")} className="flex-1 text-left bg-night-light rounded-xl p-4 border border-parchment/5 hover:bg-parchment/10 transition-colors">
+                <p className="text-[10px] uppercase text-ash mb-1">Abonnement</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-parchment capitalize">{user ? user.sub_tier : "Gratuit"}</p>
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="text-ash"><path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+              </button>
               <div className="flex-1 bg-night-light rounded-xl p-4 border border-parchment/5"><p className="text-[10px] uppercase text-ash mb-1">Credits</p><p className="text-sm text-parchment">{user ? user.credits : 0}</p></div>
             </div>
           </section>
