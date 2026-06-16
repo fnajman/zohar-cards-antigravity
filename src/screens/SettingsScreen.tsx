@@ -318,33 +318,7 @@ export function SettingsScreen() {
     </div>
   );
 
-  if (section === "plans") return (
-    <div className="h-full flex flex-col bg-night overflow-y-auto">
-      <header className="px-6 pt-12 pb-4">{back(() => setSection("main"))}</header>
-      <main ref={scrollRef as any} className="flex-1 px-6 py-6 overflow-y-auto">
-        <h2 className="text-xl font-medium tracking-tight text-parchment mb-2">{t('settings.plans_title')}</h2>
-        <p className="text-sm text-ash mb-8">{t('settings.plans_subtitle')}</p>
-        <div className="space-y-3">
-          {([
-            { id: "free", name: "Gratuit", price: "0", period: "mois", questions: "2", chat: false },
-            { id: "light", name: "Light", price: "4.99", period: "mois", questions: "30", chat: false },
-            { id: "plus", name: "Plus", price: "9.99", period: "mois", questions: "100", chat: true },
-            { id: "unlimited", name: "Illimité", price: "19.99", period: "mois", questions: "∞", chat: true },
-          ] as const).map((p) => (
-            <div key={p.name} className={`rounded-2xl p-4 border ${user?.sub_tier === p.id ? "bg-parchment/5 border-parchment/20" : "bg-night-light border-parchment/5"}`}>
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="text-sm font-medium text-parchment">{p.name}</h3>
-                {user?.sub_tier === p.id && <span className="text-[10px] uppercase text-ash bg-parchment/10 px-2 py-0.5 rounded-full">{t('settings.current_plan')}</span>}
-              </div>
-              <p className="text-[11px] text-ash/70 mb-3">{p.price} EUR / {p.period}</p>
-              <div className="text-sm text-parchment mb-4">{t('settings.questions_per_month', { q: p.questions })}</div>
-              {user?.sub_tier !== p.id && <button className="mt-3 w-full py-2 border border-parchment/20 text-parchment rounded-full text-xs hover:border-parchment/40 transition-colors">{t('settings.choose_plan')}</button>}
-            </div>
-          ))}
-        </div>
-      </main>
-    </div>
-  );
+
 
   const handleGiftCodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -479,7 +453,7 @@ export function SettingsScreen() {
             <div className="space-y-2">
               {user && <Btn label={t('settings.gift_code_btn')} onClick={() => setSection("gift-code")} />}
               {user && <Btn label={t('settings.history')} onClick={() => setSection("history")} />}
-              {user && <Btn label={t('settings.plans')} onClick={() => setSection("plans")} />}
+              {user && <Btn label={t('settings.plans')} onClick={() => navigate("/subscription")} />}
               <Btn label={t('about.title')} onClick={() => navigate("/about")} />
               <Btn 
                 label={user ? t('settings.logout', 'Déconnexion') : t('auth.login_btn', 'Se connecter')} 
