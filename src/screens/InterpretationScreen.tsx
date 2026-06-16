@@ -87,10 +87,13 @@ export function InterpretationScreen() {
           for await (const chunk of stream) {
             const content = chunk.choices[0]?.delta?.content || "";
             if (content) {
-              fullResponse += content;
-              setMessages([{ id: "msg-0", role: "assistant", content: fullResponse }]);
-              // Artificial delay for a more natural typing rhythm
-              await new Promise(r => setTimeout(r, 25));
+              for (let i = 0; i < content.length; i++) {
+                fullResponse += content[i];
+                if (i % 2 === 0 || i === content.length - 1) {
+                  setMessages([{ id: "msg-0", role: "assistant", content: fullResponse }]);
+                }
+                await new Promise(r => setTimeout(r, 15));
+              }
             }
           }
 
@@ -191,14 +194,17 @@ export function InterpretationScreen() {
       for await (const chunk of stream) {
         const content = chunk.choices[0]?.delta?.content || "";
         if (content) {
-          fullResponse += content;
-          setMessages(prev => {
-            const newMsgs = [...prev];
-            newMsgs[newMsgs.length - 1] = { id: newMsgId, role: "assistant", content: fullResponse };
-            return newMsgs;
-          });
-          // Artificial delay for a more natural typing rhythm
-          await new Promise(r => setTimeout(r, 25));
+          for (let i = 0; i < content.length; i++) {
+            fullResponse += content[i];
+            if (i % 2 === 0 || i === content.length - 1) {
+              setMessages(prev => {
+                const newMsgs = [...prev];
+                newMsgs[newMsgs.length - 1] = { id: newMsgId, role: "assistant", content: fullResponse };
+                return newMsgs;
+              });
+            }
+            await new Promise(r => setTimeout(r, 15));
+          }
         }
       }
       setIsTyping(false);
