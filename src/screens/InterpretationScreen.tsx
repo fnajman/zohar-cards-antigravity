@@ -127,13 +127,23 @@ export function InterpretationScreen() {
     initChat();
   }, [currentDraw, messages.length, i18n.language, currentQuestion]);
 
+  const [autoScroll, setAutoScroll] = useState(true);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    const isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
+    setAutoScroll(isAtBottom);
+  };
+
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (autoScroll) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+    }
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, autoScroll]);
 
   useEffect(() => {
     if (!currentDraw) {
@@ -238,7 +248,7 @@ export function InterpretationScreen() {
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto px-6 py-6 scroll-smooth">
+      <main className="flex-1 overflow-y-auto px-6 py-6" onScroll={handleScroll}>
         <div className="flex flex-col gap-6">
           {messages.map((msg) => (
             <motion.div 
