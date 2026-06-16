@@ -132,7 +132,17 @@ export function InterpretationScreen() {
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     const isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
-    setAutoScroll(isAtBottom);
+    
+    // Only re-enable autoScroll if the user explicitly scrolls back to the very bottom
+    if (isAtBottom) {
+      setAutoScroll(true);
+    }
+  };
+
+  const handleUserInteraction = () => {
+    if (autoScroll) {
+      setAutoScroll(false);
+    }
   };
 
   const scrollToBottom = () => {
@@ -248,7 +258,12 @@ export function InterpretationScreen() {
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto px-6 py-6" onScroll={handleScroll}>
+      <main 
+        className="flex-1 overflow-y-auto px-6 py-6" 
+        onScroll={handleScroll}
+        onTouchStart={handleUserInteraction}
+        onWheel={handleUserInteraction}
+      >
         <div className="flex flex-col gap-6">
           {messages.map((msg) => (
             <motion.div 
