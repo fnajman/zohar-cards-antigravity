@@ -59,6 +59,7 @@ export function InterpretationScreen() {
 
     const fullHistory = [
       { role: "system", content: `Model used: ${s.aiModel}\nMots sélectionnés: ${keywords}` },
+      ...(s.currentQuestion?.trim() ? [{ role: "user", content: s.currentQuestion.trim() }] : []),
       ...history.filter(m => m.role !== "system")
     ];
 
