@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@plugin "@tailwindcss/typography";
 @theme {
   --color-night: #0E0F1A;
   --color-night-light: #1a1b2e;
@@ -41,39 +41,6 @@
 }
 
 @layer utilities {
-  .markdown-prose p {
-    margin-bottom: 0.75rem;
-  }
-  .markdown-prose p:last-child {
-    margin-bottom: 0;
-  }
-  .markdown-prose strong {
-    font-weight: 600;
-    color: var(--color-parchment);
-  }
-  .markdown-prose em {
-    font-style: italic;
-    color: rgba(245, 241, 232, 0.8);
-  }
-  .markdown-prose h1, .markdown-prose h2, .markdown-prose h3 {
-    font-weight: 600;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-parchment);
-  }
-  .markdown-prose ul {
-    list-style-type: disc;
-    padding-left: 1.25rem;
-    margin-bottom: 0.75rem;
-  }
-  .markdown-prose ol {
-    list-style-type: decimal;
-    padding-left: 1.25rem;
-    margin-bottom: 0.75rem;
-  }
-  .markdown-prose li {
-    margin-bottom: 0.25rem;
-  }
 }
 
 @keyframes link-blink {

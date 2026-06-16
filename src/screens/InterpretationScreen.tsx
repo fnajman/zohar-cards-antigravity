@@ -253,7 +253,7 @@ export function InterpretationScreen() {
                 {msg.role === 'system' ? (
                   msg.content
                 ) : (
-                  <div className="markdown-prose">
+                  <div className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-a:text-parchment prose-strong:text-parchment prose-em:text-parchment/80">
                     <ReactMarkdown>{msg.content}</ReactMarkdown>
                   </div>
                 )}
