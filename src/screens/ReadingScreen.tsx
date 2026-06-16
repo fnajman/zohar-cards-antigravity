@@ -46,7 +46,25 @@ export function ReadingScreen() {
           ))}
         </div>
 
-        <motion.div key={tab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+        <motion.div 
+          key={tab} 
+          initial={{ opacity: 0, x: 20 }} 
+          animate={{ opacity: 1, x: 0 }} 
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={(e, info) => {
+            const tabsOrder = ["l1", "l2", "combo"] as const;
+            const currentIdx = tabsOrder.indexOf(tab);
+            if (info.offset.x < -50 && currentIdx < tabsOrder.length - 1) {
+              setTab(tabsOrder[currentIdx + 1]);
+            } else if (info.offset.x > 50 && currentIdx > 0) {
+              setTab(tabsOrder[currentIdx - 1]);
+            }
+          }}
+        >
           {tab === "combo" && (
             <div className="space-y-5">
               <div>
@@ -66,7 +84,7 @@ export function ReadingScreen() {
                           </span>
                         </summary>
                         <div className="pt-4 space-y-3">
-                          {combination.content_long.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+                          {combination.content_long.split('\n').filter((p: string) => p.trim() !== '').map((para: string, i: number) => (
                             <p key={i} className="text-sm text-ash leading-relaxed">{para.trim()}</p>
                           ))}
                         </div>
@@ -95,7 +113,7 @@ export function ReadingScreen() {
                         {k === "inner_life" ? t('reading.frame_inner', 'Vie intérieure') : k === "relationships" ? t('reading.frame_relationships', 'Relations') : k === "work_and_projects" ? t('reading.frame_work', 'Travail & Projets') : t('reading.frame_general', 'Général')}
                       </span>
                       <ul className="list-none space-y-1 mb-3">
-                        {frame.what_to_observe?.map((obs, i) => (
+                        {frame.what_to_observe?.map((obs: string, i: number) => (
                           <li key={i} className="text-sm text-parchment/80 flex items-start">
                             <span className="text-parchment/40 mr-2 mt-1 flex-shrink-0">•</span>
                             <span>{obs}</span>
@@ -114,7 +132,7 @@ export function ReadingScreen() {
                 <div className="bg-night-light rounded-2xl p-4 border border-parchment/5">
                   <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60 mb-3">{t('reading.reflective_questions', 'QUESTIONS DE RÉFLEXION')}</p>
                   <ul className="space-y-3">
-                    {combination.reflective_questions.map((q, i) => (
+                    {combination.reflective_questions.map((q: string, i: number) => (
                       <li key={i} className="text-sm text-parchment/90 flex items-start">
                         <span className="text-parchment/30 mr-2 flex-shrink-0">{(i + 1).toString().padStart(2, '0')}.</span>
                         <span>{q}</span>

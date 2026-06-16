@@ -242,6 +242,8 @@ export const useStore = create<AppState>()(
         drawStyle: state.drawStyle,
         hebrewFont: state.hebrewFont,
         authToken: state.authToken,
+        user: state.user,
+        profileId: state.profileId,
         aiModel: state.aiModel,
         hasSeenTutorial: state.hasSeenTutorial,
         usedGiftCodes: state.usedGiftCodes,

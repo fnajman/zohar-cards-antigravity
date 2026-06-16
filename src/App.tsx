@@ -50,14 +50,17 @@ export default function App() {
   }, [appLanguage]);
 
   React.useEffect(() => {
-    // Si on a un token mais pas de user (ex: rechargement de page), on va chercher le profil
-    if (authToken && !useStore.getState().user) {
+    // Si on a un token, on va chercher/rafraîchir le profil en arrière-plan
+    if (authToken) {
       getMe(authToken)
         .then(user => {
           loginSession(authToken, user);
           useStore.getState().syncProfileOnLogin(authToken, user);
         })
-        .catch(() => logout());
+        .catch((err) => {
+          console.error("Token expiré ou invalide", err);
+          logout();
+        });
     }
   }, [authToken, loginSession, logout]);
 
