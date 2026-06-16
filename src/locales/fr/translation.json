@@ -89,6 +89,7 @@
   },
   "question": {
     "no_credits": "Vous n'avez plus de crédits pour poser une question personnelle.",
+    "guest_alert": "Vous devez créer un compte pour bénéficier de toutes les fonctionnalités.\n\nVoulez-vous créer un compte maintenant ?",
     "credit_alert_confirm": "Il est nécessaire d'avoir des crédits pour dialoguer avec l'expert IA.\n\nVoulez-vous découvrir nos offres pour obtenir des crédits ?",
     "see_plans": "Voir les offres",
     "title": "Votre question",
