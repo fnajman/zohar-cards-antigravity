@@ -89,6 +89,7 @@
   },
   "question": {
     "no_credits": "You have no credits left to ask a personal question.",
+    "credit_alert_confirm": "Credits are required to converse with the AI expert.\n\nWould you like to discover our offers to get credits?",
     "see_plans": "View plans",
     "title": "Your question",
     "subtitle": "There's no need to be precise. Let what comes, come.",

@@ -44,7 +44,10 @@ export function QuestionScreen() {
     }
     const isPrivileged = user.role === 'admin' || user.role === 'contrib';
     if (!isPrivileged && (user.credits ?? 0) < 3) {
-      alert(t('question.credit_alert', "Vous devez avoir au moins 3 crédits pour obtenir une interprétation."));
+      const wantToSubscribe = window.confirm(t('question.credit_alert_confirm', "Il est nécessaire d'avoir des crédits pour dialoguer avec l'expert IA.\n\nVoulez-vous découvrir nos offres pour obtenir des crédits ?"));
+      if (wantToSubscribe) {
+        navigate("/subscription");
+      }
       return;
     }
 

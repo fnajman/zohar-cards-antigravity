@@ -89,7 +89,8 @@
   },
   "question": {
     "no_credits": "Vous n'avez plus de crédits pour poser une question personnelle.",
-    "see_plans": "Voir les abonnements",
+    "credit_alert_confirm": "Il est nécessaire d'avoir des crédits pour dialoguer avec l'expert IA.\n\nVoulez-vous découvrir nos offres pour obtenir des crédits ?",
+    "see_plans": "Voir les offres",
     "title": "Votre question",
     "subtitle": "Il n'est pas nécessaire d'être précis. Laissez venir ce qui vient.",
     "placeholder": "Ce qui occupe mon esprit...",
