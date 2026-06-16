@@ -78,7 +78,7 @@ export function SubscriptionScreen() {
   return (
     <div className="h-full bg-night flex flex-col relative">
       <header className="flex-none px-6 pt-12 pb-4 flex items-center justify-between sticky top-0 bg-night/95 backdrop-blur-sm z-20 border-b border-parchment/5">
-        <button onClick={() => navigate(-1)} className="w-10 h-10 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">
+        <button onClick={() => navigate("/settings")} className="w-10 h-10 rounded-full bg-parchment/5 flex items-center justify-center hover:bg-parchment/10 transition-colors">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
         <h1 className="text-sm tracking-[0.2em] uppercase text-parchment">{t('subscription.title')}</h1>
