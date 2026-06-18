@@ -287,4 +287,5 @@ sequenceDiagram
 ### 6.1 Générateur de Combinaisons
 Un script local Node.js (`scripts/generate_combinations.js`) est utilisé pour pré-générer les combinaisons manquantes via l'API OpenAI (GPT-4o) et les injecter directement dans la base Xano.
 *   **Fonctionnement** : Le script interroge d'abord la base Xano (`GET /combination`) pour recenser les paires déjà créées. Il itère ensuite sur les paires restantes, appelle l'API d'OpenAI avec un prompt détaillé contenant la sémantique de chaque lettre, puis poste le résultat structuré en JSON (anglais et français) sur Xano via `POST /combination`.
+*   **Prompt** : Le prompt exact utilisé (Master Prompt) est sauvegardé dans **[`prd/example_prompt_combinaison.md`](./example_prompt_combinaison.md)**.
 *   **Usage** : `node scripts/generate_combinations.js` (nécessite `.env` avec `OPENAI_API_KEY`).
