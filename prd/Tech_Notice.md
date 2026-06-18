@@ -210,8 +210,8 @@ Base URL : `https://api.najman.app/api:ST5QxeS-`
 
 ## 4. Flows Applicatifs (Exemples)
 
-### 4.1 Flow de Démarrage (Fluidity First)
-L'objectif est d'éliminer les temps de chargement perçus.
+### 4.2 Flow de Démarrage (Fluidity First)
+L'objectif est d'éliminer les temps de chargement perçus, tout en garantissant que l'utilisateur est toujours sur la dernière version.
 
 ```mermaid
 sequenceDiagram
@@ -223,20 +223,30 @@ sequenceDiagram
     App->>App: Affiche Splash Screen (Logo)
     
     par Parallel Requests
+        App->>API: GET /version.json?t=timestamp (No-Cache)
         App->>API: GET /auth/me (Check Token)
         App->>API: GET /content/letters?lang=fr
         App->>API: GET /content/assets
     end
     
-    API-->>App: User Profile
-    API-->>App: 22 Lettres (Data + URLs)
-    API-->>App: Global Assets (Card Backs)
+    API-->>App: Version (ex: v0.54)
     
-    App->>App: Prefetch Images (expo-image cache)
-    App->>User: Affiche Home Screen (Prêt & Fluide)
+    alt Version Locale != Version Serveur
+        App->>App: Stoppe la navigation
+        App->>User: Affiche UpdatePopup (Blocant)
+        User->>App: Clique "Recharger"
+        App->>App: Clear Caches + Unregister SW + Reload
+    else Version Identique
+        API-->>App: User Profile
+        API-->>App: 22 Lettres (Data + URLs)
+        API-->>App: Global Assets (Card Backs)
+        
+        App->>App: Prefetch Images (expo-image cache)
+        App->>User: Affiche Home Screen (Prêt & Fluide)
+    end
 ```
 
-### 4.2 Flow de Tirage (Rituel)
+### 4.3 Flow de Tirage (Rituel)
 Séparation de l'acte technique (Draw) de l'acte intellectuel (Reading) pour gérer la latence IA.
 
 ```mermaid
@@ -303,8 +313,24 @@ Un script local Node.js (`scripts/generate_combinations.js`) est utilisé pour p
 Un script local (`scripts/extract_letters_to_md.js`) permet d'interroger directement l'API Xano pour extraire le contenu actuel de toutes les lettres (en français) vers un fichier Markdown éditable et lisible par un humain (`prd/letters_content_fr.md`). Ce format balisé (ex: `### content_long`) permet une relecture facile et prépare le terrain pour un futur script d'import.
 *   **Usage** : `node scripts/extract_letters_to_md.js`
 
-## 8. Versioning
+## 8. Versioning et PWA Updates
+
+Le système de mise à jour s'appuie sur le plugin `vite-plugin-pwa` mais ajoute une couche de vérification manuelle agressive pour contrer les lenteurs du Service Worker (particulièrement sur iOS standalone PWA).
+
+### 8.1. Détection Active (SplashScreen)
+À chaque lancement de l'application (sur le `SplashScreen`), un `fetch` non-caché est effectué vers `public/version.json`.
+Si la version retournée diffère de `APP_VERSION` (dans `src/version.ts`), l'application :
+1. Interrompt immédiatement le timer de navigation (le splash screen reste affiché).
+2. Transmet un signal global `hasUpdateAvailable` via le store.
+3. Déclenche l'apparition de `UpdatePopup` par-dessus l'écran.
+
+### 8.2. Résolution (UpdatePopup)
+Lorsque l'utilisateur accepte la mise à jour :
+* Si le Service Worker a déjà signalé qu'il a téléchargé l'update (`needRefresh` est `true`), l'application utilise la méthode standard `updateServiceWorker(true)`.
+* Si le Service Worker n'a pas encore réagi (détection manuelle `hasUpdateAvailable`), l'application **purge manuellement l'API Cache du navigateur**, **désinscrit brutalement le Service Worker**, puis force le `location.reload()`. Cela garantit le téléchargement immédiat de la nouvelle version depuis le serveur.
+
+### 8.3. Règles de Versioning
 **Règle absolue :** À chaque nouvelle fonctionnalité ou correctif majeur ajouté et validé au code, la version doit être incrémentée systématiquement :
-1. Via la commande `npm version patch` (ou `minor`/`major` selon l'ampleur) pour le package. Cela permet le bon fonctionnement de la mise à jour automatique PWA (Service Worker) et de s'assurer que les utilisateurs sont notifiés des nouveautées.
-2. En modifiant manuellement la constante `APP_VERSION` dans le fichier `src/version.ts` pour l'affichage visuel en bas de page (ex: passage de v0.52 à v0.53).
-3. En modifiant manuellement la valeur `"version"` dans le fichier `public/version.json` pour que la modale de mise à jour PWA puisse détecter et afficher la nouvelle version correctement (ex: passage de v0.52 à v0.53).
+1. Via la commande `npm version patch` (ou `minor`/`major` selon l'ampleur) pour le package.
+2. En modifiant manuellement la constante `APP_VERSION` dans le fichier `src/version.ts` pour l'affichage visuel en bas de page (ex: passage de v0.53 à v0.54).
+3. En modifiant manuellement la valeur `"version"` dans le fichier `public/version.json` pour que la modale de mise à jour PWA détecte le changement (ex: passage de v0.53 à v0.54).
