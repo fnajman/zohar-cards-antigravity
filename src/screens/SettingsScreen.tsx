@@ -164,6 +164,7 @@ export function SettingsScreen() {
   const [giftCode, setGiftCode] = useState("");
   const [giftCodeMessage, setGiftCodeMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [isSubmittingGiftCode, setIsSubmittingGiftCode] = useState(false);
+  const [expandedDrawId, setExpandedDrawId] = useState<number | null>(null);
   const queryClient = useQueryClient();
 
   const { data: spending } = useQuery({
@@ -323,14 +324,33 @@ export function SettingsScreen() {
                         <div>{dDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                       </div>
                     </div>
-                    <p className="text-xs text-ash">{d.combination.title}</p>
+                    <div className="flex items-start justify-between gap-2 mt-2">
+                      <p className="text-xs text-ash/80 leading-relaxed font-medium">{d.combination.title}</p>
+                      <button 
+                        onClick={() => setExpandedDrawId(expandedDrawId === d.id ? null : d.id)}
+                        className="flex-shrink-0 w-5 h-5 rounded-md border border-parchment/20 flex items-center justify-center text-parchment hover:bg-parchment/10 transition-colors"
+                      >
+                        {expandedDrawId === d.id ? (
+                          <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        ) : (
+                          <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        )}
+                      </button>
+                    </div>
+                    {expandedDrawId === d.id && d.combination.content_medium && (
+                      <div className="mt-3 p-3 bg-night/50 rounded-lg border border-parchment/5">
+                        <p className="text-xs text-ash leading-relaxed">
+                          {d.combination.content_medium}
+                        </p>
+                      </div>
+                    )}
                   </div>
                   <button 
                     onClick={() => {
                       queryClient.setQueryData(['currentDraw', i18n.language], d);
-                      navigate("/interpretation");
+                      navigate("/reading");
                     }}
-                    className="self-start text-[11px] text-parchment/70 bg-parchment/5 hover:bg-parchment/10 py-1.5 px-3 rounded-lg transition-colors border border-parchment/10 flex items-center gap-1.5"
+                    className="self-start text-[11px] text-parchment/70 bg-parchment/5 hover:bg-parchment/10 py-1.5 px-3 rounded-lg transition-colors border border-parchment/10 flex items-center gap-1.5 mt-1"
                   >
                     <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 14A6 6 0 1 0 2 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M2 3V8H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     {t('settings.reanalyze_btn')}
