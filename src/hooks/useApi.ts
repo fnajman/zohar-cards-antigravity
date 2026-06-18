@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { api } from "@/services/api";
+import { useStore } from "@/store/useStore";
 
 export function useLetters() {
   const { i18n } = useTranslation();
@@ -28,9 +29,10 @@ export function useCurrentDraw() {
 
 export function useDrawHistory() {
   const { i18n } = useTranslation();
+  const { authToken, profileId } = useStore();
   return useQuery({
-    queryKey: ['drawHistory', i18n.language],
-    queryFn: () => api.getDrawHistory(i18n.language)
+    queryKey: ['drawHistory', i18n.language, authToken, profileId],
+    queryFn: () => api.getDrawHistory(i18n.language, authToken, profileId)
   });
 }
 

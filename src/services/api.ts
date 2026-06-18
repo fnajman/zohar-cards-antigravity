@@ -185,9 +185,43 @@ export const api = {
     return currentDraw ? flattenDraw(currentDraw, lang) : null;
   },
 
-  getDrawHistory: async (lang: string = 'fr'): Promise<Draw[]> => {
-    await delay(400);
-    return drawHistory.map(d => flattenDraw(d, lang));
+  getDrawHistory: async (lang: string = 'fr', authToken?: string | null, profileId?: number | null): Promise<Draw[]> => {
+    if (!authToken || !profileId) {
+      return drawHistory.map(d => flattenDraw(d, lang));
+    }
+    
+    try {
+      const res = await fetch(`${XANO_URL}/drawbyuser?profile_id=${profileId}`, {
+        headers: { "Authorization": `Bearer ${authToken}` }
+      });
+      if (!res.ok) throw new Error("Failed to fetch remote history");
+      const remoteDraws = await res.json();
+      
+      const dbLetters = await fetchDBLetters();
+      
+      const mappedDraws = remoteDraws.map((rd: any) => {
+        const combo = rd._combination || rd.combination;
+        if (!combo) return null;
+        
+        const card1 = dbLetters.find((l: DBLetter) => l.id === combo.position_1_id) || dbLetters[0];
+        const card2 = dbLetters.find((l: DBLetter) => l.id === combo.position_2_id) || dbLetters[1];
+        
+        const dbDraw: DBDraw = {
+          id: rd.id,
+          created_at: new Date(rd.created_at).toISOString(),
+          card_1: card1,
+          card_2: card2,
+          combination: combo,
+          selected_keywords: rd.llm_history?.selected_keywords || []
+        };
+        return flattenDraw(dbDraw, lang);
+      }).filter(Boolean) as Draw[];
+      
+      return mappedDraws.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    } catch (err) {
+      console.error(err);
+      return drawHistory.map(d => flattenDraw(d, lang));
+    }
   },
 
   addKeywordsToDraw: async (drawId: number, keywords: string[], lang: string = 'fr'): Promise<Draw> => {

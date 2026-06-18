@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useStore, type DrawStyle } from "@/store/useStore";
 import { useDrawHistory } from "@/hooks/useApi";
 import { type PersonalInfo } from "@/services/profileApi";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { openrouterApi } from "@/services/openrouterApi";
 import { HEBREW_FONT_STYLES, type HebrewFontStyle } from "../components/HebrewGlyph";
 import { useScrollHint } from "@/hooks/useScrollHint";
@@ -157,13 +157,14 @@ const DRAW_STYLES: { id: DrawStyle; label: string }[] = [
 
 export function SettingsScreen() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, drawStyle, setDrawStyle, hebrewFont, setHebrewFont, aiModel, setAiModel } = useStore();
   const { data: drawHistory = [], isLoading } = useDrawHistory();
   const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language" | "ai-model" | "gift-code" | "personal" | "faq">("main");
   const [giftCode, setGiftCode] = useState("");
   const [giftCodeMessage, setGiftCodeMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [isSubmittingGiftCode, setIsSubmittingGiftCode] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data: spending } = useQuery({
     queryKey: ["openrouter-spending"],
@@ -302,19 +303,41 @@ export function SettingsScreen() {
       <header className="sticky top-0 z-10 bg-night/95 backdrop-blur-sm px-6 pt-12 pb-3">{back(() => setSection("main"))}</header>
       <main ref={scrollRef as any} className="flex-1 px-6 py-6 overflow-y-auto">
         <h2 className="text-xl font-medium tracking-tight text-parchment mb-6">{t('settings.history_title')}</h2>
-        {isLoading ? <p className="text-sm text-ash">{t('common.loading')}</p> : drawHistory.length === 0
+        {isLoading ? (
+          <div className="flex items-center justify-center py-10">
+            <span className="w-6 h-6 rounded-full border-2 border-parchment/20 border-t-parchment animate-spin"></span>
+          </div>
+        ) : drawHistory.length === 0
           ? <p className="text-sm text-ash">{t('settings.no_history')}</p>
-          : <div className="space-y-3">{drawHistory.map((d) => (
-            <div key={d.id} className="bg-night-light rounded-xl p-4 border border-parchment/5">
-              <div className="flex items-center gap-3 mb-1">
-                <span className="font-hebrew text-xl text-parchment">{d.card_1.symbol}</span>
-                <span className="text-ash text-sm">+</span>
-                <span className="font-hebrew text-xl text-parchment">{d.card_2.symbol}</span>
-                <span className="text-[10px] text-ash ml-auto">{new Date(d.created_at).toLocaleDateString("fr-FR")}</span>
-              </div>
-              <p className="text-xs text-ash">{d.combination.title}</p>
-            </div>
-          ))}</div>}
+          : <div className="space-y-4">{drawHistory.map((d) => {
+              const dDate = new Date(d.created_at);
+              return (
+                <div key={d.id} className="bg-night-light rounded-xl p-4 border border-parchment/5 flex flex-col gap-3">
+                  <div>
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="font-hebrew text-xl text-parchment">{d.card_1.symbol}</span>
+                      <span className="text-ash text-sm">+</span>
+                      <span className="font-hebrew text-xl text-parchment">{d.card_2.symbol}</span>
+                      <div className="text-[10px] text-ash ml-auto text-right">
+                        <div>{dDate.toLocaleDateString()}</div>
+                        <div>{dDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-ash">{d.combination.title}</p>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      queryClient.setQueryData(['currentDraw', i18n.language], d);
+                      navigate("/interpretation");
+                    }}
+                    className="self-start text-[11px] text-parchment/70 bg-parchment/5 hover:bg-parchment/10 py-1.5 px-3 rounded-lg transition-colors border border-parchment/10 flex items-center gap-1.5"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 14A6 6 0 1 0 2 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M2 3V8H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    {t('settings.reanalyze_btn')}
+                  </button>
+                </div>
+              );
+            })}</div>}
       </main>
     </div>
   );
