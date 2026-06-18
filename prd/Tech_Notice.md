@@ -307,3 +307,4 @@ Un script local (`scripts/extract_letters_to_md.js`) permet d'interroger directe
 **Règle absolue :** À chaque nouvelle fonctionnalité ou correctif majeur ajouté et validé au code, la version doit être incrémentée systématiquement :
 1. Via la commande `npm version patch` (ou `minor`/`major` selon l'ampleur) pour le package. Cela permet le bon fonctionnement de la mise à jour automatique PWA (Service Worker) et de s'assurer que les utilisateurs sont notifiés des nouveautées.
 2. En modifiant manuellement la constante `APP_VERSION` dans le fichier `src/version.ts` pour l'affichage visuel en bas de page (ex: passage de v0.52 à v0.53).
+3. En modifiant manuellement la valeur `"version"` dans le fichier `public/version.json` pour que la modale de mise à jour PWA puisse détecter et afficher la nouvelle version correctement (ex: passage de v0.52 à v0.53).
