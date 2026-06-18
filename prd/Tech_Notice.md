@@ -289,3 +289,6 @@ Un script local Node.js (`scripts/generate_combinations.js`) est utilisé pour p
 *   **Fonctionnement** : Le script interroge d'abord la base Xano (`GET /combination`) pour recenser les paires déjà créées. Il itère ensuite sur les paires restantes, appelle l'API d'OpenAI avec un prompt détaillé contenant la sémantique de chaque lettre, puis poste le résultat structuré en JSON (anglais et français) sur Xano via `POST /combination`.
 *   **Prompt** : Le prompt exact utilisé (Master Prompt) est sauvegardé dans **[`prd/example_prompt_combinaison.md`](./example_prompt_combinaison.md)**.
 *   **Usage** : `node scripts/generate_combinations.js` (nécessite `.env` avec `OPENAI_API_KEY`).
+
+## 8. Versioning
+**Règle absolue :** À chaque nouvelle fonctionnalité ou correctif majeur ajouté et validé au code, la version dans `package.json` **doit être incrémentée** systématiquement via la commande `npm version patch` (ou `minor`/`major` selon l'ampleur), avant de pousser les modifications sur git. Cela permet le bon fonctionnement de la mise à jour automatique PWA (Service Worker) et de s'assurer que les utilisateurs sont notifiés des nouveautées.
