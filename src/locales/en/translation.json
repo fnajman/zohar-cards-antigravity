@@ -135,9 +135,10 @@
     "gift_code_btn": "Redeem a code",
     "gift_code_placeholder": "Enter your code",
     "gift_code_submit": "Submit",
-    "gift_code_invalid": "This code does not exist or has expired.",
+    "gift_code_invalid": "This code does not exist.",
+    "gift_code_expired": "This code has expired.",
     "gift_code_used": "This code has already been used. It is single-use only.",
-    "gift_code_success": "Congratulations! 3 credits have been added to your account.",
+    "gift_code_success": "Congratulations! {{count}} credits have been added to your account.",
     "personal": {
       "title": "Personal",
       "subtitle": "Optional",

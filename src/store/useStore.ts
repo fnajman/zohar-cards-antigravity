@@ -4,6 +4,7 @@ import { fakeUser } from "@/data/fake-data";
 import type { UserProfile } from "@/data/types";
 import type { HebrewFontStyle } from "@/components/HebrewGlyph";
 import { createProfile, updateProfile, type PersonalInfo } from "@/services/profileApi";
+import { checkCoupon } from "@/services/bonusApi";
 
 // Assuming we duplicate or import the Message type
 export type Message = {
@@ -47,7 +48,7 @@ interface AppState {
   setAiModel: (model: string) => void;
   setHasSeenTutorial: () => void;
   usedGiftCodes: string[];
-  applyGiftCode: (code: string) => { success: boolean; messageKey: string };
+  applyGiftCode: (code: string) => Promise<{ success: boolean; messageKey: string; count?: number }>;
   syncProfileOnLogin: (token: string, user: UserProfile) => Promise<void>;
   deductCredits: (amount: number) => Promise<void>;
 }
@@ -125,11 +126,11 @@ export const useStore = create<AppState>()(
       },
       setHasSeenTutorial: () => set({ hasSeenTutorial: true }),
       usedGiftCodes: [],
-      applyGiftCode: (code: string) => {
+      applyGiftCode: async (code: string) => {
         const state = get();
         const codeUpper = code.trim().toUpperCase();
         
-        if (codeUpper !== "BONUS03") {
+        if (!state.authToken) {
           return { success: false, messageKey: 'settings.gift_code_invalid' };
         }
         
@@ -139,24 +140,41 @@ export const useStore = create<AppState>()(
           return { success: false, messageKey: 'settings.gift_code_used' };
         }
         
-        const newCredits = (state.user?.credits || 0) + 3;
-        // Apply credits
-        set({ 
-          usedGiftCodes: isPrivileged ? state.usedGiftCodes : [...state.usedGiftCodes, codeUpper],
-          user: state.user ? { ...state.user, credits: newCredits } : null
-        });
-        
-        const s = get();
-        if (s.authToken && s.profileId && s.user) {
-          updateProfile(s.authToken, s.profileId, s.user.id, { 
-            appLanguage: s.appLanguage, 
-            drawStyle: s.drawStyle, 
-            hebrewFont: s.hebrewFont, 
-            aiModel: s.aiModel 
-          }, s.usedGiftCodes, s.personalInfo, newCredits).catch(console.error);
+        try {
+          const coupon = await checkCoupon(state.authToken, codeUpper);
+          
+          if (!coupon) {
+            return { success: false, messageKey: 'settings.gift_code_invalid' };
+          }
+          
+          if (coupon.expiration_date && new Date(coupon.expiration_date) < new Date()) {
+            return { success: false, messageKey: 'settings.gift_code_expired' };
+          }
+
+          const creditToAdd = coupon.credit || 0;
+          const newCredits = (state.user?.credits || 0) + creditToAdd;
+          
+          // Apply credits
+          set({ 
+            usedGiftCodes: isPrivileged ? state.usedGiftCodes : [...state.usedGiftCodes, codeUpper],
+            user: state.user ? { ...state.user, credits: newCredits } : null
+          });
+          
+          const s = get();
+          if (s.profileId && s.user) {
+            await updateProfile(s.authToken, s.profileId, s.user.id, { 
+              appLanguage: s.appLanguage, 
+              drawStyle: s.drawStyle, 
+              hebrewFont: s.hebrewFont, 
+              aiModel: s.aiModel 
+            }, s.usedGiftCodes, s.personalInfo, newCredits);
+          }
+          
+          return { success: true, messageKey: 'settings.gift_code_success', count: creditToAdd };
+        } catch (err) {
+          console.error("Error checking coupon:", err);
+          return { success: false, messageKey: 'settings.gift_code_invalid' };
         }
-        
-        return { success: true, messageKey: 'settings.gift_code_success' };
       },
       syncProfileOnLogin: async (token, user) => {
         if (isSyncing) return;

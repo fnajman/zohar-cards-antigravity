@@ -163,6 +163,7 @@ export function SettingsScreen() {
   const [section, setSection] = useState<"main" | "history" | "plans" | "draw-style" | "hebrew-font" | "language" | "ai-model" | "gift-code" | "personal" | "faq">("main");
   const [giftCode, setGiftCode] = useState("");
   const [giftCodeMessage, setGiftCodeMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [isSubmittingGiftCode, setIsSubmittingGiftCode] = useState(false);
 
   const { data: spending } = useQuery({
     queryKey: ["openrouter-spending"],
@@ -320,17 +321,24 @@ export function SettingsScreen() {
 
 
 
-  const handleGiftCodeSubmit = (e: React.FormEvent) => {
+  const handleGiftCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!giftCode.trim()) return;
+    if (!giftCode.trim() || isSubmittingGiftCode) return;
     
-    const result = useStore.getState().applyGiftCode(giftCode);
-    setGiftCodeMessage({
-      type: result.success ? 'success' : 'error',
-      text: t(result.messageKey)
-    });
-    if (result.success) {
-      setGiftCode("");
+    setIsSubmittingGiftCode(true);
+    setGiftCodeMessage(null);
+    
+    try {
+      const result = await useStore.getState().applyGiftCode(giftCode);
+      setGiftCodeMessage({
+        type: result.success ? 'success' : 'error',
+        text: t(result.messageKey, { count: result.count })
+      });
+      if (result.success) {
+        setGiftCode("");
+      }
+    } finally {
+      setIsSubmittingGiftCode(false);
     }
   };
 
@@ -347,14 +355,16 @@ export function SettingsScreen() {
               value={giftCode}
               onChange={(e) => setGiftCode(e.target.value)}
               placeholder={t('settings.gift_code_placeholder')}
-              className="block w-full appearance-none m-0 bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-parchment placeholder-ash focus:outline-none focus:border-parchment/30 transition-colors uppercase"
+              disabled={isSubmittingGiftCode}
+              className="block w-full appearance-none m-0 bg-night-light border border-parchment/10 rounded-xl px-4 py-3 text-parchment placeholder-ash focus:outline-none focus:border-parchment/30 transition-colors uppercase disabled:opacity-50"
             />
           </div>
           <button 
             type="submit"
-            className="w-full py-3 bg-parchment/10 text-parchment rounded-xl font-medium hover:bg-parchment/20 transition-colors"
+            disabled={isSubmittingGiftCode}
+            className="w-full py-3 bg-parchment/10 text-parchment rounded-xl font-medium hover:bg-parchment/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center h-12"
           >
-            {t('settings.gift_code_submit')}
+            {isSubmittingGiftCode ? <span className="w-5 h-5 rounded-full border-2 border-parchment/20 border-t-parchment animate-spin"></span> : t('settings.gift_code_submit')}
           </button>
           
           {giftCodeMessage && (

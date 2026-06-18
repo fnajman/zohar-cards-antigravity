@@ -135,9 +135,10 @@
     "gift_code_btn": "Utiliser un code",
     "gift_code_placeholder": "Entrez votre code",
     "gift_code_submit": "Valider",
-    "gift_code_invalid": "Ce code n'existe pas ou a expiré.",
+    "gift_code_invalid": "Ce code n'existe pas.",
+    "gift_code_expired": "Ce code a expiré.",
     "gift_code_used": "Ce code a déjà été utilisé. Il est à usage unique.",
-    "gift_code_success": "Félicitations ! 3 crédits ont été ajoutés à votre compte.",
+    "gift_code_success": "Félicitations ! {{count}} crédits ont été ajoutés à votre compte.",
     "personal": {
       "title": "Personnel",
       "subtitle": "Facultatif",
