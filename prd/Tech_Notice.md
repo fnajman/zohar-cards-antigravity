@@ -151,6 +151,10 @@ Ces endpoints suivent la **Règle Universelle de Langue** (voir `04_backend_spec
 *   `GET /content/assets`
     *   Use Case: Au lancement, récupérer les Dos (Card Backs) actifs.
     *   Response: `[ { "key": "card_back_cosmos", "url": "..." }, ... ]`
+*   `GET /drawbyuser`
+    *   Use Case: Récupérer l'historique complet des tirages de l'utilisateur connecté.
+    *   Logic: Filtre par le `user_id` lié au token d'authentification. L'API renvoie la liste des tirages. Chaque tirage inclut désormais un objet imbriqué `_combination` (ou `combination`) qui contient les données statiques (incluant `position_1_id` et `position_2_id`), évitant ainsi des requêtes supplémentaires.
+    *   Response: Liste d'objets `[{"id":19,"created_at":...,"user_id":18,"_combination":{"id":367,"position_1_id":19,"position_2_id":9,"i18n_content":...}}, ...]`
 
 ### 3.4 Coupons & Bonus (Marketing)
 Base URL : `https://api.najman.app/api:ST5QxeS-`
@@ -317,12 +321,17 @@ Un script local (`scripts/extract_letters_to_md.js`) permet d'interroger directe
 
 Le système de mise à jour s'appuie sur le plugin `vite-plugin-pwa` mais ajoute une couche de vérification manuelle agressive pour contrer les lenteurs du Service Worker (particulièrement sur iOS standalone PWA).
 
-### 8.1. Détection Active (SplashScreen)
-À chaque lancement de l'application (sur le `SplashScreen`), un `fetch` non-caché est effectué vers `public/version.json`.
-Si la version retournée diffère de `APP_VERSION` (dans `src/version.ts`), l'application :
-1. Interrompt immédiatement le timer de navigation (le splash screen reste affiché).
-2. Transmet un signal global `hasUpdateAvailable` via le store.
-3. Déclenche l'apparition de `UpdatePopup` par-dessus l'écran.
+### 8.1. Détection (SplashScreen & HomeScreen)
+Afin d'éviter des appels réseau excessifs, il n'y a **pas de vérification en arrière-plan (polling)**.
+La vérification (un `fetch` non-caché vers `public/version.json`) a lieu uniquement à des moments clés :
+1. **SplashScreen** (Au lancement ou redémarrage de l'app).
+2. **HomeScreen** (Arrivée sur le menu principal).
+3. **Manuel** (Via le bouton "Mise à jour (vX.YY)" dans les paramètres).
+
+Si la version retournée diffère de `APP_VERSION` (dans `src/version.ts`) :
+- Dans le cas du Splash Screen, la navigation est interrompue.
+- Un signal global `hasUpdateAvailable` est transmis via le store.
+- L'apparition de `UpdatePopup` est déclenchée par-dessus l'écran.
 
 ### 8.2. Résolution (UpdatePopup)
 Lorsque l'utilisateur accepte la mise à jour :
