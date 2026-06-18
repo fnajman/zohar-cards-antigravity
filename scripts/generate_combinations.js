@@ -85,12 +85,26 @@ L'utilisateur a tiré une combinaison de deux cartes. L'ordre est très importan
 La dynamique va de la Lettre 1 (Agent actif, élan initial) vers la Lettre 2 (Récepteur, manifestation ou destination).
 
 Lettre 1 (Agent actif) : ${letter1.i18n_content.fr.identity.name}
-Symbolisme court : ${letter1.i18n_content.fr.content_short}
+Signature poétique : ${letter1.i18n_content.fr.signature.poetic_sentence}
 Essence : ${letter1.i18n_content.fr.symbolic_essence.core_idea}
+Mouvement intérieur : ${letter1.i18n_content.fr.symbolic_essence.inner_movement}
+Mots-clés : ${letter1.i18n_content.fr.semantic_field.keywords.join(', ')}
+Polarités : ${letter1.i18n_content.fr.semantic_field.polarities.join(', ')}
+Lecture calligraphique : ${letter1.i18n_content.fr.form_symbolism.calligraphic_reading}
+Climat intérieur : ${letter1.i18n_content.fr.vibrational_qualities.inner_climate}
+Évocation existentielle : ${letter1.i18n_content.fr.existential_reading.life_phase_evocation}
+Contenu de référence : ${letter1.i18n_content.fr.content_medium}
 
 Lettre 2 (Récepteur) : ${letter2.i18n_content.fr.identity.name}
-Symbolisme court : ${letter2.i18n_content.fr.content_short}
+Signature poétique : ${letter2.i18n_content.fr.signature.poetic_sentence}
 Essence : ${letter2.i18n_content.fr.symbolic_essence.core_idea}
+Mouvement intérieur : ${letter2.i18n_content.fr.symbolic_essence.inner_movement}
+Mots-clés : ${letter2.i18n_content.fr.semantic_field.keywords.join(', ')}
+Polarités : ${letter2.i18n_content.fr.semantic_field.polarities.join(', ')}
+Lecture calligraphique : ${letter2.i18n_content.fr.form_symbolism.calligraphic_reading}
+Climat intérieur : ${letter2.i18n_content.fr.vibrational_qualities.inner_climate}
+Évocation existentielle : ${letter2.i18n_content.fr.existential_reading.life_phase_evocation}
+Contenu de référence : ${letter2.i18n_content.fr.content_medium}
 
 CRÉE LE CONTENU DE CETTE COMBINAISON EXACTE.
 Le contenu ne doit jamais être prescriptif ni faire de divination (pas de voyance ni de conseils médicaux/psychologiques stricts).
