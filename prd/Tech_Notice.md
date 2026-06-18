@@ -96,7 +96,9 @@ La base est relationnelle mais utilise fortement le type **JSON** pour la flexib
 
 ## 3. API & Endpoints (Spécifications)
 
-Base URL: `https://api.najman.app/api:hyEJD2He`
+Base URL Principale : `https://api.najman.app/api:hyEJD2He`
+Swagger UI (Marketing/Bonus) : `https://api.najman.app/api:ST5QxeS-`
+Swagger JSON (Marketing/Bonus) : `https://api.najman.app/apispec:ST5QxeS-?type=json&token=`
 
 ### 3.1 Authentification
 Toute requête authentifiée doit fournir le header: `Authorization: Bearer <token>`
@@ -150,6 +152,12 @@ Ces endpoints suivent la **Règle Universelle de Langue** (voir `04_backend_spec
     *   Use Case: Au lancement, récupérer les Dos (Card Backs) actifs.
     *   Response: `[ { "key": "card_back_cosmos", "url": "..." }, ... ]`
 
+### 3.4 Coupons & Bonus (Marketing)
+Base URL : `https://api.najman.app/api:ST5QxeS-`
+*   `GET /bonus/coupon/{coupon_code}`
+    *   Use Case: Vérification et application d'un code cadeau (ex: dans SettingsScreen).
+    *   Logic: Vérifie si le coupon existe. Le frontend vérifie ensuite sa validité (`expiration_date`) et applique le crédit dynamique (`credit`) au profil utilisateur si le code n'est pas déjà présent dans l'historique `usedGiftCodes`.
+
 
 ### 3.3 Core Flows (Tirage & Lecture)
 
@@ -188,6 +196,7 @@ Ces endpoints suivent la **Règle Universelle de Langue** (voir `04_backend_spec
         *   Les *Guardrails* (Pas de prédiction, pas de conseil médical).
     4.  Appelle OpenAI/Claude.
     5.  Sauvegarde dans `Reading`.
+    > **Note** : Le prompt d'interprétation de démarrage exact (Template + Exemple concret Aleph+Beth) est documenté dans **[`prd/example_prompt_chat.md`](./example_prompt_chat.md)**.
 *   **Response** :
     ```json
     {
@@ -289,6 +298,10 @@ Un script local Node.js (`scripts/generate_combinations.js`) est utilisé pour p
 *   **Fonctionnement** : Le script interroge d'abord la base Xano (`GET /combination`) pour recenser les paires déjà créées. Il itère ensuite sur les paires restantes, appelle l'API d'OpenAI avec un prompt détaillé contenant la sémantique de chaque lettre, puis poste le résultat structuré en JSON (anglais et français) sur Xano via `POST /combination`.
 *   **Prompt** : Le prompt exact utilisé (Master Prompt) est sauvegardé dans **[`prd/example_prompt_combinaison.md`](./example_prompt_combinaison.md)**.
 *   **Usage** : `node scripts/generate_combinations.js` (nécessite `.env` avec `OPENAI_API_KEY`).
+
+### 6.2 Extracteur de Contenu des Lettres
+Un script local (`scripts/extract_letters_to_md.js`) permet d'interroger directement l'API Xano pour extraire le contenu actuel de toutes les lettres (en français) vers un fichier Markdown éditable et lisible par un humain (`prd/letters_content_fr.md`). Ce format balisé (ex: `### content_long`) permet une relecture facile et prépare le terrain pour un futur script d'import.
+*   **Usage** : `node scripts/extract_letters_to_md.js`
 
 ## 8. Versioning
 **Règle absolue :** À chaque nouvelle fonctionnalité ou correctif majeur ajouté et validé au code, la version doit être incrémentée systématiquement :
