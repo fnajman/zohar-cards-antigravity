@@ -15,12 +15,7 @@ export function UpdatePopup() {
     updateServiceWorker,
   } = useRegisterSW({
     onRegistered(r: ServiceWorkerRegistration | undefined) {
-      // Periodic check for updates every 1 minute
-      if (r) {
-        setInterval(() => {
-          r.update();
-        }, 60 * 1000);
-      }
+      // Intentionally not polling
     }
   });
 

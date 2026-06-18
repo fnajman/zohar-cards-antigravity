@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { openrouterApi } from "@/services/openrouterApi";
 import { HEBREW_FONT_STYLES, type HebrewFontStyle } from "../components/HebrewGlyph";
 import { useScrollHint } from "@/hooks/useScrollHint";
+import { APP_VERSION } from "@/version";
 import { FaqSection } from "@/components/FaqSection";
 
 // --- LANGUAGE SELECTOR ---
@@ -166,6 +167,20 @@ export function SettingsScreen() {
   const [isSubmittingGiftCode, setIsSubmittingGiftCode] = useState(false);
   const [expandedDrawId, setExpandedDrawId] = useState<number | null>(null);
   const queryClient = useQueryClient();
+
+  const handleCheckUpdate = async () => {
+    try {
+      const res = await fetch('/version.json?t=' + Date.now(), { cache: 'no-store' });
+      const data = await res.json();
+      if (data && data.version && data.version !== APP_VERSION) {
+        useStore.getState().setHasUpdateAvailable(data.version);
+      } else {
+        alert(t('settings.up_to_date', 'L\'application est déjà à jour.'));
+      }
+    } catch (e) {
+      console.error("Version check failed", e);
+    }
+  };
 
   const { data: spending } = useQuery({
     queryKey: ["openrouter-spending"],
@@ -507,6 +522,7 @@ export function SettingsScreen() {
               {user && <Btn label={t('settings.gift_code_btn')} onClick={() => setSection("gift-code")} />}
               {user && <Btn label={t('settings.history')} onClick={() => setSection("history")} />}
               {user && <Btn label={t('settings.plans')} onClick={() => navigate("/subscription")} />}
+              <Btn label={`Mise à jour (${APP_VERSION})`} onClick={handleCheckUpdate} />
               <Btn label={t('about.title')} onClick={() => navigate("/about")} />
               <Btn 
                 label={user ? t('settings.logout', 'Déconnexion') : t('auth.login_btn', 'Se connecter')} 

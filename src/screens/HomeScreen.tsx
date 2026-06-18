@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "@/store/useStore";
@@ -8,6 +9,21 @@ export function HomeScreen() {
   const navigate = useNavigate();
   const { user } = useStore();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    const checkVersion = async () => {
+      try {
+        const res = await fetch('/version.json?t=' + Date.now(), { cache: 'no-store' });
+        const data = await res.json();
+        if (data && data.version && data.version !== APP_VERSION) {
+          useStore.getState().setHasUpdateAvailable(data.version);
+        }
+      } catch (e) {
+        console.error("Version check failed", e);
+      }
+    };
+    checkVersion();
+  }, []);
 
   return (
     <div className="h-full flex flex-col bg-night overflow-y-auto no-scrollbar">
