@@ -27,6 +27,7 @@ interface AppState {
   hebrewFont: HebrewFontStyle;
   appLanguage: string;
   personalInfo?: PersonalInfo;
+  hasUpdateAvailable: string | null;
   journeyProgress: JourneyStep[];
   currentQuestion: string;
   chatMessages: Message[];
@@ -47,6 +48,7 @@ interface AppState {
   updateUser: (data: Partial<UserProfile>) => void;
   setAiModel: (model: string) => void;
   setHasSeenTutorial: () => void;
+  setHasUpdateAvailable: (version: string | null) => void;
   usedGiftCodes: string[];
   applyGiftCode: (code: string) => Promise<{ success: boolean; messageKey: string; count?: number }>;
   syncProfileOnLogin: (token: string, user: UserProfile) => Promise<void>;
@@ -66,6 +68,7 @@ export const useStore = create<AppState>()(
       drawStyle: "chaos",
       hebrewFont: "Lalou",
       appLanguage: navigator.language.startsWith('fr') ? 'fr' : 'en',
+      hasUpdateAvailable: null,
       journeyProgress: [],
       currentQuestion: "",
       chatMessages: [],
@@ -125,6 +128,7 @@ export const useStore = create<AppState>()(
         }
       },
       setHasSeenTutorial: () => set({ hasSeenTutorial: true }),
+      setHasUpdateAvailable: (version: string | null) => set({ hasUpdateAvailable: version }),
       usedGiftCodes: [],
       applyGiftCode: async (code: string) => {
         const state = get();

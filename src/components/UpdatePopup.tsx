@@ -8,6 +8,7 @@ import { APP_VERSION } from "@/version";
 export function UpdatePopup() {
   const { t } = useTranslation();
   const [newVersion, setNewVersion] = useState<string | null>(null);
+  const hasUpdateAvailable = useStore(state => state.hasUpdateAvailable);
 
   const {
     needRefresh: [needRefresh, setNeedRefresh],
@@ -37,13 +38,28 @@ export function UpdatePopup() {
     }
   }, [needRefresh]);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     // 1. Reset user journey and logout (hard restart)
     useStore.getState().logout();
     useStore.getState().resetJourney();
     
     // 2. Apply update and reload
-    updateServiceWorker(true);
+    if (needRefresh) {
+      updateServiceWorker(true);
+    } else {
+      // Manual bypass if SW update event hasn't fired yet
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(name => caches.delete(name)));
+      }
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for (const reg of regs) {
+          await reg.unregister();
+        }
+      }
+    }
+
     setTimeout(() => {
       window.location.reload();
     }, 100);
@@ -51,11 +67,15 @@ export function UpdatePopup() {
 
   const handleClose = () => {
     setNeedRefresh(false);
+    useStore.getState().setHasUpdateAvailable(null);
   };
+
+  const showPopup = needRefresh || !!hasUpdateAvailable;
+  const displayVersion = newVersion || hasUpdateAvailable;
 
   return (
     <AnimatePresence>
-      {needRefresh && (
+      {showPopup && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-night/80 backdrop-blur-sm">
           <motion.div 
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
@@ -79,7 +99,7 @@ export function UpdatePopup() {
             </p>
 
             <div className="text-xs text-parchment/60 font-mono tracking-wider mb-6 bg-night px-3 py-1.5 rounded-lg border border-parchment/5">
-              {APP_VERSION} {newVersion ? `-> ${newVersion}` : ''}
+              {APP_VERSION} {displayVersion ? `-> ${displayVersion}` : ''}
             </div>
 
             <div className="flex gap-3 w-full">

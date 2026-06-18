@@ -12,13 +12,30 @@ export function SplashScreen() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
+    let isNavigating = true;
     const lang = i18n.language;
+
+    const checkVersion = async () => {
+      try {
+        const res = await fetch('/version.json?t=' + Date.now(), { cache: 'no-store' });
+        const data = await res.json();
+        if (data && data.version && data.version !== APP_VERSION) {
+          useStore.getState().setHasUpdateAvailable(data.version);
+          isNavigating = false;
+        }
+      } catch (e) {
+        console.error("Version check failed", e);
+      }
+    };
+
     Promise.all([
+      checkVersion(),
       queryClient.prefetchQuery({ queryKey: ['letters', lang], queryFn: () => api.getLetters(lang) }),
       queryClient.prefetchQuery({ queryKey: ['letterOfDay', lang], queryFn: () => api.getLetterOfTheDay(lang) }),
       queryClient.prefetchQuery({ queryKey: ['drawHistory', lang], queryFn: () => api.getDrawHistory(lang) }),
       queryClient.prefetchQuery({ queryKey: ['currentDraw', lang], queryFn: () => api.getCurrentDraw(lang) }),
     ]).then(() => {
+      if (!isNavigating) return;
       const hasSeen = useStore.getState().hasSeenTutorial;
       const t = setTimeout(() => navigate(hasSeen ? "/auth" : "/tutorial"), 5200);
       return () => clearTimeout(t);
