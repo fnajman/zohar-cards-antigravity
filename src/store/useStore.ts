@@ -161,7 +161,7 @@ export const useStore = create<AppState>()(
           });
           
           const s = get();
-          if (s.profileId && s.user) {
+          if (s.authToken && s.profileId && s.user) {
             await updateProfile(s.authToken, s.profileId, s.user.id, { 
               appLanguage: s.appLanguage, 
               drawStyle: s.drawStyle, 
