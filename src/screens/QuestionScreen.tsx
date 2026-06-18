@@ -89,11 +89,23 @@ export function QuestionScreen() {
                 {t('question.subtitle')}
               </p>
             </motion.div>
-            <textarea
-              value={question} onChange={(e) => setQuestion(e.target.value)}
-              placeholder={t('question.placeholder')}
-              className="w-full h-28 bg-night-light border border-parchment/10 rounded-2xl px-4 py-3 text-base text-parchment placeholder:text-ash/40 resize-none focus:outline-none focus:border-parchment/25 transition-colors mb-2"
-            />
+            <div className="relative w-full mb-2">
+              <textarea
+                value={question} onChange={(e) => setQuestion(e.target.value)}
+                placeholder={t('question.placeholder')}
+                className="w-full h-40 bg-night-light border border-parchment/10 rounded-2xl px-4 py-3 pr-12 text-base text-parchment placeholder:text-ash/40 resize-none focus:outline-none focus:border-parchment/25 transition-colors"
+              />
+              <button
+                onClick={handleReveal}
+                disabled={question.trim().length === 0}
+                className="absolute bottom-3 right-3 p-2 rounded-full bg-parchment text-ink hover:bg-bone transition-colors disabled:opacity-50 disabled:bg-transparent disabled:text-ash"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
             
             <div className="w-full text-left">
               <p className="text-[11px] tracking-[0.15em] uppercase text-ash/60 mb-3">{t('interpretation.resonance')}</p>
