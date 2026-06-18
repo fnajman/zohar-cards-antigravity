@@ -291,4 +291,6 @@ Un script local Node.js (`scripts/generate_combinations.js`) est utilisé pour p
 *   **Usage** : `node scripts/generate_combinations.js` (nécessite `.env` avec `OPENAI_API_KEY`).
 
 ## 8. Versioning
-**Règle absolue :** À chaque nouvelle fonctionnalité ou correctif majeur ajouté et validé au code, la version dans `package.json` **doit être incrémentée** systématiquement via la commande `npm version patch` (ou `minor`/`major` selon l'ampleur), avant de pousser les modifications sur git. Cela permet le bon fonctionnement de la mise à jour automatique PWA (Service Worker) et de s'assurer que les utilisateurs sont notifiés des nouveautées.
+**Règle absolue :** À chaque nouvelle fonctionnalité ou correctif majeur ajouté et validé au code, la version doit être incrémentée systématiquement :
+1. Via la commande `npm version patch` (ou `minor`/`major` selon l'ampleur) pour le package. Cela permet le bon fonctionnement de la mise à jour automatique PWA (Service Worker) et de s'assurer que les utilisateurs sont notifiés des nouveautées.
+2. En modifiant manuellement la constante `APP_VERSION` dans le fichier `src/version.ts` pour l'affichage visuel en bas de page (ex: passage de v0.52 à v0.53).
