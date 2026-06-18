@@ -140,6 +140,7 @@
     "gift_code_expired": "Ce code a expiré.",
     "gift_code_used": "Ce code a déjà été utilisé. Il est à usage unique.",
     "gift_code_success": "Félicitations ! {{count}} crédits ont été ajoutés à votre compte.",
+    "update_btn": "Mise à jour (version actuelle {{version}})",
     "personal": {
       "title": "Personnel",
       "subtitle": "Facultatif",
@@ -214,7 +215,9 @@
     "title": "Nouvelle version disponible",
     "desc": "Une nouvelle version de l'application est disponible en ligne. Voulez-vous la recharger maintenant ?",
     "later": "Plus tard",
-    "reload": "Recharger"
+    "reload": "Mise à jour",
+    "updating_title": "Mise à jour en cours",
+    "updating_desc": "Veuillez patienter..."
   },
   "subscription": {
     "title": "Abonnements",

@@ -140,6 +140,7 @@
     "gift_code_expired": "This code has expired.",
     "gift_code_used": "This code has already been used. It is single-use only.",
     "gift_code_success": "Congratulations! {{count}} credits have been added to your account.",
+    "update_btn": "Update (current version {{version}})",
     "personal": {
       "title": "Personal",
       "subtitle": "Optional",
@@ -214,7 +215,9 @@
     "title": "New version available",
     "desc": "A new version of the app is available online. Do you want to reload it now?",
     "later": "Later",
-    "reload": "Reload"
+    "reload": "Update",
+    "updating_title": "Updating",
+    "updating_desc": "Please wait..."
   },
   "subscription": {
     "title": "Subscriptions",
