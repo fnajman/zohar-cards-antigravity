@@ -16,7 +16,16 @@
     "tutorial_btn": "Tutorial"
   },
   "auth": {
-    "guest_mode": "Guest Mode"
+    "guest_mode": "Guest mode",
+    "login_btn": "Log in",
+    "lost_password": "Lost password",
+    "lost_password_title": "Reset Password",
+    "lost_password_desc": "Enter your email address",
+    "send_code": "Send code",
+    "code_validation": "Validation code",
+    "new_password": "New password",
+    "change_password_btn": "Change password",
+    "password_changed_success": "Password changed successfully! You can now log in."
   },
   "tutorial": {
     "title": "Tutorial",

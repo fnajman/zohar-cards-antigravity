@@ -50,3 +50,48 @@ export async function getMe(authToken: string): Promise<UserProfile> {
   const data = await res.json();
   return data;
 }
+
+export async function requestMagicCode(email: string): Promise<void> {
+  const res = await fetch(`${XANO_AUTH_URL}/auth/magic-login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    throw new Error(errorData?.message || "Failed to send code");
+  }
+}
+
+export async function verifyMagicCode(email: string, code: string): Promise<string> {
+  const res = await fetch(`${XANO_AUTH_URL}/auth/magic-verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, code })
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    throw new Error(errorData?.message || "Invalid code");
+  }
+
+  const data = await res.json();
+  return data.authToken;
+}
+
+export async function updateUserPassword(authToken: string, password: string): Promise<void> {
+  const res = await fetch(`${XANO_AUTH_URL}/auth/user/update`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${authToken}`
+    },
+    body: JSON.stringify({ password })
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    throw new Error(errorData?.message || "Failed to update password");
+  }
+}

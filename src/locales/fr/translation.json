@@ -16,7 +16,16 @@
     "tutorial_btn": "Tutoriel"
   },
   "auth": {
-    "guest_mode": "Mode invité"
+    "guest_mode": "Mode invité",
+    "login_btn": "Se connecter",
+    "lost_password": "Mot de passe perdu",
+    "lost_password_title": "Réinitialisation",
+    "lost_password_desc": "Entrez votre adresse email",
+    "send_code": "Envoyer le code",
+    "code_validation": "Code de validation",
+    "new_password": "Nouveau mot de passe",
+    "change_password_btn": "Changer le mot de passe",
+    "password_changed_success": "Mot de passe modifié avec succès ! Vous pouvez maintenant vous connecter."
   },
   "tutorial": {
     "title": "Tutoriel",
