@@ -129,6 +129,10 @@ sequenceDiagram
     end
 ```
 
+*   `POST /auth/login` : Authentification classique (Email / Password).
+*   `POST /auth/magic-login` : Demande d'un code de réinitialisation de mot de passe (envoi par email).
+*   `POST /auth/magic-verify` : Vérification du code de réinitialisation, retourne un `auth_token` temporaire.
+*   `POST /auth/user/update` : Mise à jour du profil (utilisé pour définir un nouveau mot de passe avec le token issu de `magic-verify`).
 *   `POST /auth/signup` : Création de compte (Password).
 *   `GET /auth/me` : Récupération du profil complet (`Authorization: Bearer`). Renvoie l'objet `user` contenant un objet imbriqué `profile`. Ce endpoint centralise la récupération des données utilisateur en une seule requête (plus de requête séparée sur `/profile`).
 
