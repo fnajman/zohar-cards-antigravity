@@ -522,7 +522,7 @@ export function SettingsScreen() {
               {user && <Btn label={t('settings.gift_code_btn')} onClick={() => setSection("gift-code")} />}
               {user && <Btn label={t('settings.history')} onClick={() => setSection("history")} />}
               {user && <Btn label={t('settings.plans')} onClick={() => navigate("/subscription")} />}
-              <Btn label={`Mise à jour (${APP_VERSION})`} onClick={handleCheckUpdate} />
+              <Btn label={t('settings.update_btn', { version: APP_VERSION })} onClick={handleCheckUpdate} />
               <Btn label={t('about.title')} onClick={() => navigate("/about")} />
               <Btn 
                 label={user ? t('settings.logout', 'Déconnexion') : t('auth.login_btn', 'Se connecter')} 

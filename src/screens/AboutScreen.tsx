@@ -41,9 +41,12 @@ export function AboutScreen() {
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
               />
             </div>
-            <p className="text-sm text-ash/80 leading-relaxed text-center italic">
+            <p className="text-sm text-ash/80 leading-relaxed text-center italic mb-4">
               {t('about.frank_lalou')}
             </p>
+            <a href="https://lalou.devfree.fr/" target="_blank" rel="noopener noreferrer" className="text-sm text-parchment/80 hover:text-parchment transition-colors underline block text-center">
+              https://lalou.devfree.fr/
+            </a>
           </div>
         </motion.div>
       </main>
