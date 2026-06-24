@@ -262,6 +262,7 @@ Carte 1 (L'impulsion) : ${card1.identity?.name} (${card1.symbol})
 - Polarités : ${card1.semantic_field?.polarities?.join(', ') || ''}
 - Déséquilibres : ${card1.semantic_field?.imbalances?.join(', ') || ''}
 - Pratique / Focus : ${card1.symbolic_practices?.focus || ''}
+- Zone Corporelle (Kabbale / Tehima) : ${card1.body_correspondence?.body_area_kabbale_tehima || ''}
 - Enseignement profond : ${card1.content_long || ''}
 
 Carte 2 (La structure/réponse) : ${card2.identity?.name} (${card2.symbol})
@@ -273,6 +274,7 @@ Carte 2 (La structure/réponse) : ${card2.identity?.name} (${card2.symbol})
 - Polarités : ${card2.semantic_field?.polarities?.join(', ') || ''}
 - Déséquilibres : ${card2.semantic_field?.imbalances?.join(', ') || ''}
 - Pratique / Focus : ${card2.symbolic_practices?.focus || ''}
+- Zone Corporelle (Kabbale / Tehima) : ${card2.body_correspondence?.body_area_kabbale_tehima || ''}
 - Enseignement profond : ${card2.content_long || ''}
 
 === LA COMBINAISON ===

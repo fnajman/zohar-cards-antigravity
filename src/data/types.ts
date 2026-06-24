@@ -49,6 +49,7 @@ export interface Letter {
     body_area: string;
     felt_quality: string;
     symbolic_function: string;
+    body_area_kabbale_tehima?: string;
   };
   existential_reading: {
     ethical_note: string;

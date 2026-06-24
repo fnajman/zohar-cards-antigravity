@@ -268,6 +268,12 @@ export function LetterCard({ letter }: { letter: Letter }) {
             <p className="text-sm text-parchment/90">{letter.body_correspondence?.body_area}</p>
             <p className="text-xs text-parchment/60 mt-1">{letter.body_correspondence?.felt_quality}</p>
           </div>
+          {letter.body_correspondence?.body_area_kabbale_tehima && (
+            <div>
+              <p className="text-[10px] uppercase text-ash/60 mb-1">Kabbale / Téhima</p>
+              <p className="text-sm text-parchment/90">{letter.body_correspondence.body_area_kabbale_tehima}</p>
+            </div>
+          )}
         </div>
       </AccordionSection>
 

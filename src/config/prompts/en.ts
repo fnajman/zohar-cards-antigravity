@@ -262,6 +262,7 @@ Letter 1 (The Impulse) : ${card1.identity?.name} (${card1.symbol})
 - Polarities : ${card1.semantic_field?.polarities?.join(', ') || ''}
 - Imbalances : ${card1.semantic_field?.imbalances?.join(', ') || ''}
 - Practice / Focus : ${card1.symbolic_practices?.focus || ''}
+- Body Area (Kabbalah / Tehima) : ${card1.body_correspondence?.body_area_kabbale_tehima || ''}
 - Deep Teaching : ${card1.content_long || ''}
 
 Letter 2 (The Structure/Response) : ${card2.identity?.name} (${card2.symbol})
@@ -273,6 +274,7 @@ Letter 2 (The Structure/Response) : ${card2.identity?.name} (${card2.symbol})
 - Polarities : ${card2.semantic_field?.polarities?.join(', ') || ''}
 - Imbalances : ${card2.semantic_field?.imbalances?.join(', ') || ''}
 - Practice / Focus : ${card2.symbolic_practices?.focus || ''}
+- Body Area (Kabbalah / Tehima) : ${card2.body_correspondence?.body_area_kabbale_tehima || ''}
 - Deep Teaching : ${card2.content_long || ''}
 
 === THE COMBINATION ===

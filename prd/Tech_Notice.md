@@ -347,3 +347,6 @@ Lorsque l'utilisateur accepte la mise à jour :
 1. Via la commande `npm version patch` (ou `minor`/`major` selon l'ampleur) pour le package.
 2. En modifiant manuellement la constante `APP_VERSION` dans le fichier `src/version.ts` pour l'affichage visuel en bas de page (ex: passage de v0.53 à v0.54).
 3. En modifiant manuellement la valeur `"version"` dans le fichier `public/version.json` pour que la modale de mise à jour PWA détecte le changement (ex: passage de v0.53 à v0.54).
+
+### 6.3 Ajout de champs de contenu (Kabbale / Tehima)
+Le champ `body_correspondence.body_area_kabbale_tehima` a été ajouté dans la base Xano et injecté dynamiquement dans les composants d'interface (UI) ainsi que dans les *System Prompts* (FR et EN). L'API Xano permet la lecture et la mise à jour (via PATCH) de cette propriété au sein de l'objet JSON `i18n_content`.
